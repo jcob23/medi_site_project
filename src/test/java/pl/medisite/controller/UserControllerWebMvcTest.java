@@ -41,9 +41,9 @@ public class UserControllerWebMvcTest {
     @Test
     void loginWorksCorrectly () throws Exception {
         //given
-        mockMvc.perform(MockMvcRequestBuilders.get("/medi_login"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("medi_login"));
+                .andExpect(view().name("login"));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class UserControllerWebMvcTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists("registered"))
-                    .andExpect(view().name("medi_login"));
+                    .andExpect(view().name("login"));
 
         }else{
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
@@ -129,7 +129,7 @@ public class UserControllerWebMvcTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists("registered"))
-                    .andExpect(view().name("medi_login"));
+                    .andExpect(view().name("login"));
 
         }else{
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))

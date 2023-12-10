@@ -17,9 +17,9 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    @GetMapping("/medi_login")
+    @GetMapping("/login")
     public String login(){
-        return "medi_login";
+        return "login";
     }
 
     @GetMapping("/register")
@@ -35,7 +35,7 @@ public class UserController {
     ){
         userService.saveUser(userDTO);
         model.addAttribute("registered", true);
-        return "medi_login";
+        return "login";
     }
     @GetMapping("/admin")
     public String adminPage(Model model){

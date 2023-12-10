@@ -45,22 +45,23 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .build();
     }
-
+    // obsługa błędu 403
+    //https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/medi_login","/index", "/register","/register/save").permitAll()
+                        .requestMatchers("/login","/index", "/register","/register/save").permitAll()
                         .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/**").hasAnyAuthority("ADMIN")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
-                        .loginPage("/medi_login")
+                        .loginPage("/login")
                         .defaultSuccessUrl("/user",true)
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/medi_login?logout")
+                        .logoutSuccessUrl("/login?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()

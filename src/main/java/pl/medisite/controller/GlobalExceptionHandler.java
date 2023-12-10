@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 
@@ -35,6 +36,20 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("errorMessage", message);
         return modelAndView;
     }
+
+    // obsługa błędu 403
+    //https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView handleForbiddenError(AccessDeniedException ex){
+        String message = "Odmowa dostępu, brak odpowiednich uprawnień";
+        log.error(message,ex);
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("errorMessage", message);
+        return modelAndView;
+    }
+
+
 
 
 
