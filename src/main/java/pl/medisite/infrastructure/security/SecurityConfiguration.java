@@ -51,15 +51,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user","/login","/index", "/register","/register/save").permitAll()
+                        .requestMatchers("/medi_login","/index", "/register","/register/save").permitAll()
                         .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/**").hasAnyAuthority("ADMIN")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/user",true))
+                        .loginPage("/medi_login")
+                        .defaultSuccessUrl("/user",true)
+                )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/medi_login?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()

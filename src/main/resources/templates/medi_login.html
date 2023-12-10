@@ -8,15 +8,19 @@
     </head>
     <body>
     <h1>MediSite</h1>
+    <h3>Logowanie</h3>
+    <div th:if="${param.error}" style="color: red;">Nieprawidłowy email lub hasło.</div>
+    <div th:if="${param.logout}">Zostałeś wylogowany</div>
+    <div th:if="${registered}">Użytkownik zarejestrowany pomyślnie! Zaloguj się teraz.</div>
         <div class="card-body">
             <form name='f' action="login" method='POST'>
                 <table>
                     <tr>
-                        <td>User:</td>
+                        <td>Email:</td>
                         <td><input type='text' name='username'></td>
                     </tr>
                     <tr>
-                        <td>Password:</td>
+                        <td>Hasło:</td>
                         <td><input type='password' name='password' /></td>
                     </tr>
                     <tr>
@@ -24,6 +28,7 @@
                     </tr>
                     <tr>
                         <td><a th:href="@{/register}" class="btn btn-info" role="button" >Rejestracja</a></td>
+
                     </tr>
                 </table>
             </form>

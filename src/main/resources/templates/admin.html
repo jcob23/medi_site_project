@@ -12,6 +12,20 @@
         <div class="container">
             <div class="page-header" id="banner">
                 <h2>Admin</h2>
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>email</th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="email : ${usersEmails}">
+                        <td th:text="${email}"></td>
+                        <td>
+                            <form action="#" th:action="@{admin/delete/{email}(email=${email})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-danger">Usuń</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </body>

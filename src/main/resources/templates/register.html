@@ -8,19 +8,18 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="page-header" id="banner">
-        <h2>Register</h2>
-    </div>
-        <form action="#" th:action = "@{/register/save}" method='POST'>
-                <div class="form-group">
-                    Email: <input type="text" th:name="email"/>
-                    Hasło: <input type="password" th:name="password"/>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create employee" name="button"/>
-                </div>
-            </form>
+    <div class="container">
+        <div class="page-header" id="banner">
+            <h2>Register</h2>
+        </div>
+        <form action="#" th:action="@{/register}" method='POST' th:object="${userDTO}">
+            <div class="form-group">
+                Email: <input type="text" th:field="*{email}"/><br>
+                Hasło: <input type="password" th:field="*{password}"/>
+            </div>
+            <button type="submit" class="btn btn-info">zarejestruj się</button>
+            <a th:href="@{/login}" class="btn btn-info" role="button">Masz już konto? Zaloguj się</a>
+        </form>
     </div>
 </body>
 </html>
