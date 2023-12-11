@@ -19,7 +19,6 @@ import pl.medisite.service.UserService;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // WebMvcTest-test integracyjny
@@ -28,10 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // Serializacja parametrów wyjściowych (z klasy na wyjściowego html)
 // Walidacja danych wejściowych
 // Odpowiednie zmapowanie wyjątków
-@WebMvcTest(controllers = UserController.class)
+@WebMvcTest(controllers = LoginController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserControllerWebMvcTest {
+public class LoginControllerWebMvcTest {
 
     private MockMvc mockMvc;
 
@@ -51,6 +50,7 @@ public class UserControllerWebMvcTest {
         // given when then
         mockMvc.perform(MockMvcRequestBuilders.get("/register"))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("userDTO"))
                 .andExpect(view().name("register"));
     }
 
@@ -63,21 +63,19 @@ public class UserControllerWebMvcTest {
         Map<String, String> parametersMap = UserDTO.builder().email(email).build().asMap();
         parametersMap.forEach(parameters::add);
 
-        if(correctEmail){
+        if ( correctEmail ) {
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists("registered"))
                     .andExpect(view().name("login"));
 
-        }else{
+        } else {
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
                     .andExpect(status().isBadRequest())
                     .andExpect(model().attributeDoesNotExist("registered"))
                     .andExpect(model().attribute("errorMessage", Matchers.containsString(email)))
                     .andExpect(view().name("error"));
         }
-
-
     }
 
     public static Stream<Arguments> emailValidationWorksCorrectly () {
@@ -114,10 +112,12 @@ public class UserControllerWebMvcTest {
                 /*30*/ Arguments.of(false, "CAT…123@email.com"),
                 /*31*/ Arguments.of(false, "”(),:;<>[\\]@email.com"),
                 /*32*/ Arguments.of(false, "obviously”not”correct@email.com"),
-                /*33*/ Arguments.of(false, "example\\ is”especially”not\\allowed@email.com")
+                /*33*/ Arguments.of(false, "example\\ is”especially”not\\allowed@email.com"),
+                /*34*/ Arguments.of(false, "")
         );
 
     }
+
     @ParameterizedTest
     @MethodSource
     void passwordValidationWorksCorrectly (Boolean correctPassword, String password) throws Exception {
@@ -125,13 +125,13 @@ public class UserControllerWebMvcTest {
         Map<String, String> parametersMap = UserDTO.builder().password(password).build().asMap();
         parametersMap.forEach(parameters::add);
 
-        if(correctPassword){
+        if ( correctPassword ) {
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists("registered"))
                     .andExpect(view().name("login"));
 
-        }else{
+        } else {
             mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
                     .andExpect(status().isBadRequest())
                     .andExpect(model().attributeDoesNotExist("registered"))

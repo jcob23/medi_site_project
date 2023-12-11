@@ -19,6 +19,7 @@ import java.util.Optional;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    //Zrobić że jeżeli mail jest poprawny, a hasło błędne to pojawi sie odpowiedni komunikat
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleBindException(BindException ex){
@@ -26,6 +27,7 @@ public class GlobalExceptionHandler {
         if("password".equals(ex.getFieldError().getField())){
             message = "Za krótkie hasło!";
         }else{
+
             message = String.format("Błędne żądanie dla pola: [%s], nieprawidłowa wartość: [%s].",
                     Optional.ofNullable(ex.getFieldError()).map(FieldError::getField).orElse(null),
                     Optional.ofNullable(ex.getFieldError()).map(FieldError::getRejectedValue).orElse(null)

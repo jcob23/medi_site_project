@@ -1,14 +1,12 @@
 package pl.medisite.controller;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 
 @Data
 @Builder
@@ -16,7 +14,8 @@ import java.util.Optional;
 @NoArgsConstructor
 public class UserDTO {
 
-    @Email
+    @NotBlank
+    @Email(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
     private String email;
 
     @Size(min = 4)
