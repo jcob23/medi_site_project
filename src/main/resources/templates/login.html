@@ -9,7 +9,9 @@
     <body>
     <h1>MediSite</h1>
     <h3>Logowanie</h3>
-    <div th:if="${param.error}" style="color: red;">Nieprawidłowy email lub hasło.</div>
+    <div th:if="${error}" style="color: red;">
+        <span th:text="${errorMessage}"></span>
+    </div>
     <div th:if="${param.logout}">Zostałeś wylogowany</div>
     <div th:if="${registered}">Użytkownik zarejestrowany pomyślnie! Zaloguj się teraz.</div>
         <div class="card-body">
@@ -28,7 +30,6 @@
                     </tr>
                     <tr>
                         <td><a th:href="@{/register}" class="btn btn-info" role="button" >Rejestracja</a></td>
-
                     </tr>
                 </table>
             </form>
