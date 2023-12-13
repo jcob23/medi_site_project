@@ -3,13 +3,13 @@ package pl.medisite.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.medisite.controller.buisness.PatientDTO;
+import pl.medisite.controller.system.UserDTO;
+import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 
 @Controller
@@ -17,7 +17,7 @@ import pl.medisite.service.UserService;
 @AllArgsConstructor
 public class LoginController {
 
-    private UserService userService;
+    private PatientService patientService;
 
     private final AuthenticationManager authenticationManager;
 
@@ -36,21 +36,17 @@ public class LoginController {
 
     @GetMapping("/register")
     public String showRegisterPage(Model model){
-        model.addAttribute("userDTO",new UserDTO());
+        model.addAttribute("patientDTO",new PatientDTO());
         return "register";
     }
     @PostMapping("/register")
     public String registerUser(
-            @Valid @ModelAttribute("userDTO") UserDTO userDTO,
+            @Valid @ModelAttribute("patientDTO") PatientDTO patientDTO,
             Model model
     ){
-        userService.saveUser(userDTO);
+        patientService.savePatient(patientDTO);
         model.addAttribute("registered", true);
         return "login";
     }
-
-    public record LoginRequest(String username, String password) {
-    }
-
 
 }

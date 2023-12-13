@@ -1,4 +1,4 @@
-package pl.medisite.controller;
+package pl.medisite.controller.system;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

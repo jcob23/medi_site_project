@@ -1,11 +1,9 @@
 package pl.medisite.util;
 
 import lombok.experimental.UtilityClass;
-import pl.medisite.controller.UserDTO;
+import pl.medisite.controller.system.UserDTO;
 import pl.medisite.infrastructure.security.RoleEntity;
 import pl.medisite.infrastructure.security.UserEntity;
-
-import javax.management.relation.Role;
 
 @UtilityClass
 public class UserFixtures {

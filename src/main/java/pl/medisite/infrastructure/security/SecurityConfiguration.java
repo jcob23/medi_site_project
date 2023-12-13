@@ -61,13 +61,15 @@ public class SecurityConfiguration  {
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+
                         .requestMatchers("/login", "/register","/register/save").permitAll()
-                        .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/user","/home/**").hasAnyAuthority("USER", "ADMIN", "DOCTOR")
                         .requestMatchers("/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/**").hasAnyAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")
-                        .defaultSuccessUrl("/user",true)
+                        .defaultSuccessUrl("/home",true)
                         .failureHandler(customAuthenticationFailureHandler)
                 )
                 .logout(logout -> logout

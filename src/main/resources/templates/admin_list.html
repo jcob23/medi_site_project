@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Panel Admina</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    </head>
+
+    <body>
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <td><a th:href="@{/admin/users}" class="btn btn-info" role="button" >Wszyscy</a></td>
+            <td><a th:href="@{/admin/doctors}" class="btn btn-info" role="button" >Doktorzy</a></td>
+            <td><a th:href="@{/admin/plebs}" class="btn btn-info" role="button" >Plebs</a></td>
+        </tr>
+    </table>
+        <div class="container">
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>email</th>
+                        <th>imie</th>
+                        <th>nazwisko</th>
+                        <th>numer telefonu</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="personDTO : ${personsData}">
+                        <td th:text="${personDTO.email}"></td>
+                        <td th:text="${personDTO.name}"></td>
+                        <td th:text="${personDTO.surname}"></td>
+                        <td th:text="${personDTO.phone}"></td>
+                        <td>
+                            <form action="#" th:action="@{admin/delete/{email}(email=${email})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-danger">Usuń</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="#" th:action="@{admin/edit_patient/{email}(email=${email})}" th:method="POST">
+                                <button type="submit" class="btn btn-info">Edytuj</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </body>
+
+</html>

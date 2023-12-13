@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse" th:fragment="header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home}">MediSite</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <th:block th:if="${#strings.equals(userRole, 'USER')}">
+                <li><a href="#">WIZYTY</a></li>
+                <li><a href="#">LEKARZE</a></li>
+            </th:block>
+            <th:block th:if="${#strings.equals(userRole, 'ADMIN')}">
+                <li><a th:href="@{/admin/users}" >UŻYTKOWNICY</a></li>
+                <li><a th:href="@{/admin/add}" >DODAJ LEKARZA</a></li>
+            </th:block>
+            <th:block th:if="${#strings.equals(userRole, 'DOCTOR')}">
+                <li><a href="#">TEST</a></li>
+                <li><a href="#">CZY</a></li>
+                <li><a href="#">DOCTOR</a></li>
+                <li><a href="#">DZIAŁA</a></li>
+            </th:block>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#" th:href="@{/profile}">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/logout}"  onclick="$('#form').submit();">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                </a>
+            </li>
+            <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

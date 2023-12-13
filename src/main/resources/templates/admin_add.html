@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Employees example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<h2>Dodaj lekarza</h2>
+<form action="#" th:action="@{/admin/add}" method="POST" th:object="${doctorDTO}">
+    <div class="form-group">
+        IMIĘ: <input type="text" th:field="*{name}"/><br>
+        NAZWISKO: <input type="text" th:field="*{surname}"/><br>
+        SPECIALIZACJA: <input type="text" th:field="*{specialization}"/><br>
+        TELEFON: <input type="text" th:field="*{phone}"/><br>
+        EMAIL: <input type="text" th:field="*{email}"/>
+        HASŁO: <input type="password" th:field="*{password}"/>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Dodaj lekarza" name="button"/>
+    </div>
+</form>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package pl.medisite.controller;
+package pl.medisite.controller.system;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -20,7 +20,6 @@ public class UserDTO {
 
     @Size(min = 4)
     private String password;
-
 
     public Map<String,String> asMap(){
         Map<String, String > result = new HashMap<>();

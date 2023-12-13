@@ -2,22 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Rejestracja</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 
 <body>
+<div th:insert="~{fragments/header :: header}"></div>
     <div class="container">
         <div class="page-header" id="banner">
-            <h2>Register</h2>
+            <h3>Zarejestruj się</h3>
         </div>
-        <form action="#" th:action="@{/register}" method='POST' th:object="${userDTO}">
+        <form action="#" th:action="@{/register}" method='POST' th:object="${patientDTO}">
             <div class="form-group">
-                Email: <input type="text" th:field="*{email}"/><br>
-                Hasło: <input type="password" th:field="*{password}"/>
+                IMIĘ: <input type="text" th:field="*{name}"/><br>
+                NAZWISKO: <input type="text" th:field="*{surname}"/><br>
+                TELEFON: <input type="text" th:field="*{phone}" placeholder="+xx xxx xxx xxx"/><br>
+                EMAIL: <input type="text" th:field="*{email}" placeholder="example@mail.com"/><br>
+                HASŁO: <input type="password" th:field="*{password}"/>
             </div>
-            <button type="submit" class="btn btn-info">zarejestruj się</button>
+            <button type="submit" class="btn btn-info">Zarejestruj się</button>
             <a th:href="@{/login}" >Masz już konto? Zaloguj się</a>
         </form>
     </div>

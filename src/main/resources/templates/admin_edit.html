@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Panel Admina</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+    <form action="#" th:action="@{/admin/edit_patient}" method='PUT' th:object="${user}">
+        <div class="form-group">
+            IMIĘ: <input type="text" th:field="*{name}" th:value=${"user.name"}/><br>
+            NAZWISKO: <input type="text" th:field="*{surname}" th:value=${"user.surname"}/><br>
+            TELEFON: <input type="text" th:field="*{phone}" th:value=${"user.phone"}/><br>
+        </div>
+        <button type="submit" class="btn btn-info">zaktualizuj</button>
+    </form>
+</body>
+
+</html>
