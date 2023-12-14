@@ -20,17 +20,22 @@ spring:
       minimum-idle: 10
       maximum-pool-size: 20
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        dialect:org.dialect.PostgreSQLDialect
+      properties:
+        ddl-auto: none
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   mvc:
     hiddenmethod:
       filter:
         enabled: true
   resources:
     add-mappings: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
 
 #logging:
 #    level:

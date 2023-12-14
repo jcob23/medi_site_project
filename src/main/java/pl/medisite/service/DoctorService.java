@@ -17,9 +17,9 @@ public class DoctorService {
     UserService userService;
 
     @Transactional
-    public void saveDoctor(DoctorDTO doctorDTO){
+    public void saveDoctor(DoctorDTO doctorDTO) {
         UserEntity userEntity = userService
-                .saveUser(UserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(),3);
+                .saveUser(UserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(), 3);
 
         DoctorEntity doctorEntity = DoctorEntity.builder()
                 .name(doctorDTO.getName())
@@ -30,4 +30,24 @@ public class DoctorService {
                 .build();
         doctorRepository.save(doctorEntity);
     }
+
+    @Transactional
+    public void updateDoctor(DoctorEntity doctorEntity) {
+        DoctorEntity existingDoctor = doctorRepository.findByEmail(doctorEntity.getLoginDetails().getEmail());
+        existingDoctor.setName(doctorEntity.getName());
+        existingDoctor.setSurname(doctorEntity.getSurname());
+        existingDoctor.setPhone(doctorEntity.getPhone());
+        doctorRepository.save(existingDoctor);
+    }
+
+    @Transactional
+    public void deleteDoctor(String email) {
+        doctorRepository.deleteByMail(email);
+        userService.deleteUser(email);
+    }
+
+    public DoctorEntity findByEmail(String email) {
+        return doctorRepository.findByEmail(email);
+    }
+
 }

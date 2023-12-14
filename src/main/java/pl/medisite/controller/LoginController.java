@@ -18,9 +18,6 @@ import pl.medisite.service.UserService;
 public class LoginController {
 
     private PatientService patientService;
-
-    private final AuthenticationManager authenticationManager;
-
     @GetMapping("/login")
     public String loginPage(@RequestParam(name = "error", required = false) String error,
                             HttpSession session,

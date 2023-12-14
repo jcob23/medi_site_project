@@ -1,6 +1,7 @@
 package pl.medisite.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.buisness.PatientDTO;
@@ -11,6 +12,7 @@ import pl.medisite.infrastructure.security.UserEntity;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PatientService {
 
     private UserService userService;
@@ -28,6 +30,23 @@ public class PatientService {
                 .loginDetails(userEntity)
                 .build();
         patientRepository.save(patientEntity);
+    }
+
+    @Transactional
+    public void updatePatient(PatientEntity patientEntity) {
+        log.info("########");
+        PatientEntity existingPatient = patientRepository.findByEmail(patientEntity.getLoginDetails().getEmail());
+        log.info("########");
+        existingPatient.setName(patientEntity.getName());
+        existingPatient.setSurname(patientEntity.getSurname());
+        existingPatient.setPhone(patientEntity.getPhone());
+        patientRepository.save(existingPatient);
+    }
+
+    @Transactional
+    public void deletePatient(String email) {
+        patientRepository.deleteByMail(email);
+        userService.deleteUser(email);
     }
 
     public PatientEntity findByEmail(String email) {

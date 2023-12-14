@@ -6,10 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import pl.medisite.service.UserService;
 
 
 import java.io.IOException;
@@ -19,8 +17,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    private final UserService userService;
-
+    private final UserRepository useruserRepository;
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
@@ -35,7 +32,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     private String determineFailureMessage(HttpServletRequest request, AuthenticationException exception) {
         String mail = request.getParameter("username");
-        UserEntity byEmail = userService.findByEmail(mail);
+        UserEntity byEmail = useruserRepository.findByEmail(mail);
         return (byEmail == null) ?
                 String.format("Nie znaleziono konta o takim mailu: %s.", mail) :
                 "Błędne hasło.";

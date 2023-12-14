@@ -10,13 +10,15 @@
 
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-    <form action="#" th:action="@{/admin/edit_patient}" method='PUT' th:object="${user}">
+    <form action="#" th:action="@{/admin/edit_patient}" method='POST' th:object="${user}">
+        <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" th:field="*{loginDetails.email}" th:value="${user.loginDetails.email}" />
         <div class="form-group">
-            IMIĘ: <input type="text" th:field="*{name}" th:value=${"user.name"}/><br>
-            NAZWISKO: <input type="text" th:field="*{surname}" th:value=${"user.surname"}/><br>
-            TELEFON: <input type="text" th:field="*{phone}" th:value=${"user.phone"}/><br>
+            IMIĘ: <input type="text" th:field="*{name}" /><br>
+            NAZWISKO: <input type="text" th:field="*{surname}" /><br>
+            TELEFON: <input type="text" th:field="*{phone}"/><br>
         </div>
-        <button type="submit" class="btn btn-info">zaktualizuj</button>
+        <button type="submit" class="btn btn-info">ZAKTUALIZUJ</button>
     </form>
 </body>
 

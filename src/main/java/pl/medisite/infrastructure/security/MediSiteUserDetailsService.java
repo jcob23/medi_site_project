@@ -19,6 +19,8 @@ public class MediSiteUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername (String email) throws UsernameNotFoundException {
 
         UserEntity user = userRepository.findByEmail(email);
+        if(user == null)
+            throw new UsernameNotFoundException("User not found");
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getRole());
         return buildUserForAuthentication(user,authority);
 

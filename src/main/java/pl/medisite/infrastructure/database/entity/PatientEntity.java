@@ -32,11 +32,11 @@ public class PatientEntity {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "email",referencedColumnName = "email")
     private UserEntity loginDetails;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name = "disease_id")
     private List<DiseaseEntity> diseases;
 }
