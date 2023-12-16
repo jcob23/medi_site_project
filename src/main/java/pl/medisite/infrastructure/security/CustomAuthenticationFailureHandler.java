@@ -22,7 +22,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
         String targetUrl = "/login?error=true";
-        setFailureMessage(request, determineFailureMessage(request, exception));
+        setFailureMessage(request, determineFailureMessage(request));
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
@@ -30,11 +30,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         request.getSession().setAttribute("errorMessage", errorMessage);
     }
 
-    private String determineFailureMessage(HttpServletRequest request, AuthenticationException exception) {
+    private String determineFailureMessage(HttpServletRequest request) {
         String mail = request.getParameter("username");
         UserEntity byEmail = useruserRepository.findByEmail(mail);
-        return (byEmail == null) ?
-                String.format("Nie znaleziono konta o takim mailu: %s.", mail) :
-                "Błędne hasło.";
+        return (byEmail == null) ? String.format("Nie znaleziono konta o takim mailu: %s.", mail) : "Błędne hasło.";
     }
 }

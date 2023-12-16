@@ -20,7 +20,7 @@ public class MediSiteUserDetailsService implements UserDetailsService {
 
         UserEntity user = userRepository.findByEmail(email);
         if(user == null)
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found: " + email);
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getRole());
         return buildUserForAuthentication(user,authority);
 

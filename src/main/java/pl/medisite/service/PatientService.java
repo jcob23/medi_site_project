@@ -2,6 +2,7 @@ package pl.medisite.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.buisness.PatientDTO;
@@ -42,6 +43,7 @@ public class PatientService {
         existingPatient.setPhone(patientEntity.getPhone());
         patientRepository.save(existingPatient);
     }
+
 
     @Transactional
     public void deletePatient(String email) {

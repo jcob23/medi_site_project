@@ -8,6 +8,21 @@ server:
 #    url: https://petstore3.swagger.io.api/v3/
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: medisitecontact@gmail.com
+    password: dndk qxkg yxra uabf
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  #          ssl:
+  #            enable: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
@@ -32,6 +47,7 @@ spring:
         enabled: true
   resources:
     add-mappings: true
+
 
 logging:
   level:

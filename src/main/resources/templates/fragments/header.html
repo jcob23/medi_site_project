@@ -15,6 +15,7 @@
         </div>
         <ul class="nav navbar-nav">
             <th:block th:if="${#strings.equals(userRole, 'USER')}">
+                <li><a th:href="@{/patient}">PROFIL</a></li>
                 <li><a href="#">WIZYTY</a></li>
                 <li><a href="#">LEKARZE</a></li>
             </th:block>
@@ -23,10 +24,9 @@
                 <li><a th:href="@{/admin/add}" >DODAJ LEKARZA</a></li>
             </th:block>
             <th:block th:if="${#strings.equals(userRole, 'DOCTOR')}">
-                <li><a href="#">TEST</a></li>
-                <li><a href="#">CZY</a></li>
-                <li><a href="#">DOCTOR</a></li>
-                <li><a href="#">DZIAŁA</a></li>
+                <li><a href="#">PROFIL</a></li>
+                <li><a href="#">NADCHODZĄCE WIZYTY</a></li>
+                <li><a href="#">KALENDARZ</a></li>
             </th:block>
         </ul>
         <ul class="nav navbar-nav navbar-right">

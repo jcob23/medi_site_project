@@ -33,15 +33,20 @@ public class UserService {
         return userRepository.saveAndFlush(userEntity);
     }
     @Transactional
-    public List<PersonInformation> getUsersEmails () {
+    public void deleteUser (String email) {
+        userRepository.deleteByEmail(email);
+    }
+
+    @Transactional
+    public List<PersonInformation> getPatientsInformation() {
         return personInformationRepository.findPatientInformation().stream().filter(user -> user.getRole().equals("USER")).toList();
     }
     @Transactional
-    public List<PersonInformation> getDoctorsEmails () {
+    public List<PersonInformation> getDoctorsInformation() {
         return personInformationRepository.findDoctorInformation().stream().filter(user -> user.getRole().equals("DOCTOR")).toList();
     }
     @Transactional
-    public List<PersonInformation> getAllEmails () {
+    public List<PersonInformation> getAllUsersInformation() {
         List<PersonInformation> personInformation = personInformationRepository.findDoctorInformation();
         List<PersonInformation> personInformation2 = personInformationRepository.findPatientInformation();
         personInformation.addAll(personInformation2);
@@ -49,8 +54,8 @@ public class UserService {
         return personInformation;
     }
 
-    @Transactional
-    public void deleteUser (String email) {
-        userRepository.deleteByEmail(email);
+
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

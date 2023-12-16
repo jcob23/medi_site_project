@@ -20,7 +20,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 @AllArgsConstructor
-@Slf4j
 public class AdminController {
 
     private UserService userService;
@@ -28,35 +27,32 @@ public class AdminController {
     private DoctorService doctorService;
 
     @GetMapping("/edit_patient/{email}")
-    public String showEditUser(@PathVariable("email") String email, Model model) {
+    public String showEditPatient(@PathVariable("email") String email, Model model) {
         PatientEntity patientEntity = patientService.findByEmail(email);
         model.addAttribute("user", patientEntity);
         return "admin_edit";
     }
-
     @PutMapping("/edit_patient")
-    public String editDoctor(@ModelAttribute("user") DoctorEntity doctorEntity) {
-        doctorService.updateDoctor(doctorEntity);
-        return "redirect:/admin/doctors";
+    public String editPatient(@ModelAttribute("patient") PatientEntity patientEntity) {
+        patientService.updatePatient(patientEntity);
+        return "redirect:/admin/patients";
     }
-
     @GetMapping("/edit_doctor/{email}")
     public String showEditDoctor(@PathVariable("email") String email, Model model) {
         DoctorEntity doctorEntity = doctorService.findByEmail(email);
         model.addAttribute("user", doctorEntity);
         return "admin_edit";
     }
-
     @PutMapping("/edit_doctor")
-    public String editDoctor(@ModelAttribute("user") PatientEntity patientEntity) {
-        patientService.updatePatient(patientEntity);
-        return "redirect:/admin/plebs";
+    public String editDoctor(@ModelAttribute("patient") DoctorEntity doctorEntity) {
+        doctorService.updateDoctor(doctorEntity);
+        return "redirect:/admin/doctors";
     }
 
     @DeleteMapping("/delete_patient/{email}")
     public String deletePatient(@PathVariable String email) {
         patientService.deletePatient(email);
-        return "redirect:/admin/plebs";
+        return "redirect:/admin/patients";
     }
 
     @DeleteMapping("/delete_doctor/{email}")
@@ -67,23 +63,19 @@ public class AdminController {
 
     @GetMapping("/add")
     public String adminAddPage(Model model, Authentication authentication) {
-        String userRole = authentication.getAuthorities().iterator().next().getAuthority();
-        model.addAttribute("userRole", userRole);
         model.addAttribute("doctorDTO", new DoctorDTO());
         return "admin_add";
     }
 
     @PostMapping("/add")
-    public String adminAddDoctor(
-            @Valid @ModelAttribute("doctorDTO") DoctorDTO doctorDTO
-    ) {
+    public String adminAddDoctor(@Valid @ModelAttribute("doctorDTO") DoctorDTO doctorDTO) {
         doctorService.saveDoctor(doctorDTO);
         return "redirect:/admin/add";
     }
 
-    @GetMapping("/plebs")
-    public String adminPlebsPage(Model model, Authentication authentication) {
-        List<PersonInformation> users = userService.getUsersEmails();
+    @GetMapping("/patients")
+    public String adminPatientsPage(Model model, Authentication authentication) {
+        List<PersonInformation> users = userService.getPatientsInformation();
         String userRole = authentication.getAuthorities().iterator().next().getAuthority();
         model.addAttribute("userRole", userRole);
         model.addAttribute("personsData", users);
@@ -92,7 +84,7 @@ public class AdminController {
 
     @GetMapping("/doctors")
     public String adminDoctorsPage(Model model, Authentication authentication) {
-        List<PersonInformation> users = userService.getDoctorsEmails();
+        List<PersonInformation> users = userService.getDoctorsInformation();
         String userRole = authentication.getAuthorities().iterator().next().getAuthority();
         model.addAttribute("userRole", userRole);
         model.addAttribute("personsData", users);
@@ -101,7 +93,7 @@ public class AdminController {
 
     @GetMapping("/users")
     public String adminUsersPage(Model model, Authentication authentication) {
-        List<PersonInformation> users = userService.getAllEmails();
+        List<PersonInformation> users = userService.getAllUsersInformation();
         String userRole = authentication.getAuthorities().iterator().next().getAuthority();
         model.addAttribute("userRole", userRole);
         model.addAttribute("personsData", users);
