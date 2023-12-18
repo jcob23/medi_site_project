@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.infrastructure.database.entity.PersonInformation;
 import pl.medisite.controller.system.UserDTO;
 import pl.medisite.infrastructure.database.repository.PersonInformationRepository;
+import pl.medisite.infrastructure.security.ForgotPassword.MediSiteToken;
 import pl.medisite.infrastructure.security.RoleRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 import pl.medisite.infrastructure.security.UserRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +24,9 @@ public class UserService {
     PersonInformationRepository personInformationRepository;
     PasswordEncoder passwordEncoder;
 
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
     @Transactional
     public UserEntity saveUser (UserDTO user, int roleId) {
         UserEntity userEntity = UserEntity.builder()
@@ -32,16 +37,24 @@ public class UserService {
 
         return userRepository.saveAndFlush(userEntity);
     }
-    @Transactional
+
     public void deleteUser (String email) {
         userRepository.deleteByEmail(email);
     }
 
     @Transactional
-    public List<PersonInformation> getPatientsInformation() {
-        return personInformationRepository.findPatientInformation().stream().filter(user -> user.getRole().equals("USER")).toList();
+    public void changeUserPassword(UserEntity user, String newPassword){
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
-    @Transactional
+
+
+
+
+    public List<PersonInformation> getPatientsInformation() {
+        return personInformationRepository.findPatientInformation().stream().filter(user -> user.getRole().equals("PATIENT")).toList();
+    }
+
     public List<PersonInformation> getDoctorsInformation() {
         return personInformationRepository.findDoctorInformation().stream().filter(user -> user.getRole().equals("DOCTOR")).toList();
     }
@@ -55,7 +68,7 @@ public class UserService {
     }
 
 
-    public UserEntity findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserEntity getUserFromToken(UUID token) {
+       return userRepository.findByToken(token);
     }
 }

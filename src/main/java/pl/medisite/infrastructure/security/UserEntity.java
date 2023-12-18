@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
+import pl.medisite.infrastructure.security.ForgotPassword.MediSiteToken;
 
 @Data
 @Builder
@@ -30,4 +31,7 @@ public class UserEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "token_id")
+    private MediSiteToken token;
 }

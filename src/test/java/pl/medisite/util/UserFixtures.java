@@ -34,7 +34,7 @@ public class UserFixtures {
                 .id(2)
                 .email("test1@email.com")
                 .password("12345")
-                .role(new RoleEntity("USER"))
+                .role(new RoleEntity("PATIENT"))
                 .build();
     }
 
@@ -43,7 +43,7 @@ public class UserFixtures {
                 .id(3)
                 .email("test2@email.com")
                 .password("12345")
-                .role(new RoleEntity("USER"))
+                .role(new RoleEntity("PATIENT"))
                 .build();
     }
 
@@ -52,7 +52,7 @@ public class UserFixtures {
                 .id(4)
                 .email("test3@email.com")
                 .password("12345")
-                .role(new RoleEntity("USER"))
+                .role(new RoleEntity("PATIENT"))
                 .build();
     }
 }

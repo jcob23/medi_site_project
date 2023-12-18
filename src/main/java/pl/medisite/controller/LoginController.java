@@ -1,16 +1,15 @@
 package pl.medisite.controller;
 
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.medisite.controller.buisness.PatientDTO;
-import pl.medisite.infrastructure.security.ResetPasswordService;
+import pl.medisite.infrastructure.security.ForgotPassword.ResetPasswordService;
 import pl.medisite.infrastructure.security.UserEntity;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
@@ -21,8 +20,6 @@ import pl.medisite.service.UserService;
 public class LoginController {
 
     private PatientService patientService;
-    private UserService userService;
-    private ResetPasswordService resetPasswordService;
 
     @GetMapping("/login")
     public String loginPage(@RequestParam(name = "error", required = false) String error,
@@ -51,21 +48,6 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/reset")
-    public String showResetPasswordPage(){
-        return "resetPasswordPage";
-    }
 
-    @PostMapping("/reset")
-    public String resetPassword(@RequestParam("email") String mail, Model model) throws MessagingException {
-        UserEntity user = userService.findByEmail(mail);
-        if(user == null){
-            model.addAttribute("notFound",true);
-        }else {
-            resetPasswordService.sendMail(mail);
-            model.addAttribute("reset", true);
-        }
-        return "resetPasswordPage";
-    }
 
 }

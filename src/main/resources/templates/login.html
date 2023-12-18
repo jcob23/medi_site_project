@@ -11,9 +11,10 @@
     <div th:if="${error}" style="color: red;">
         <span th:text="${errorMessage}"></span>
     </div>
-    <div th:if="${param.logout}">Zostałeś wylogowany</div>
-    <div th:if="${deleted}">Twoje konto zostało usunięte</div>
+    <div th:if="${param.logout}">Zostałeś wylogowany.</div>
+    <div th:if="${deleted}">Twoje konto zostało usunięte.</div>
     <div th:if="${registered}">Użytkownik zarejestrowany pomyślnie! Zaloguj się teraz.</div>
+    <div th:if="${reset}">Twoje hasło zostało pomyślnie zmienione! Zaloguj się teraz.</div>
         <div class="card-body">
             <form name='f' action="login" method='POST'>
                 <table>
@@ -30,7 +31,7 @@
                            <br>
                            <button type="submit" class="btn btn-info">Zaloguj się</button>
                             <a th:href="@{/register}" class="btn btn-info" role="button" >Rejestracja</a>
-                            <a th:href="@{/reset}">Zapomniałeś hasła?</a>
+                            <a th:href="@{/forget}">Zapomniałeś hasła?</a>
                        </td>
                     </tr>
                 </table>

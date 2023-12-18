@@ -62,10 +62,11 @@ public class SecurityConfiguration  {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
 
-                        .requestMatchers("/login", "/register/**","/register/save","/reset/**").permitAll()
-                        .requestMatchers("/patient/**","/home/**").hasAnyAuthority("USER", "ADMIN", "DOCTOR")
+                        .requestMatchers("/login", "/register/**","/register/save","/forget/**").permitAll()
+                        .requestMatchers("/home/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
                         .requestMatchers("/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/**").hasAnyAuthority("DOCTOR")
+                        .requestMatchers("/DOCTOR").hasAnyAuthority("DOCTOR")
+                        .requestMatchers("/patient/**").hasAnyAuthority("PATIENT")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")
@@ -78,7 +79,6 @@ public class SecurityConfiguration  {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
-
                 )
                 .build();
     }
