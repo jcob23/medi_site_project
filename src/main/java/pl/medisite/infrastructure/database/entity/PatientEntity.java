@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import pl.medisite.infrastructure.security.UserEntity;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -38,5 +39,8 @@ public class PatientEntity {
 
     @OneToMany
     @JoinColumn(name = "disease_id")
-    private List<DiseaseEntity> diseases;
+    private Set<DiseaseEntity> diseases;
+
+    @OneToMany(mappedBy = "patient")
+    private Set<AppointmentEntity> appointments;
 }

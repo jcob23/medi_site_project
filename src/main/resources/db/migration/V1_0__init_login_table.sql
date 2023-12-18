@@ -4,6 +4,11 @@ CREATE TABLE medisite_role
     role        VARCHAR(20) NOT NULL,
     PRIMARY KEY (role_id)
 );
+INSERT INTO medisite_role (role_id,role) values (1,'ADMIN');
+
+INSERT INTO medisite_role (role_id,role) values (2,'PATIENT');
+
+INSERT INTO medisite_role (role_id,role) values (3,'DOCTOR');
 
 CREATE TABLE medisite_user_token
 (
@@ -31,5 +36,4 @@ CREATE TABLE medisite_user
                FOREIGN KEY(token_id)
                    REFERENCES medisite_user_token(token_id) ON DELETE SET NULL
 );
-
 

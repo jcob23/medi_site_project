@@ -8,6 +8,7 @@ CREATE TABLE medisite_doctor
     email               VARCHAR(32)         NOT NULL,
     description         VARCHAR(256),
     PRIMARY KEY (doctor_id),
+    UNIQUE(email),
     CONSTRAINT fk_user
            FOREIGN KEY(email)
                REFERENCES medisite_user(email)

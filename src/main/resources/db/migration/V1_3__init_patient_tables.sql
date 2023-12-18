@@ -17,6 +17,7 @@ CREATE TABLE medisite_patient
     email               VARCHAR(32)         NOT NULL,
     disease_id          int,
     PRIMARY KEY (patient_id),
+    UNIQUE(email),
     CONSTRAINT fk_diseases
            FOREIGN KEY(disease_id)
                REFERENCES medisite_patient_diseases(disease_id),
@@ -25,11 +26,9 @@ CREATE TABLE medisite_patient
               REFERENCES medisite_user(email)
 );
 
-
---
 INSERT INTO medisite_patient (name,surname,email,phone)
 VALUES ('Romek','Księżycowy', 'user1@medisite.pl','+48 234 873 981');
 
 INSERT INTO medisite_patient (name,surname,email,phone)
-VALUES ('Tomek','Giwazdowy', 'user2@medisite.pl','+48 234 873 982');
+VALUES ('Tomek','Gwiazdowy', 'user2@medisite.pl','+48 234 873 982');
 

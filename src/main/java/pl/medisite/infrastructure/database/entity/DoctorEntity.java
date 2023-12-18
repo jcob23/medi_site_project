@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.medisite.infrastructure.security.UserEntity;
 
+import java.util.Set;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -38,5 +40,9 @@ public class DoctorEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email",referencedColumnName = "email")
     private UserEntity loginDetails;
+
+    @OneToMany
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id")
+    private Set<AppointmentEntity> appointments;
 
 }
