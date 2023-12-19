@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.buisness.PatientDTO;
 import pl.medisite.controller.system.UserDTO;
+import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
+import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.infrastructure.security.UserEntity;
+
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +22,7 @@ public class PatientService {
 
     private UserService userService;
     private PatientRepository patientRepository;
+    private DiseaseRepository diseaseRepository;
 
     @Transactional
     public void savePatient(PatientDTO patientDTO) {
@@ -35,9 +40,7 @@ public class PatientService {
 
     @Transactional
     public void updatePatient(PatientEntity patientEntity) {
-        log.info("########");
         PatientEntity existingPatient = patientRepository.findByEmail(patientEntity.getLoginDetails().getEmail());
-        log.info("########");
         existingPatient.setName(patientEntity.getName());
         existingPatient.setSurname(patientEntity.getSurname());
         existingPatient.setPhone(patientEntity.getPhone());
@@ -51,6 +54,9 @@ public class PatientService {
         userService.deleteUser(email);
     }
 
+    public Set<DiseaseEntity> getDiseases(String email){
+        return diseaseRepository.getDiseases(email);
+    }
     public PatientEntity findByEmail(String email) {
         return patientRepository.findByEmail(email);
     }

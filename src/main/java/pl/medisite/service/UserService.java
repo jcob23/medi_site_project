@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.infrastructure.database.entity.PersonInformation;
 import pl.medisite.controller.system.UserDTO;
 import pl.medisite.infrastructure.database.repository.PersonInformationRepository;
-import pl.medisite.infrastructure.security.ForgotPassword.MediSiteToken;
 import pl.medisite.infrastructure.security.RoleRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 import pl.medisite.infrastructure.security.UserRepository;
@@ -47,24 +46,20 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
-
-
-
-
     public List<PersonInformation> getPatientsInformation() {
-        return personInformationRepository.findPatientInformation().stream().filter(user -> user.getRole().equals("PATIENT")).toList();
+        return personInformationRepository.findPatientInformation();
     }
 
-    public List<PersonInformation> getDoctorsInformation() {
-        return personInformationRepository.findDoctorInformation().stream().filter(user -> user.getRole().equals("DOCTOR")).toList();
+    public List<PersonInformation.DoctorInformation> getDoctorsInformation() {
+        return personInformationRepository.findDoctorInformation();
     }
     @Transactional
     public List<PersonInformation> getAllUsersInformation() {
-        List<PersonInformation> personInformation = personInformationRepository.findDoctorInformation();
+        List<PersonInformation.DoctorInformation> personInformation = personInformationRepository.findDoctorInformation();
         List<PersonInformation> personInformation2 = personInformationRepository.findPatientInformation();
-        personInformation.addAll(personInformation2);
+        personInformation2.addAll(personInformation);
 
-        return personInformation;
+        return personInformation2;
     }
 
 

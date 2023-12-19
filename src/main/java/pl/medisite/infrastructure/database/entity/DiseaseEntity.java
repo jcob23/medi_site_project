@@ -1,9 +1,11 @@
 package pl.medisite.infrastructure.database.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "medisite_patient_diseases")
 public class DiseaseEntity {
@@ -24,4 +26,8 @@ public class DiseaseEntity {
 
     @Column(name = "since")
     private LocalDate since;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private PatientEntity patient;
 }

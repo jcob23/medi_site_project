@@ -37,10 +37,6 @@ public class PatientEntity {
     @JoinColumn(name = "email",referencedColumnName = "email")
     private UserEntity loginDetails;
 
-    @OneToMany
-    @JoinColumn(name = "disease_id")
-    private Set<DiseaseEntity> diseases;
-
     @OneToMany(mappedBy = "patient")
     private Set<AppointmentEntity> appointments;
 }

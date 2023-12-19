@@ -14,16 +14,18 @@
             <a class="navbar-brand" th:href="@{/home}">MediSite</a>
         </div>
         <ul class="nav navbar-nav">
-            <th:block th:if="${#strings.equals(userRole, 'USER')}">
+            <th:block th:if="${#strings.equals(session.userRole, 'PATIENT')}">
                 <li><a th:href="@{/patient}">PROFIL</a></li>
                 <li><a href="#">WIZYTY</a></li>
                 <li><a href="#">LEKARZE</a></li>
             </th:block>
-            <th:block th:if="${#strings.equals(userRole, 'ADMIN')}">
+
+            <th:block th:if="${#strings.equals(session.userRole, 'ADMIN')}">
                 <li><a th:href="@{/admin/users}" >UŻYTKOWNICY</a></li>
                 <li><a th:href="@{/admin/add}" >DODAJ LEKARZA</a></li>
             </th:block>
-            <th:block th:if="${#strings.equals(userRole, 'DOCTOR')}">
+
+            <th:block th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
                 <li><a href="#">PROFIL</a></li>
                 <li><a href="#">NADCHODZĄCE WIZYTY</a></li>
                 <li><a href="#">KALENDARZ</a></li>

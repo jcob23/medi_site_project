@@ -1,28 +1,44 @@
 package pl.medisite.infrastructure.database.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonInformation {
 
     @Id
-    String email;
+    private  String email;
 
-    String name;
+    private String name;
 
-    String surname;
+    private String surname;
 
-    String role;
+    private String role;
 
-    String phone;
+    private String phone;
 
+    @Getter
+    @Entity
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DoctorInformation extends PersonInformation {
 
+        @Column(name = "specialization")
+        private String specialization;
+
+        @Column(name = "description")
+        private String description;
+
+    }
 }
+

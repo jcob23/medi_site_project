@@ -39,6 +39,8 @@ public class DoctorDTO  {
 
     private String specialization;
 
+    private String description;
+
     public Map<String, String> asMap () {
         Map<String, String> result = new HashMap<>();
         Optional.ofNullable(email).ifPresent(value -> result.put("email", email));

@@ -1,5 +1,6 @@
-package pl.medisite.controller;
+package pl.medisite.controller.buisness;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @GetMapping()
-    public String homePage (Model model, Authentication authentication) {
+    public String homePage (HttpSession session, Authentication authentication) {
         String userRole = authentication.getAuthorities().iterator().next().getAuthority();
         log.error("### " + userRole);
-        model.addAttribute("userRole", userRole);
+        session.setAttribute("userRole", userRole);
         return "home";
     }
 }

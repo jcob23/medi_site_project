@@ -1,4 +1,4 @@
-package pl.medisite.controller;
+package pl.medisite.controller.system;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;

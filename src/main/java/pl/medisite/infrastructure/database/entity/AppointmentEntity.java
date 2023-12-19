@@ -19,6 +19,7 @@ public class AppointmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "appointment_id")
     private int id;
 
     @Column(name = "appointment_start")

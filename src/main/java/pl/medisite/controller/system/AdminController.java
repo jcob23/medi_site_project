@@ -2,7 +2,6 @@ package pl.medisite.controller.system;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,17 +31,20 @@ public class AdminController {
         model.addAttribute("user", patientEntity);
         return "admin_edit";
     }
+
     @PutMapping("/edit_patient")
     public String editPatient(@ModelAttribute("patient") PatientEntity patientEntity) {
         patientService.updatePatient(patientEntity);
         return "redirect:/admin/patients";
     }
+
     @GetMapping("/edit_doctor/{email}")
     public String showEditDoctor(@PathVariable("email") String email, Model model) {
         DoctorEntity doctorEntity = doctorService.findByEmail(email);
         model.addAttribute("user", doctorEntity);
         return "admin_edit";
     }
+
     @PutMapping("/edit_doctor")
     public String editDoctor(@ModelAttribute("patient") DoctorEntity doctorEntity) {
         doctorService.updateDoctor(doctorEntity);
@@ -76,26 +78,23 @@ public class AdminController {
     @GetMapping("/patients")
     public String adminPatientsPage(Model model, Authentication authentication) {
         List<PersonInformation> users = userService.getPatientsInformation();
-        String userRole = authentication.getAuthorities().iterator().next().getAuthority();
-        model.addAttribute("userRole", userRole);
+        model.addAttribute("patientView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
     }
 
     @GetMapping("/doctors")
     public String adminDoctorsPage(Model model, Authentication authentication) {
-        List<PersonInformation> users = userService.getDoctorsInformation();
-        String userRole = authentication.getAuthorities().iterator().next().getAuthority();
-        model.addAttribute("userRole", userRole);
+        List<PersonInformation.DoctorInformation> users = userService.getDoctorsInformation();
+        model.addAttribute("doctorView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
     }
 
+
     @GetMapping("/users")
     public String adminUsersPage(Model model, Authentication authentication) {
         List<PersonInformation> users = userService.getAllUsersInformation();
-        String userRole = authentication.getAuthorities().iterator().next().getAuthority();
-        model.addAttribute("userRole", userRole);
         model.addAttribute("personsData", users);
         return "admin_list";
     }

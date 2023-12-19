@@ -7,10 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
+import pl.medisite.controller.system.LoginController;
 import pl.medisite.controller.system.UserDTO;
 import pl.medisite.infrastructure.security.UserRepository;
 import pl.medisite.service.UserService;
-import pl.medisite.util.UserFixtures;
 
 @ExtendWith(MockitoExtension.class)
 public class LoginControllerMockitoTest {

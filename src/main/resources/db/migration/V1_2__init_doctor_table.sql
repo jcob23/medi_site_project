@@ -6,7 +6,7 @@ CREATE TABLE medisite_doctor
     specialization      VARCHAR(32)         NOT NULL,
     phone               VARCHAR(32)         NOT NULL,
     email               VARCHAR(32)         NOT NULL,
-    description         VARCHAR(256),
+    description         VARCHAR(256)        NOT NULL,
     PRIMARY KEY (doctor_id),
     UNIQUE(email),
     CONSTRAINT fk_user
@@ -14,11 +14,11 @@ CREATE TABLE medisite_doctor
                REFERENCES medisite_user(email)
 );
 
-INSERT INTO medisite_doctor (name,surname,email,phone,specialization)
-VALUES ('Agata','Lekarka', 'doctor1@medisite.pl','+48 534 873 981','bezsenność');
+INSERT INTO medisite_doctor (name,surname,email,phone,specialization,description)
+VALUES ('Agata','Lekarka', 'doctor1@medisite.pl','+48 534 873 981','bezsenność','');
 
-INSERT INTO medisite_doctor (name,surname,email,phone,specialization)
-VALUES ('Krystyna','Doktorka','doctor2@medisite.pl','+48 634 873 982','strach');
+INSERT INTO medisite_doctor (name,surname,email,phone,specialization,description)
+VALUES ('Krystyna','Doktorka','doctor2@medisite.pl','+48 634 873 982','strach','');
 
 
 
