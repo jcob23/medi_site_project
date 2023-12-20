@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,10 @@ public class HomeController {
     @GetMapping()
     public String homePage (HttpSession session, Authentication authentication) {
         String userRole = authentication.getAuthorities().iterator().next().getAuthority();
-        log.error("### " + userRole);
+        String userEmail =( (UserDetails) authentication.getPrincipal()).getUsername();
         session.setAttribute("userRole", userRole);
+        session.setAttribute("userEmail", userEmail);
+        log.info("### UserRole:" + userRole);
         return "home";
     }
 }

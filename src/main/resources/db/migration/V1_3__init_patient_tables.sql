@@ -32,7 +32,6 @@ VALUES (1,'Romek','Księżycowy', 'user1@medisite.pl','+48 234 873 981');
 INSERT INTO medisite_patient (patient_id,name,surname,email,phone)
 VALUES (2,'Tomek','Gwiazdowy', 'user2@medisite.pl','+48 234 873 982');
 
-
 INSERT INTO medisite_patient_diseases (disease_id,name,description,cured,since,patient_id)
 VALUES (1,'choroba A', 'opis choroby A',false,'2020.01.01',1);
 

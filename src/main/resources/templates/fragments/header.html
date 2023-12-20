@@ -21,8 +21,8 @@
             </th:block>
 
             <th:block th:if="${#strings.equals(session.userRole, 'ADMIN')}">
-                <li><a th:href="@{/admin/users}" >UŻYTKOWNICY</a></li>
-                <li><a th:href="@{/admin/add}" >DODAJ LEKARZA</a></li>
+                <li><a th:href="@{/admin/users}">UŻYTKOWNICY</a></li>
+                <li><a th:href="@{/admin/add}">DODAJ LEKARZA</a></li>
             </th:block>
 
             <th:block th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
@@ -37,12 +37,18 @@
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 </a>
             </li>
-            <li>
-                <a th:href="@{/logout}"  onclick="$('#form').submit();">
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/logout}" onclick="$('#form').submit();">
                     <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
                 </a>
             </li>
-            <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+            <form style="visibility: hidden" id="logout" method="POST" action="#" th:action="@{/logout}"></form>
+            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/login}" onclick="$('#form').submit();">
+                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Login
+                </a>
+            </li>
+            <form style="visibility: hidden" id="login" method="GET" action="#" th:action="@{/login}"></form>
         </ul>
     </div>
 </nav>

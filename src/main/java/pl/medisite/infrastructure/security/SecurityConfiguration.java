@@ -64,9 +64,9 @@ public class SecurityConfiguration  {
 
                         .requestMatchers("/login", "/register/**","/register/save","/forget/**").permitAll()
                         .requestMatchers("/home/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
+                        .requestMatchers("/patient","/patient/**").hasAnyAuthority("PATIENT")
                         .requestMatchers("/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/DOCTOR").hasAnyAuthority("DOCTOR")
-                        .requestMatchers("/patient/**").hasAnyAuthority("PATIENT")
+                        .requestMatchers("/doctor").hasAnyAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")

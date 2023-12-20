@@ -12,13 +12,15 @@
         <div class="container">
             <div class="page-header" id="banner">
                 <h2>Pacjent</h2>
-                <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
             </div>
-            <form action="#"
-                  th:action="@{/patient}"
-                  th:method="DELETE">
+            <form action="#" th:action="@{/patient/diseases/{email}(email=${session.userEmail})}" th:method="GET">
+                <button type="submit" class="btn btn-info">Historia chorób</button>
+            </form>
+            <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
+            <form action="#" th:action="@{/patient}" th:method="DELETE">
                 <button type="submit" class="btn btn-danger">Usuń konto</button>
             </form>
+
         </div>
     </body>
 </html>
