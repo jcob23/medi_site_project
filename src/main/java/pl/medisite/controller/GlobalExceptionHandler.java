@@ -1,6 +1,7 @@
 package pl.medisite.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,6 +50,17 @@ public class GlobalExceptionHandler {
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("errorMessage", message);
         return modelAndView;
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView handleBadRequestException(BadRequestException ex){
+        String message = "nie można odwołać wizity z przeszłości";
+        log.error(message,ex);
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("errorMessage", message);
+        return modelAndView;
+
     }
 
 

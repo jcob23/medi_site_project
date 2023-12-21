@@ -19,7 +19,7 @@ public class DoctorController {
     private DoctorService doctorService;
     @GetMapping()
     public String showDoctorPage(){
-        return "doctorPage.html";
+        return "doctor_profile";
     }
     @DeleteMapping()
     public String  deleteDoctor(Authentication authentication, Model model){
