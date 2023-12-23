@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Historia chorób</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+</body>
+<table class="table table-striped table-hover">
+    <tr>
+        <th>IMIE</th>
+        <th>NAZWISKO</th>
+        <th>SPECIALIZACJA</th>
+        <th>OPIS</th>
+        <th><th/>
+    </tr>
+    <tr th:each="personDTO : ${personsData}">
+        <td th:text="${personDTO.name}"></td>
+        <td th:text="${personDTO.surname}"></td>
+        <td th:text="${personDTO.specialization}"></td>
+        <td th:text="${personDTO.description}"></td>
+        <td>
+            <form action="#" th:action="@{/patient/book_appointment}" th:method="GET">
+                <button type="submit" class="btn btn-info">Zarezerwuj Wizytę</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</html>

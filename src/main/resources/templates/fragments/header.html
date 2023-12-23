@@ -17,7 +17,7 @@
             <th:block th:if="${#strings.equals(session.userRole, 'PATIENT')}">
                 <li><a th:href="@{/patient}">PROFIL</a></li>
                 <li><a th:href="@{/patient/appointments/{email}(email=${session.userEmail})}">WIZYTY</a></li>
-                <li><a href="#">LEKARZE</a></li>
+                <li><a th:href="@{/patient/doctors}">LEKARZE</a></li>
             </th:block>
 
             <th:block th:if="${#strings.equals(session.userRole, 'ADMIN')}">

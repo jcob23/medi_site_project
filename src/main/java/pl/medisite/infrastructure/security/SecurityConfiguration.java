@@ -61,12 +61,12 @@ public class SecurityConfiguration  {
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-
                         .requestMatchers("/login", "/register/**","/register/save","/forget/**").permitAll()
-                        .requestMatchers("/home/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
-                        .requestMatchers("/patient","/patient/**").hasAnyAuthority("PATIENT")
-                        .requestMatchers("/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/doctor").hasAnyAuthority("DOCTOR")
+                        .requestMatchers("/home/**","/patient/diseases/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
+                        .requestMatchers("/patient/appointments/**").hasAnyAuthority("PATIENT", "ADMIN")
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/patient").hasAuthority("PATIENT")
+                        .requestMatchers("/doctor").hasAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")

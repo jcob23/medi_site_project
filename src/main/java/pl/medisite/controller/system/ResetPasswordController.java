@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class ResetPasswordController {
 
     private UserService userService;
     private ResetPasswordService resetPasswordService;
+
 
     @GetMapping()
     public String showForgetPasswordPage() {
@@ -46,7 +48,6 @@ public class ResetPasswordController {
             HttpSession session
 
     ) {
-        log.info("-###-: " + token);
         session.setAttribute("token", token);
         return "resetPassword";
     }
@@ -59,7 +60,7 @@ public class ResetPasswordController {
     ) {
         model.addAttribute("reset", true);
         UUID token = UUID.fromString((String) session.getAttribute("token"));
-        log.info("###: " + token);
+        session.removeAttribute("token");
         UserEntity user = userService.getUserFromToken(token);
         userService.changeUserPassword(user,newPassword);
         return "login";

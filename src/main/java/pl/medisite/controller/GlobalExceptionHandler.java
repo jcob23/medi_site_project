@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     }
 
     // obsługa błędu 403
-    //https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
+//    https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleForbiddenError(AccessDeniedException ex){
@@ -55,12 +55,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleBadRequestException(BadRequestException ex){
-        String message = "nie można odwołać wizity z przeszłości";
+        String message = "nie można odwołać wizyty z przeszłości";
         log.error(message,ex);
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("errorMessage", message);
         return modelAndView;
-
     }
 
 
