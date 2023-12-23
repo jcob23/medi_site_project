@@ -16,7 +16,7 @@ import java.util.Optional;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorDTO  {
+public class DoctorDTO {
 
     @Id
     @NotBlank
@@ -41,7 +41,7 @@ public class DoctorDTO  {
 
     private String description;
 
-    public Map<String, String> asMap () {
+    public Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         Optional.ofNullable(email).ifPresent(value -> result.put("email", email));
         Optional.ofNullable(password).ifPresent(value -> result.put("password", password));

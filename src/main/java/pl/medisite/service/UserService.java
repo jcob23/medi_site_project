@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.medisite.infrastructure.database.entity.PersonInformation;
 import pl.medisite.controller.system.UserDTO;
+import pl.medisite.infrastructure.database.entity.PersonInformation;
 import pl.medisite.infrastructure.database.repository.PersonInformationRepository;
 import pl.medisite.infrastructure.security.RoleRepository;
 import pl.medisite.infrastructure.security.UserEntity;
@@ -26,8 +26,9 @@ public class UserService {
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     @Transactional
-    public UserEntity saveUser (UserDTO user, int roleId) {
+    public UserEntity saveUser(UserDTO user, int roleId) {
         UserEntity userEntity = UserEntity.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
@@ -37,15 +38,16 @@ public class UserService {
         return userRepository.saveAndFlush(userEntity);
     }
 
-    public void deleteUser (String email) {
+    public void deleteUser(String email) {
         userRepository.deleteByEmail(email);
     }
 
     @Transactional
-    public void changeUserPassword(UserEntity user, String newPassword){
+    public void changeUserPassword(UserEntity user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
     public List<PersonInformation> getPatientsInformation() {
         return personInformationRepository.findPatientInformation();
     }
@@ -53,6 +55,7 @@ public class UserService {
     public List<PersonInformation.DoctorInformation> getDoctorsInformation() {
         return personInformationRepository.findDoctorInformation();
     }
+
     @Transactional
     public List<PersonInformation> getAllUsersInformation() {
         List<PersonInformation.DoctorInformation> personInformation = personInformationRepository.findDoctorInformation();
@@ -64,6 +67,6 @@ public class UserService {
 
 
     public UserEntity getUserFromToken(UUID token) {
-       return userRepository.findByToken(token);
+        return userRepository.findByToken(token);
     }
 }

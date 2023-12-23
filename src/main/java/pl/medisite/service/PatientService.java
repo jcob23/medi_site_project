@@ -3,15 +3,12 @@ package pl.medisite.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.buisness.PatientDTO;
 import pl.medisite.controller.system.UserDTO;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
-import pl.medisite.infrastructure.database.repository.AppointmentRepository;
 import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.infrastructure.security.UserEntity;
@@ -41,6 +38,7 @@ public class PatientService {
                 .build();
         patientRepository.save(patientEntity);
     }
+
     @Transactional
     public void updatePatient(PatientEntity patientEntity) {
         PatientEntity existingPatient = patientRepository.findByEmail(patientEntity.getLoginDetails().getEmail());
@@ -49,13 +47,15 @@ public class PatientService {
         existingPatient.setPhone(patientEntity.getPhone());
         patientRepository.save(existingPatient);
     }
+
     @Transactional
     public void deletePatient(String email) {
         patientRepository.deleteByMail(email);
         userService.deleteUser(email);
     }
-    public Set<DiseaseEntity> getDiseases(String email){
-        return diseaseRepository.getDiseases(email,Sort.by(Sort.Direction.ASC, "since"));
+
+    public Set<DiseaseEntity> getDiseases(String email) {
+        return diseaseRepository.getDiseases(email, Sort.by(Sort.Direction.ASC, "since"));
     }
 
 

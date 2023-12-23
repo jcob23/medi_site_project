@@ -16,17 +16,17 @@ public class MediSiteUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername (String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         UserEntity user = userRepository.findByEmail(email);
-        if(user == null)
+        if( user == null )
             throw new UsernameNotFoundException("User not found: " + email);
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getRole());
-        return buildUserForAuthentication(user,authority);
+        return buildUserForAuthentication(user, authority);
 
     }
 
-    private UserDetails buildUserForAuthentication (UserEntity user, SimpleGrantedAuthority authority) {
+    private UserDetails buildUserForAuthentication(UserEntity user, SimpleGrantedAuthority authority) {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),

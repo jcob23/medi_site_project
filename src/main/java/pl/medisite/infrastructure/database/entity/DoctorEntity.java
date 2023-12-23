@@ -38,7 +38,7 @@ public class DoctorEntity {
     private String description;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email",referencedColumnName = "email")
+    @JoinColumn(name = "email", referencedColumnName = "email")
     private UserEntity loginDetails;
 
     @OneToMany

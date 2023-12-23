@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.infrastructure.security.UserEntity;
@@ -41,11 +40,12 @@ public class ResetPasswordService {
         mailSender.send(mail);
     }
 
-    private String createLinkWithToken(String email){
+    private String createLinkWithToken(String email) {
         UUID token = createToken(email).getUuid();
         return "http://localhost:8190/medisite/forget/reset?token=" + token;
     }
-    private MediSiteToken createToken(String email){
+
+    private MediSiteToken createToken(String email) {
         MediSiteToken token = MediSiteToken.builder()
                 .uuid(UUID.randomUUID())
                 .expirationTime(LocalDateTime.now().plusMinutes(1))
@@ -56,9 +56,10 @@ public class ResetPasswordService {
         tokenRepository.save(token);
         return token;
     }
+
     @Scheduled(cron = "0 0 5 * * *")
     @Transactional
-    public void clearOldTokens(){
+    public void clearOldTokens() {
         log.info("###sprzątam!###");
         tokenRepository.deleteByExpirationTimeBefore(LocalDateTime.now());
     }

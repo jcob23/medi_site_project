@@ -19,21 +19,24 @@ public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
 
-    public Set<AppointmentEntity> getAppointments(String email){
+    public Set<AppointmentEntity> getAppointments(String email) {
         return appointmentRepository.getAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
     }
-    public Set<AppointmentEntity> getFutureAppointments(String email){
-        return appointmentRepository.getFutureAppointments(email,Sort.by(Sort.Direction.ASC, "appointmentStart"));
+
+    public Set<AppointmentEntity> getFutureAppointments(String email) {
+        return appointmentRepository.getFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
     }
-    public Set<AppointmentEntity> getPastAppointments(String email){
-        return appointmentRepository.getPastAppointments(email,Sort.by(Sort.Direction.ASC, "appointmentStart"));
+
+    public Set<AppointmentEntity> getPastAppointments(String email) {
+        return appointmentRepository.getPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
     }
+
     @Transactional
     public void deleteAppointment(String email, Integer id) throws BadRequestException {
         AppointmentEntity appointmentEntity = appointmentRepository.getById(id);
-        if(appointmentEntity.getAppointmentEnd().isBefore(ZonedDateTime.now())){
+        if( appointmentEntity.getAppointmentEnd().isBefore(ZonedDateTime.now()) ) {
             throw new BadRequestException();
         }
-        appointmentRepository.deleteAppointment(email,id);
+        appointmentRepository.deleteAppointment(email, id);
     }
 }

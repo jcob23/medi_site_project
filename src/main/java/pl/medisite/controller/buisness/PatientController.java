@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,6 @@ import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 import pl.medisite.util.SecurityHelper;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -44,9 +41,6 @@ public class PatientController {
     @GetMapping("/doctors")
     public String showPatientDoctorsList(Model model) {
         List<PersonInformation.DoctorInformation> doctorsInformation = userService.getDoctorsInformation();
-        log.info("###");
-        log.info("###" + doctorsInformation);
-        log.info("###");
         model.addAttribute("personsData", doctorsInformation);
         return "patient_doctor_list";
     }
@@ -56,7 +50,7 @@ public class PatientController {
                                       Model model,
                                       Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email,authentication);
+        securityHelper.checkAuthority(email, authentication);
         Set<DiseaseEntity> diseases = patientService.getDiseases(email);
         model.addAttribute("patientDiseases", diseases);
         return "patient_diseases";
@@ -67,7 +61,7 @@ public class PatientController {
                                           Model model,
                                           Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email,authentication);
+        securityHelper.checkAuthority(email, authentication);
         Set<AppointmentEntity> appointments = appointmentService.getAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
@@ -78,7 +72,7 @@ public class PatientController {
                                                 Model model,
                                                 Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email,authentication);
+        securityHelper.checkAuthority(email, authentication);
         Set<AppointmentEntity> appointments = appointmentService.getFutureAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
@@ -89,7 +83,7 @@ public class PatientController {
                                               Model model,
                                               Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email,authentication);
+        securityHelper.checkAuthority(email, authentication);
         Set<AppointmentEntity> appointments = appointmentService.getPastAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
@@ -113,7 +107,6 @@ public class PatientController {
         SecurityContextHolder.getContext().setAuthentication(null);
         return "login";
     }
-
 
 
 }

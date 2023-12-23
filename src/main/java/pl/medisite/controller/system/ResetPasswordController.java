@@ -5,10 +5,12 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.medisite.infrastructure.security.ForgotPassword.ResetPasswordService;
 import pl.medisite.infrastructure.security.UserEntity;
 import pl.medisite.service.UserService;
@@ -62,7 +64,7 @@ public class ResetPasswordController {
         UUID token = UUID.fromString((String) session.getAttribute("token"));
         session.removeAttribute("token");
         UserEntity user = userService.getUserFromToken(token);
-        userService.changeUserPassword(user,newPassword);
+        userService.changeUserPassword(user, newPassword);
         return "login";
     }
 }

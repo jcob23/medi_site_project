@@ -17,13 +17,15 @@ import pl.medisite.service.DoctorService;
 public class DoctorController {
 
     private DoctorService doctorService;
+
     @GetMapping()
-    public String showDoctorPage(){
+    public String showDoctorPage() {
         return "doctor_profile";
     }
+
     @DeleteMapping()
-    public String  deleteDoctor(Authentication authentication, Model model){
-        UserDetails principal =(UserDetails) authentication.getPrincipal();
+    public String deleteDoctor(Authentication authentication, Model model) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
         String email = principal.getUsername();
         doctorService.deleteDoctor(email);
         model.addAttribute("deleted", true);

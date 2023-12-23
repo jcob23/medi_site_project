@@ -3,6 +3,7 @@ package pl.medisite.infrastructure.database.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.medisite.infrastructure.database.entity.PersonInformation;
+
 import java.util.List;
 
 public interface PersonInformationRepository extends JpaRepository<PersonInformation, String> {
@@ -15,6 +16,7 @@ public interface PersonInformationRepository extends JpaRepository<PersonInforma
                     "JOIN medisite_role r ON u.role_id = r.role_id;"
     )
     List<PersonInformation.DoctorInformation> findDoctorInformation();
+
     @Query(
             nativeQuery = true,
             value = "SELECT u.email, p.name, p.surname, p.phone,'' as description,'' as specialization, r.role,'PersonInformation' as dtype" +

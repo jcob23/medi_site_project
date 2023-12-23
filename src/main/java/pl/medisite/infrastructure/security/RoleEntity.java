@@ -23,7 +23,7 @@ public class RoleEntity {
     @Column(name = "role")
     private String role;
 
-    public RoleEntity (String role) {
+    public RoleEntity(String role) {
         this.id = 2;
         this.role = role;
     }

@@ -10,7 +10,7 @@ import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 
 import java.util.Set;
 
-public interface AppointmentRepository extends JpaRepository<AppointmentEntity,Long> {
+public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
 
 
     AppointmentEntity getById(Integer id);

@@ -9,21 +9,18 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfiguration  {
+public class SecurityConfiguration {
 
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -37,12 +34,13 @@ public class SecurityConfiguration  {
     public DaoAuthenticationProvider authenticationProvider(
             PasswordEncoder passwordEncoder,
             UserDetailsService userDetailsService
-    ){
+    ) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(
             HttpSecurity httpSecurity,
@@ -61,8 +59,8 @@ public class SecurityConfiguration  {
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login", "/register/**","/register/save","/forget/**").permitAll()
-                        .requestMatchers("/home/**","/patient/diseases/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
+                        .requestMatchers("/login", "/register/**", "/register/save", "/forget/**").permitAll()
+                        .requestMatchers("/home/**", "/patient/diseases/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
                         .requestMatchers("/patient/appointments/**").hasAnyAuthority("PATIENT", "ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/patient").hasAuthority("PATIENT")
@@ -70,7 +68,7 @@ public class SecurityConfiguration  {
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home",true)
+                        .defaultSuccessUrl("/home", true)
                         .failureHandler(customAuthenticationFailureHandler)
                 )
                 .logout(logout -> logout

@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.medisite.infrastructure.security.UserEntity;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -34,7 +33,7 @@ public class PatientEntity {
     private String phone;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "email",referencedColumnName = "email")
+    @JoinColumn(name = "email", referencedColumnName = "email")
     private UserEntity loginDetails;
 
     @OneToMany(mappedBy = "patient")

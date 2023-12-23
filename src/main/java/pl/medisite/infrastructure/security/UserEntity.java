@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.security.ForgotPassword.MediSiteToken;
 
 @Data
