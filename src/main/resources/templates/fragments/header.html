@@ -26,13 +26,13 @@
             </th:block>
 
             <th:block th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
-                <li><a href="#">PROFIL</a></li>
+                <li><a th:href="@{/doctor}">PROFIL</a></li>
                 <li><a href="#">NADCHODZĄCE WIZYTY</a></li>
                 <li><a href="#">KALENDARZ</a></li>
             </th:block>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li>
+            <li th:unless="${#strings.equals(session.userRole, 'ADMIN')}">
                 <a href="#" th:href="@{/profile}">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 </a>

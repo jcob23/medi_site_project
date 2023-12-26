@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.buisness.DoctorDTO;
 import pl.medisite.controller.system.UserDTO;
+import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.security.UserEntity;
+
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -15,6 +18,7 @@ public class DoctorService {
 
     DoctorRepository doctorRepository;
     UserService userService;
+    AppointmentService appointmentService;
 
     @Transactional
     public void saveDoctor(DoctorDTO doctorDTO) {
@@ -50,4 +54,9 @@ public class DoctorService {
         return doctorRepository.findByEmail(email);
     }
 
+
+
+    public Set<AppointmentEntity> getAppointments(String email) {
+       return appointmentService.getDoctorAppointments(email);
+    }
 }

@@ -62,7 +62,7 @@ public class PatientController {
                                           Authentication authentication
     ) throws AccessDeniedException {
         securityHelper.checkAuthority(email, authentication);
-        Set<AppointmentEntity> appointments = appointmentService.getAppointments(email);
+        Set<AppointmentEntity> appointments = appointmentService.getPatientAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -73,7 +73,7 @@ public class PatientController {
                                                 Authentication authentication
     ) throws AccessDeniedException {
         securityHelper.checkAuthority(email, authentication);
-        Set<AppointmentEntity> appointments = appointmentService.getFutureAppointments(email);
+        Set<AppointmentEntity> appointments = appointmentService.getPatientFutureAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -84,7 +84,7 @@ public class PatientController {
                                               Authentication authentication
     ) throws AccessDeniedException {
         securityHelper.checkAuthority(email, authentication);
-        Set<AppointmentEntity> appointments = appointmentService.getPastAppointments(email);
+        Set<AppointmentEntity> appointments = appointmentService.getPatientPastAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -95,7 +95,7 @@ public class PatientController {
             @RequestParam("email") String email,
             @RequestParam("appointmentId") Integer appointmentId
     ) throws BadRequestException {
-        appointmentService.deleteAppointment(email, appointmentId);
+        appointmentService.deleteAppointment(appointmentId);
         redirectAttributes.addAttribute("email", email);
         return "redirect:/patient/appointments/{email}";
     }

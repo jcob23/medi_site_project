@@ -16,27 +16,46 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     AppointmentEntity getById(Integer id);
 
     @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.doctor d" +
+            " JOIN d.loginDetails u" +
+            " WHERE u.email = :email")
+    Set<AppointmentEntity> getDoctorAppointments(String email, Sort sort);
+
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.doctor d" +
+            " JOIN d.loginDetails u" +
+            " WHERE u.email = :email AND a.appointmentStart < CURRENT_TIMESTAMP")
+    Set<AppointmentEntity> getDoctorPastAppointments(String email, Sort sort);
+
+
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.doctor d" +
+            " JOIN d.loginDetails u" +
+            " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
+    Set<AppointmentEntity> getDoctorFutureAppointments(String email, Sort sort);
+
+    @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.patient p" +
             " JOIN p.loginDetails u" +
             " WHERE u.email = :email")
-    Set<AppointmentEntity> getAppointments(String email, Sort sort);
+    Set<AppointmentEntity> getPatientAppointments(String email, Sort sort);
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.patient p" +
             " JOIN p.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart < CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getPastAppointments(String email, Sort sort);
+    Set<AppointmentEntity> getPatientPastAppointments(String email, Sort sort);
 
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.patient p" +
             " JOIN p.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getFutureAppointments(String email, Sort sort);
+    Set<AppointmentEntity> getPatientFutureAppointments(String email, Sort sort);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM AppointmentEntity a" +
-            " WHERE a.patient.loginDetails.email = :email AND a.id = :appointmentId")
-    void deleteAppointment(@Param("email") String email, @Param("appointmentId") Integer appointmentId);
+            " WHERE a.id = :appointmentId")
+    void deleteAppointment( @Param("appointmentId") Integer appointmentId);
 }

@@ -19,24 +19,40 @@ public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
 
-    public Set<AppointmentEntity> getAppointments(String email) {
-        return appointmentRepository.getAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentEntity> getPatientAppointments(String email) {
+        return appointmentRepository.getPatientAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
     }
 
-    public Set<AppointmentEntity> getFutureAppointments(String email) {
-        return appointmentRepository.getFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentEntity> getPatientFutureAppointments(String email) {
+        return appointmentRepository.getPatientFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
     }
 
-    public Set<AppointmentEntity> getPastAppointments(String email) {
-        return appointmentRepository.getPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentEntity> getPatientPastAppointments(String email) {
+        return appointmentRepository.getPatientPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
     }
 
+    public Set<AppointmentEntity> getDoctorAppointments(String email) {
+        return appointmentRepository.getDoctorAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    }
+
+    public Set<AppointmentEntity> getDoctorFutureAppointments(String email) {
+        return appointmentRepository.getDoctorFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    }
+
+    public Set<AppointmentEntity> getDoctorPastAppointments(String email) {
+        return appointmentRepository.getDoctorPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    }
+
+    public AppointmentEntity getById(Integer id){
+        return appointmentRepository.getById(id);
+
+    }
     @Transactional
-    public void deleteAppointment(String email, Integer id) throws BadRequestException {
+    public void deleteAppointment( Integer id) throws BadRequestException {
         AppointmentEntity appointmentEntity = appointmentRepository.getById(id);
         if( appointmentEntity.getAppointmentEnd().isBefore(ZonedDateTime.now()) ) {
             throw new BadRequestException();
         }
-        appointmentRepository.deleteAppointment(email, id);
+        appointmentRepository.deleteAppointment(id);
     }
 }

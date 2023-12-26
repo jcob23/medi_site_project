@@ -45,7 +45,7 @@
                 <td th:text="${personDTO.description}"></td>
             </div>
             <td>
-                <form action="#" th:action="@{show_appointments/{email}(email=${personDTO.email})}" th:method="GET">
+                <form action="#" th:action="@{/patient/appointments/{email}(email=${personDTO.email})}" th:method="GET">
                     <button type="submit" class="btn btn-info">Wizyty</button>
                 </form>
             </td>
