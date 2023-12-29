@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @GetMapping("/add")
-    public String adminAddPage(Model model, Authentication authentication) {
+    public String adminAddPage(Model model) {
         model.addAttribute("doctorDTO", new DoctorDTO());
         return "admin_add";
     }

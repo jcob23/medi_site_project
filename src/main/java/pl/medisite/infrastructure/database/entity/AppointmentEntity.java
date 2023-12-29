@@ -16,7 +16,6 @@ import java.time.ZonedDateTime;
 @Table(name = "medisite_appointment")
 public class AppointmentEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appointment_id")

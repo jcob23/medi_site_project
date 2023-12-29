@@ -6,21 +6,16 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.medisite.controller.buisness.AppointmentDTO;
 import pl.medisite.controller.buisness.DoctorAppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.repository.AppointmentRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
-import pl.medisite.util.DateHelper;
+import pl.medisite.util.DateTimeHelper;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.*;
 import java.util.Set;
 
 @Service
@@ -30,7 +25,7 @@ public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
     private DoctorRepository doctorRepository;
-    private DateHelper dateHelper;
+    private DateTimeHelper dateTimeHelper;
 
     public Set<AppointmentEntity> getPatientAppointments(String email) {
         return appointmentRepository.getPatientAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
@@ -60,6 +55,10 @@ public class AppointmentService {
         return appointmentRepository.getById(id);
 
     }
+
+    public AppointmentDTO getAppointment(Integer id){
+        return AppointmentDTO.mapAppointment(appointmentRepository.getById(id));
+    }
     @Transactional
     public void deleteAppointment( Integer id) throws BadRequestException {
         AppointmentEntity appointmentEntity = appointmentRepository.getById(id);
@@ -79,10 +78,10 @@ public class AppointmentService {
         }
     }
 
-    private void createAppointment(String date, String appointmentStart, String appointmentEnd, DoctorEntity doctorEntity){
+    private void createAppointment(LocalDate date, LocalTime appointmentStart, LocalTime appointmentEnd, DoctorEntity doctorEntity){
         AppointmentEntity appointmentEntity = AppointmentEntity.builder()
-                .appointmentStart(dateHelper.createZonedDateTime(date, appointmentStart))
-                .appointmentEnd(dateHelper.createZonedDateTime(date, appointmentEnd))
+                .appointmentStart(ZonedDateTime.of(date,appointmentStart, ZoneId.of("Europe/Warsaw")))
+                .appointmentEnd(ZonedDateTime.of(date,appointmentEnd, ZoneId.of("Europe/Warsaw")))
                 .doctor(doctorEntity)
                 .build();
         appointmentRepository.saveAndFlush(appointmentEntity);
@@ -100,29 +99,26 @@ public class AppointmentService {
     }
 
 
-    private void generateAppointments(String dateStart, String dateEnd, String timeStart, String timeEnd, String breakTime, String appointmentTime, DoctorEntity doctorEntity) throws ParseException {
+    private void generateAppointments(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd, String breakTime, String appointmentTime, DoctorEntity doctorEntity) throws ParseException {
 
-        LocalDate startDate = LocalDate.parse(dateStart);
-        LocalDate endDate = LocalDate.parse(dateEnd);
-        LocalTime startTime = LocalTime.parse(timeStart);
-        LocalTime endTime = LocalTime.parse(timeEnd);
-        Duration breakTimeInterval = dateHelper.parseDuration(breakTime);
-        Duration appointmentTimeInterval = dateHelper.parseDuration(appointmentTime);
-
-        LocalDate currentDate = startDate;
-        while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-            LocalTime currentTime = startTime;
-            while (currentTime.isBefore(endTime) || currentTime.equals(endTime)) {
-                createAppointment(currentDate.toString(), currentTime.toString(), currentTime.plus(appointmentTimeInterval).toString(), doctorEntity);
+        Duration breakTimeInterval = dateTimeHelper.parseDuration(breakTime);
+        Duration appointmentTimeInterval = dateTimeHelper.parseDuration(appointmentTime);
+        LocalDate currentDate = dateStart;
+        while (currentDate.isBefore(dateEnd) || currentDate.isEqual(dateEnd)) {
+            LocalTime currentTime = timeStart;
+            while (currentTime.isBefore(timeEnd) || currentTime.equals(timeEnd)) {
+                createAppointment(currentDate, currentTime, currentTime.plus(appointmentTimeInterval), doctorEntity);
                 currentTime = currentTime.plus(appointmentTimeInterval).plus(breakTimeInterval);
-                if (currentTime.isAfter(endTime) || currentTime.equals(endTime)) {
+                if (currentTime.isAfter(timeEnd) || currentTime.equals(timeEnd)) {
                     break;
                 }
             }
             currentDate = currentDate.plusDays(1);
         }
     }
-
-
-
+    public void updateAppointment(Integer appointmentId, String note) {
+        AppointmentEntity appointmentEntity = appointmentRepository.getById(appointmentId);
+        appointmentEntity.setNote(note);
+        appointmentRepository.save(appointmentEntity);
+    }
 }

@@ -1,15 +1,17 @@
 package pl.medisite.controller.buisness;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 
@@ -35,33 +37,49 @@ public class DoctorController {
                                      HttpSession session
     ) {
         String email = (String) session.getAttribute("userEmail");
-        Set<AppointmentEntity> appointments = doctorService.getAppointments(email);
+        Set<AppointmentDTO> appointments = doctorService.getAppointmentsDTO(email);
         model.addAttribute("doctorAppointmentDTO", new DoctorAppointmentDTO());
-        model.addAttribute("appointments",appointments);
+        model.addAttribute("appointments", appointments);
         return "doctor_appointments";
     }
 
     @PostMapping("/add_appointment")
     public String addAppointment(
-        @ModelAttribute("doctorAppointmentDTO") DoctorAppointmentDTO doctorAppointmentDTO,
-        HttpSession session
+            @Valid @ModelAttribute("doctorAppointmentDTO") DoctorAppointmentDTO doctorAppointmentDTO,
+            HttpSession session
     ) throws ParseException {
         String email = (String) session.getAttribute("userEmail");
         appointmentService.createNewAppointment(doctorAppointmentDTO, email);
-
         return "redirect:/doctor/appointments";
     }
 
-
-    @GetMapping("/edit_note")
-    public String showEditNote(
-            @RequestParam("email") String email,
+    @GetMapping("/details_appointment")
+    public String showAppointmentDetails(
             @RequestParam("appointmentId") Integer appointmentId,
             Model model
     ) {
-        AppointmentEntity appointment = appointmentService.getById(appointmentId);
-        model.addAttribute("appointment",appointment);
-        return "doctor_appointments";
+        AppointmentDTO appointment = appointmentService.getAppointment(appointmentId);
+        model.addAttribute("appointment", appointment);
+        return "doctor_details_appointment";
+    }
+
+    @PutMapping("/update_note")
+    public String updateNote(
+            @RequestParam("appointmentId") Integer appointmentId,
+            @RequestParam("note") String note,
+            RedirectAttributes redirectAttributes
+    ) {
+        appointmentService.updateAppointment(appointmentId,note);
+        redirectAttributes.addAttribute("appointmentId",appointmentId);
+        return "redirect:/doctor/details_appointment";
+    }
+
+    @DeleteMapping("/delete_appointment")
+    public String deleteAppointment(
+            @RequestParam("appointmentId") Integer appointmentId
+    ) throws BadRequestException {
+        appointmentService.deleteAppointment(appointmentId);
+        return "redirect:/doctor/appointments";
     }
 
     @DeleteMapping()
