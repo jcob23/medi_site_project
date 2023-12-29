@@ -1,8 +1,8 @@
 package pl.medisite.controller.buisness;
 
-import jakarta.mail.Session;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
-import pl.medisite.util.SecurityHelper;
 
+import java.text.ParseException;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/doctor")
 @AllArgsConstructor
+@Slf4j
 public class DoctorController {
 
     private DoctorService doctorService;
@@ -29,15 +30,29 @@ public class DoctorController {
         return "doctor_profile";
     }
 
-    @GetMapping("/calendar")
+    @GetMapping("/appointments")
     public String showDoctorCalendar(Model model,
                                      HttpSession session
     ) {
         String email = (String) session.getAttribute("userEmail");
         Set<AppointmentEntity> appointments = doctorService.getAppointments(email);
+        model.addAttribute("doctorAppointmentDTO", new DoctorAppointmentDTO());
         model.addAttribute("appointments",appointments);
         return "doctor_appointments";
     }
+
+    @PostMapping("/add_appointment")
+    public String addAppointment(
+        @ModelAttribute("doctorAppointmentDTO") DoctorAppointmentDTO doctorAppointmentDTO,
+        HttpSession session
+    ) throws ParseException {
+        String email = (String) session.getAttribute("userEmail");
+        appointmentService.createNewAppointment(doctorAppointmentDTO, email);
+
+        return "redirect:/doctor/appointments";
+    }
+
+
     @GetMapping("/edit_note")
     public String showEditNote(
             @RequestParam("email") String email,

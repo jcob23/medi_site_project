@@ -27,8 +27,7 @@
 
             <th:block th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
                 <li><a th:href="@{/doctor}">PROFIL</a></li>
-                <li><a href="#">NADCHODZĄCE WIZYTY</a></li>
-                <li><a href="#">KALENDARZ</a></li>
+                <li><a th:href="@{/doctor/appointments}">KALENDARZ</a></li>
             </th:block>
         </ul>
         <ul class="nav navbar-nav navbar-right">

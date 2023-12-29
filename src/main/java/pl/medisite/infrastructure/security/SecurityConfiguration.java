@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/patient/appointments/**","/patient/delete_appointment/**").hasAnyAuthority("PATIENT", "ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/patient", "/patient/doctors").hasAuthority("PATIENT")
-                        .requestMatchers("/doctor").hasAuthority("DOCTOR")
+                        .requestMatchers("/doctor/**","/doctor/add_appointment").hasAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")
@@ -81,15 +81,15 @@ public class SecurityConfiguration {
                 .build();
     }
 
-    @Bean
-    @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "false")
-    public SecurityFilterChain filterChainDisabled(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(request -> request
-                        .anyRequest()
-                        .permitAll()
-                )
-                .build();
-    }
+//    @Bean
+//    @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "false")
+//    public SecurityFilterChain filterChainDisabled(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity.csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(request -> request
+//                        .anyRequest()
+//                        .permitAll()
+//                )
+//                .build();
+//    }
 
 }
