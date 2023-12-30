@@ -1,4 +1,4 @@
-package pl.medisite.controller.system;
+package pl.medisite.controller;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -29,7 +29,7 @@ public class ResetPasswordController {
 
     @GetMapping()
     public String showForgetPasswordPage() {
-        return "forgetPassword";
+        return "forget_password";
     }
 
     @PostMapping()
@@ -41,7 +41,7 @@ public class ResetPasswordController {
             resetPasswordService.sendMail(mail);
             model.addAttribute("mail", true);
         }
-        return "forgetPassword";
+        return "forget_password";
     }
 
     @GetMapping("/reset")

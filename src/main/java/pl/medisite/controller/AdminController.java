@@ -1,4 +1,4 @@
-package pl.medisite.controller.system;
+package pl.medisite.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.medisite.controller.buisness.DoctorDTO;
+import pl.medisite.controller.DTO.DoctorDTO;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.infrastructure.database.entity.PersonInformation;

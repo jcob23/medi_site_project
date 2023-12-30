@@ -3,15 +3,14 @@ package pl.medisite.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.medisite.controller.buisness.AppointmentDTO;
-import pl.medisite.controller.buisness.DoctorDTO;
-import pl.medisite.controller.system.UserDTO;
+import pl.medisite.controller.DTO.AppointmentDTO;
+import pl.medisite.controller.DTO.DoctorDTO;
+import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;

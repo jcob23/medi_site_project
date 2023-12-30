@@ -1,4 +1,4 @@
-package pl.medisite.controller.system;
+package pl.medisite.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.medisite.controller.buisness.PatientDTO;
+import pl.medisite.controller.DTO.PatientDTO;
 import pl.medisite.service.PatientService;
 
 @Controller

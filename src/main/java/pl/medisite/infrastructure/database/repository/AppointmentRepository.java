@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
+import pl.medisite.infrastructure.database.entity.DiseaseEntity;
+import pl.medisite.infrastructure.database.entity.PatientEntity;
 
 import java.util.Set;
 
@@ -57,5 +59,12 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Transactional
     @Query("DELETE FROM AppointmentEntity a" +
             " WHERE a.id = :appointmentId")
-    void deleteAppointment( @Param("appointmentId") Integer appointmentId);
+    void deleteAppointment(@Param("appointmentId") Integer appointmentId);
+
+
+    @Query("SELECT d FROM DiseaseEntity d" +
+            " JOIN d.patient p" +
+            " JOIN p.appointments a" +
+            " WHERE a.id = :id")
+    Set<DiseaseEntity> getDiseases(@Param("id") Integer appointmentId);
 }

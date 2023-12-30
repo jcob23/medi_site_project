@@ -1,4 +1,4 @@
-package pl.medisite.controller.buisness;
+package pl.medisite.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;

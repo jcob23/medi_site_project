@@ -30,7 +30,7 @@ public class AppointmentEntity {
     @Column(name = "note")
     private String note;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_email", referencedColumnName = "email")
     private PatientEntity patient;
 

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.medisite.controller.system.UserDTO;
+import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.database.entity.PersonInformation;
 import pl.medisite.infrastructure.database.repository.PersonInformationRepository;
 import pl.medisite.infrastructure.security.RoleRepository;

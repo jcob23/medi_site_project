@@ -1,4 +1,4 @@
-package pl.medisite.controller.buisness;
+package pl.medisite.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

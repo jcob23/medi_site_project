@@ -1,4 +1,4 @@
-package pl.medisite.controller.buisness;
+package pl.medisite.controller.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Future;

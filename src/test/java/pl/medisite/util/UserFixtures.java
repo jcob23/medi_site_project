@@ -1,7 +1,7 @@
 package pl.medisite.util;
 
 import lombok.experimental.UtilityClass;
-import pl.medisite.controller.system.UserDTO;
+import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.security.RoleEntity;
 import pl.medisite.infrastructure.security.UserEntity;
 

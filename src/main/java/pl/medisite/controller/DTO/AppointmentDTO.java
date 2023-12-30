@@ -1,4 +1,4 @@
-package pl.medisite.controller.buisness;
+package pl.medisite.controller.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,6 +43,7 @@ public class AppointmentDTO {
                 appointmentEnd.getHour(),
                 appointmentEnd.getMinute(),
                 appointmentEnd.getSecond());
+
 
         return new AppointmentDTO(appointmentEntity.getId(),
                 name,

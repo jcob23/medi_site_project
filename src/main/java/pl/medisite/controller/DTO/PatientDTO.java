@@ -1,7 +1,9 @@
-package pl.medisite.controller.system;
+package pl.medisite.controller.DTO;
 
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,19 +19,35 @@ import java.util.Optional;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class PatientDTO {
 
+    @Id
     @NotBlank
     @Email(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
-    private String email;
+    String email;
 
     @Size(min = 4)
-    private String password;
+    String password;
+
+    String name;
+
+    String surname;
+
+    String role;
+
+    @Size(min = 7, max = 15)
+    @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
+    String phone;
 
     public Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         Optional.ofNullable(email).ifPresent(value -> result.put("email", email));
         Optional.ofNullable(password).ifPresent(value -> result.put("password", password));
+        Optional.ofNullable(name).ifPresent(value -> result.put("name", name));
+        Optional.ofNullable(surname).ifPresent(value -> result.put("surname", surname));
+        Optional.ofNullable(phone).ifPresent(value -> result.put("phone", phone));
         return result;
     }
+
+
 }

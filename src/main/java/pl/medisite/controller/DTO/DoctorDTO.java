@@ -1,4 +1,4 @@
-package pl.medisite.controller.buisness;
+package pl.medisite.controller.DTO;
 
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
