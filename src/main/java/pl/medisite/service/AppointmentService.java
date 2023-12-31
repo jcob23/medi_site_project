@@ -13,11 +13,14 @@ import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.repository.AppointmentRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
+import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.util.DateTimeHelper;
 
 import java.text.ParseException;
 import java.time.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +29,7 @@ public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
     private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
 
     private DateTimeHelper dateTimeHelper;
 
@@ -43,6 +47,13 @@ public class AppointmentService {
 
     public Set<AppointmentEntity> getDoctorAppointments(String email) {
         return appointmentRepository.getDoctorAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    }
+    public Set<AppointmentDTO> getDoctorFutureFreeAppointments(String email) {
+        return appointmentRepository
+                .getDoctorFutureFreeAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
+                .stream()
+                .map(AppointmentDTO::mapAppointment)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<AppointmentEntity> getDoctorFutureAppointments(String email) {
@@ -120,6 +131,7 @@ public class AppointmentService {
         }
     }
 
+    @Transactional
     public void updateAppointment(Integer appointmentId, String note) {
         AppointmentEntity appointmentEntity = appointmentRepository.getById(appointmentId);
         appointmentEntity.setNote(note);
@@ -128,5 +140,12 @@ public class AppointmentService {
 
     public Set<DiseaseEntity> getPatientDiseases(Integer appointmentId) {
         return appointmentRepository.getDiseases(appointmentId);
+    }
+
+    @Transactional
+    public void bookAppointment(Integer appointmentId, String email) {
+        AppointmentEntity appointmentEntity = appointmentRepository.getById(appointmentId);
+        appointmentEntity.setPatient(patientRepository.findByEmail(email));
+        appointmentRepository.saveAndFlush(appointmentEntity);
     }
 }

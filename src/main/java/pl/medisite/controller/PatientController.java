@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
-import pl.medisite.infrastructure.database.entity.PersonInformation;
+import pl.medisite.infrastructure.database.entity.DoctorEntity;
+import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.service.AppointmentService;
+import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 import pl.medisite.util.SecurityHelper;
@@ -31,6 +34,7 @@ public class PatientController {
     private PatientService patientService;
     private AppointmentService appointmentService;
     private UserService userService;
+    private DoctorService doctorService;
     private SecurityHelper securityHelper;
 
     @GetMapping()
@@ -40,7 +44,7 @@ public class PatientController {
 
     @GetMapping("/doctors")
     public String showPatientDoctorsList(Model model) {
-        List<PersonInformation.DoctorInformation> doctorsInformation = userService.getDoctorsInformation();
+        List<PersonDTO.DoctorDTO> doctorsInformation = userService.getDoctorsInformation();
         model.addAttribute("personsData", doctorsInformation);
         return "patient_doctor_list";
     }
@@ -87,6 +91,25 @@ public class PatientController {
         Set<AppointmentEntity> appointments = appointmentService.getPatientPastAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
+    }
+
+    @GetMapping("/book_appointment")
+    public String showBookAppointment(
+            @RequestParam(name = "email") String email,
+            Model model){
+        DoctorEntity doctorEntity = doctorService.findByEmail(email);
+        Set<AppointmentDTO> appointments = appointmentService.getDoctorFutureFreeAppointments(email);
+        model.addAttribute("doctor",doctorEntity);
+        model.addAttribute("appointments", appointments);
+        return "patient_book_appointment";
+    }
+    @PutMapping("/book_appointment")
+    public String bookAppointment(
+            @RequestParam(name = "userEmail") String userEmail,
+            @RequestParam(name = "appointmentId") Integer appointmentId,
+            @RequestParam(name = "email") String email) {
+        appointmentService.bookAppointment(appointmentId, userEmail);
+        return "redirect:/patient/book_appointment?email=" + email;
     }
 
     @DeleteMapping("/delete_appointment")

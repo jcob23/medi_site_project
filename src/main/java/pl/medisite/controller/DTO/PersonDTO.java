@@ -1,4 +1,4 @@
-package pl.medisite.infrastructure.database.entity;
+package pl.medisite.controller.DTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonInformation {
+public class PersonDTO {
 
     @Id
     private  String email;
@@ -30,7 +30,7 @@ public class PersonInformation {
     @Entity
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class DoctorInformation extends PersonInformation {
+    public static class DoctorDTO extends PersonDTO {
 
         @Column(name = "specialization")
         private String specialization;

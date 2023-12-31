@@ -37,6 +37,12 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     Set<AppointmentEntity> getDoctorFutureAppointments(String email, Sort sort);
 
     @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.doctor d" +
+            " JOIN d.loginDetails u" +
+            " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP AND a.patient IS NULL")
+    Set<AppointmentEntity> getDoctorFutureFreeAppointments(String email, Sort sort);
+
+    @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.patient p" +
             " JOIN p.loginDetails u" +
             " WHERE u.email = :email")

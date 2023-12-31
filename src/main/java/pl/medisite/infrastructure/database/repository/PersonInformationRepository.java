@@ -2,11 +2,11 @@ package pl.medisite.infrastructure.database.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import pl.medisite.infrastructure.database.entity.PersonInformation;
+import pl.medisite.controller.DTO.PersonDTO;
 
 import java.util.List;
 
-public interface PersonInformationRepository extends JpaRepository<PersonInformation, String> {
+public interface PersonInformationRepository extends JpaRepository<PersonDTO, String> {
 
     @Query(
             nativeQuery = true,
@@ -15,7 +15,7 @@ public interface PersonInformationRepository extends JpaRepository<PersonInforma
                     "JOIN medisite_doctor d ON u.email = d.email " +
                     "JOIN medisite_role r ON u.role_id = r.role_id;"
     )
-    List<PersonInformation.DoctorInformation> findDoctorInformation();
+    List<PersonDTO.DoctorDTO> findDoctorInformation();
 
     @Query(
             nativeQuery = true,
@@ -24,5 +24,5 @@ public interface PersonInformationRepository extends JpaRepository<PersonInforma
                     " JOIN medisite_patient p ON u.email = p.email" +
                     " JOIN medisite_role r ON u.role_id = r.role_id;"
     )
-    List<PersonInformation> findPatientInformation();
+    List<PersonDTO> findPatientInformation();
 }

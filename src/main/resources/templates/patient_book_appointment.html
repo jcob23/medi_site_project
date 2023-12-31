@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wizyty</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        .wrapping-text {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container">
+    <div>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th><span th:text="${doctor.name}"></span></th>
+                <th><span th:text="${doctor.surname}"></span></th>
+                <th>SPECIALIZACJA:<span th:text="${doctor.specialization}"></span></th>
+                <th>OPIS: <span th:text="${doctor.description}"></span></th>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>DATA</th>
+                <th>GODZINA</th>
+                <th></th>
+            </tr>
+            <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.date}"></td>
+                <td th:text="${appointment.time}"></td>
+                <td>
+                    <form action="#" th:action="@{/patient/book_appointment}" th:method="POST">
+                        <input type="hidden" name="_method" value="PUT" />
+                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+                        <input type="hidden" name="userEmail" th:value="${session.userEmail}" />
+                        <input type="hidden" name="email" th:value="${doctor.loginDetails.email}" />
+                        <button type="submit" class="btn btn-info">Zarezerwuj wizytę</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

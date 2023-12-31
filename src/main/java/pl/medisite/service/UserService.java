@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.UserDTO;
-import pl.medisite.infrastructure.database.entity.PersonInformation;
+import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.infrastructure.database.repository.PersonInformationRepository;
 import pl.medisite.infrastructure.security.RoleRepository;
 import pl.medisite.infrastructure.security.UserEntity;
@@ -48,21 +48,21 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<PersonInformation> getPatientsInformation() {
+    public List<PersonDTO> getPatientsInformation() {
         return personInformationRepository.findPatientInformation();
     }
 
-    public List<PersonInformation.DoctorInformation> getDoctorsInformation() {
+    public List<PersonDTO.DoctorDTO> getDoctorsInformation() {
         return personInformationRepository.findDoctorInformation();
     }
 
     @Transactional
-    public List<PersonInformation> getAllUsersInformation() {
-        List<PersonInformation.DoctorInformation> personInformation = personInformationRepository.findDoctorInformation();
-        List<PersonInformation> personInformation2 = personInformationRepository.findPatientInformation();
-        personInformation2.addAll(personInformation);
+    public List<PersonDTO> getAllUsersInformation() {
+        List<PersonDTO.DoctorDTO> personInformation = personInformationRepository.findDoctorInformation();
+        List<PersonDTO> personDTO2 = personInformationRepository.findPatientInformation();
+        personDTO2.addAll(personInformation);
 
-        return personInformation2;
+        return personDTO2;
     }
 
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.medisite.controller.DTO.DoctorDTO;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
-import pl.medisite.infrastructure.database.entity.PersonInformation;
+import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
@@ -77,7 +77,7 @@ public class AdminController {
 
     @GetMapping("/patients")
     public String adminPatientsPage(Model model, Authentication authentication) {
-        List<PersonInformation> users = userService.getPatientsInformation();
+        List<PersonDTO> users = userService.getPatientsInformation();
         model.addAttribute("patientView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
@@ -85,7 +85,7 @@ public class AdminController {
 
     @GetMapping("/doctors")
     public String adminDoctorsPage(Model model, Authentication authentication) {
-        List<PersonInformation.DoctorInformation> users = userService.getDoctorsInformation();
+        List<PersonDTO.DoctorDTO> users = userService.getDoctorsInformation();
         model.addAttribute("doctorView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
@@ -94,7 +94,7 @@ public class AdminController {
 
     @GetMapping("/users")
     public String adminUsersPage(Model model, Authentication authentication) {
-        List<PersonInformation> users = userService.getAllUsersInformation();
+        List<PersonDTO> users = userService.getAllUsersInformation();
         model.addAttribute("personsData", users);
         return "admin_list";
     }

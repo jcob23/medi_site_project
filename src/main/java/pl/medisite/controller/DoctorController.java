@@ -45,17 +45,6 @@ public class DoctorController {
         model.addAttribute("appointments", appointments);
         return "doctor_appointments";
     }
-
-    @GetMapping("/patient_diseases")
-    public String getPatientDiseases(
-            @RequestParam("appointmentId") Integer appointmentId,
-            Model model
-    ){
-        Set<DiseaseEntity> diseases =  appointmentService.getPatientDiseases(appointmentId);
-        model.addAttribute("patientDiseases", diseases);
-        return "patient_diseases";
-    }
-
     @PostMapping("/add_appointment")
     public String addAppointment(
             @Valid @ModelAttribute("doctorAppointmentDTO") DoctorAppointmentDTO doctorAppointmentDTO,
@@ -74,6 +63,15 @@ public class DoctorController {
         AppointmentDTO appointment = appointmentService.getAppointment(appointmentId);
         model.addAttribute("appointment", appointment);
         return "doctor_details_appointment";
+    }
+    @GetMapping("/patient_diseases")
+    public String getPatientDiseases(
+            @RequestParam("appointmentId") Integer appointmentId,
+            Model model
+    ){
+        Set<DiseaseEntity> diseases =  appointmentService.getPatientDiseases(appointmentId);
+        model.addAttribute("patientDiseases", diseases);
+        return "patient_diseases";
     }
 
     @PutMapping("/update_note")
