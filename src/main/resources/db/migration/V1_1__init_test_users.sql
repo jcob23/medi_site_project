@@ -13,13 +13,13 @@ VALUES ( 'doctor1@medisite.pl','$2a$12$XcjIA2Yj5OPKIkr4b1/vRejSfIWMwd.fFETrBR6d2
 INSERT INTO medisite_user (email,password,role_id)
 VALUES ( 'doctor2@medisite.pl','$2a$12$XcjIA2Yj5OPKIkr4b1/vRejSfIWMwd.fFETrBR6d2w4kcbppMOApS',3);
 
---DROP TABLE medisite_appointment;
---DROP TABLE medisite_patient_diseases;
---DROP TABLE medisite_patient;
---DROP TABLE medisite_doctor;
+--DROP TABLE appointment;
+--DROP TABLE patient_diseases;
+--DROP TABLE patient;
+--DROP TABLE doctor;
 --DROP TABLE medisite_user;
---DROP TABLE medisite_user_token;
---DROP TABLE medisite_role;
+--DROP TABLE user_token;
+--DROP TABLE role;
 --DROP TABLE flyway_schema_history;
 
 

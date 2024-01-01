@@ -1,4 +1,4 @@
-CREATE TABLE medisite_doctor
+CREATE TABLE doctor
 (
     doctor_id           SERIAL              NOT NULL,
     name                VARCHAR(20)         NOT NULL,
@@ -14,10 +14,10 @@ CREATE TABLE medisite_doctor
                REFERENCES medisite_user(email)
 );
 
-INSERT INTO medisite_doctor (name,surname,email,phone,specialization,description)
+INSERT INTO doctor (name,surname,email,phone,specialization,description)
 VALUES ('Agata','Lekarka', 'doctor1@medisite.pl','+48 534 873 981','bezsenność','');
 
-INSERT INTO medisite_doctor (name,surname,email,phone,specialization,description)
+INSERT INTO doctor (name,surname,email,phone,specialization,description)
 VALUES ('Krystyna','Doktorka','doctor2@medisite.pl','+48 634 873 982','strach','');
 
 

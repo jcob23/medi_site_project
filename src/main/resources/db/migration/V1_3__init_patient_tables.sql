@@ -1,4 +1,4 @@
-CREATE TABLE medisite_patient
+CREATE TABLE patient
 (
     patient_id           SERIAL             NOT NULL,
     name                VARCHAR(20)         NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE medisite_patient
               REFERENCES medisite_user(email)
 );
 
-CREATE TABLE medisite_patient_diseases
+CREATE TABLE patient_diseases
 (
     disease_id          SERIAL              NOT NULL,
     name                VARCHAR(20)         NOT NULL,
@@ -24,21 +24,21 @@ CREATE TABLE medisite_patient_diseases
     PRIMARY KEY (disease_id),
     CONSTRAINT fk_patient
         FOREIGN KEY(patient_id)
-            REFERENCES medisite_patient(patient_id)
+            REFERENCES patient(patient_id)
 );
-INSERT INTO medisite_patient (patient_id,name,surname,email,phone)
+INSERT INTO patient (patient_id,name,surname,email,phone)
 VALUES (1,'Romek','Księżycowy', 'user1@medisite.pl','+48 234 873 981');
 
-INSERT INTO medisite_patient (patient_id,name,surname,email,phone)
+INSERT INTO patient (patient_id,name,surname,email,phone)
 VALUES (2,'Tomek','Gwiazdowy', 'user2@medisite.pl','+48 234 873 982');
 
-INSERT INTO medisite_patient_diseases (disease_id,name,description,cured,since,patient_id)
+INSERT INTO patient_diseases (disease_id,name,description,cured,since,patient_id)
 VALUES (1,'choroba A', 'opis choroby A',false,'2020.01.01',1);
 
-INSERT INTO medisite_patient_diseases (disease_id,name,description,cured,since,patient_id)
+INSERT INTO patient_diseases (disease_id,name,description,cured,since,patient_id)
 VALUES (2,'choroba B', 'opis choroby B',false,'2019.01.01',1);
 
-INSERT INTO medisite_patient_diseases (disease_id,name,description,cured,since,patient_id)
+INSERT INTO patient_diseases (disease_id,name,description,cured,since,patient_id)
 VALUES (3,'choroba C', 'opis choroby C',true,'2021.01.01',1);
 
 

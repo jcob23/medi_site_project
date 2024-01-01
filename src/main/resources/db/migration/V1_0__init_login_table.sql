@@ -1,16 +1,16 @@
-CREATE TABLE medisite_role
+CREATE TABLE role
 (
     role_id     SERIAL      NOT NULL,
     role        VARCHAR(20) NOT NULL,
     PRIMARY KEY (role_id)
 );
-INSERT INTO medisite_role (role_id,role) values (1,'ADMIN');
+INSERT INTO role (role_id,role) values (1,'ADMIN');
 
-INSERT INTO medisite_role (role_id,role) values (2,'PATIENT');
+INSERT INTO role (role_id,role) values (2,'PATIENT');
 
-INSERT INTO medisite_role (role_id,role) values (3,'DOCTOR');
+INSERT INTO role (role_id,role) values (3,'DOCTOR');
 
-CREATE TABLE medisite_user_token
+CREATE TABLE user_token
 (
     token_id SERIAL NOT NULL,
     token uuid NOT NULL,
@@ -31,9 +31,9 @@ CREATE TABLE medisite_user
     UNIQUE(email),
     CONSTRAINT fk_role_user
            FOREIGN KEY(role_id)
-               REFERENCES medisite_role(role_id),
+               REFERENCES role(role_id),
     CONSTRAINT fk_user_token
                FOREIGN KEY(token_id)
-                   REFERENCES medisite_user_token(token_id) ON DELETE SET NULL
+                   REFERENCES user_token(token_id) ON DELETE SET NULL
 );
 
