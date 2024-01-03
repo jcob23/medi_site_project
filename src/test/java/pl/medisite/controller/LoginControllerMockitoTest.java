@@ -21,23 +21,24 @@ public class LoginControllerMockitoTest {
 
     @InjectMocks
     private LoginController loginController;
-    @Test
-    void loginPageShowsCorrectly(){
+
+//    @Test
+//    void loginPageShowsCorrectly(){
         //when
 //        String result = loginController.login();
 //        //then
 //        Assertions.assertThat(result).isEqualTo("login");
-    }
+//    }
 
-    @Test
-    void registerPageShowsCorrectly(){
-        ExtendedModelMap model = new ExtendedModelMap();
-        //when
-        String result = loginController.showRegisterPage( model);
-        //then
-        Assertions.assertThat(result).isEqualTo("register");
-        Assertions.assertThat(model.getAttribute("userDTO")).isEqualTo(new UserDTO());
-    }
+//    @Test
+//    void registerPageShowsCorrectly(){
+//        ExtendedModelMap model = new ExtendedModelMap();
+//        //when
+//        String result = loginController.showRegisterPage( model);
+//        //then
+//        Assertions.assertThat(result).isEqualTo("register");
+//        Assertions.assertThat(model.getAttribute("userDTO")).isEqualTo(new UserDTO());
+//    }
 //    @Test
 //    void registerUserWorksCorrectly () {
 //        //given

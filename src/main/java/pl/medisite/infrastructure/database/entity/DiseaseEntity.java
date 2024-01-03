@@ -1,13 +1,20 @@
 package pl.medisite.infrastructure.database.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import pl.medisite.controller.DTO.DiseaseDTO;
 
 import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "medisite_patient_diseases")
+@Table(name = "patient_diseases")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DiseaseEntity {
 
     @Id
@@ -30,4 +37,16 @@ public class DiseaseEntity {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
+
+
+    public static DiseaseEntity mapDTO(DiseaseDTO diseaseDTO, PatientEntity patient){
+        return DiseaseEntity.builder()
+                .patient(patient)
+                .cured(false)
+                .name(diseaseDTO.getName())
+                .description(diseaseDTO.getDescription())
+                .since(diseaseDTO.getSince())
+                .build();
+    }
+
 }

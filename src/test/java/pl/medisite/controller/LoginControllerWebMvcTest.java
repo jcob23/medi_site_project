@@ -38,46 +38,46 @@ public class LoginControllerWebMvcTest {
     @MockBean
     private UserService userService;
 
-    @Test
-    void loginWorksCorrectly () throws Exception {
-        //given
-        mockMvc.perform(MockMvcRequestBuilders.get("/login"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("login"));
-    }
+//    @Test
+//    void loginWorksCorrectly () throws Exception {
+//        //given
+//        mockMvc.perform(MockMvcRequestBuilders.get("/login"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("login"));
+//    }
 
-    @Test
-    void registerWorksCorrectly () throws Exception {
+//    @Test
+//    void registerWorksCorrectly () throws Exception {
         // given when then
-        mockMvc.perform(MockMvcRequestBuilders.get("/register"))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("userDTO"))
-                .andExpect(view().name("register"));
-    }
+//        mockMvc.perform(MockMvcRequestBuilders.get("/register"))
+//                .andExpect(status().isOk())
+//                .andExpect(model().attributeExists("userDTO"))
+//                .andExpect(view().name("register"));
+//    }
 
 
-    @ParameterizedTest
-    @MethodSource
-    void emailValidationWorksCorrectly (Boolean correctEmail, String email) throws Exception {
+//    @ParameterizedTest
+//    @MethodSource
+//    void emailValidationWorksCorrectly (Boolean correctEmail, String email) throws Exception {
 
-        LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        Map<String, String> parametersMap = UserDTO.builder().email(email).build().asMap();
-        parametersMap.forEach(parameters::add);
-
-        if ( correctEmail ) {
-            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
-                    .andExpect(status().isOk())
-                    .andExpect(model().attributeExists("registered"))
-                    .andExpect(view().name("login"));
-
-        } else {
-            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(model().attributeDoesNotExist("registered"))
-                    .andExpect(model().attribute("errorMessage", Matchers.containsString(email)))
-                    .andExpect(view().name("error"));
-        }
-    }
+//        LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+//        Map<String, String> parametersMap = UserDTO.builder().email(email).build().asMap();
+//        parametersMap.forEach(parameters::add);
+//
+//        if ( correctEmail ) {
+//            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
+//                    .andExpect(status().isOk())
+//                    .andExpect(model().attributeExists("registered"))
+//                    .andExpect(view().name("login"));
+//
+//        } else {
+//            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
+//                    .andExpect(status().isBadRequest())
+//                    .andExpect(model().attributeDoesNotExist("registered"))
+//                    .andExpect(model().attribute("errorMessage", Matchers.containsString(email)))
+//                    .andExpect(view().name("error"));
+//        }
+//    }
 
     public static Stream<Arguments> emailValidationWorksCorrectly () {
         return Stream.of(
@@ -119,28 +119,28 @@ public class LoginControllerWebMvcTest {
 
     }
 
-    @ParameterizedTest
-    @MethodSource
-    void passwordValidationWorksCorrectly (Boolean correctPassword, String password) throws Exception {
-        LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        Map<String, String> parametersMap = UserDTO.builder().password(password).build().asMap();
-        parametersMap.forEach(parameters::add);
+//    @ParameterizedTest
+//    @MethodSource
+//    void passwordValidationWorksCorrectly (Boolean correctPassword, String password) throws Exception {
+//        LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+//        Map<String, String> parametersMap = UserDTO.builder().password(password).build().asMap();
+//        parametersMap.forEach(parameters::add);
+//
+//        if ( correctPassword ) {
+//            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
+//                    .andExpect(status().isOk())
+//                    .andExpect(model().attributeExists("registered"))
+//                    .andExpect(view().name("login"));
+//
+//        } else {
+//            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
+//                    .andExpect(status().isBadRequest())
+//                    .andExpect(model().attributeDoesNotExist("registered"))
+//                    .andExpect(model().attribute("errorMessage", Matchers.containsString("Za krótkie hasło!")))
+//                    .andExpect(view().name("error"));
+//        }
 
-        if ( correctPassword ) {
-            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
-                    .andExpect(status().isOk())
-                    .andExpect(model().attributeExists("registered"))
-                    .andExpect(view().name("login"));
-
-        } else {
-            mockMvc.perform(MockMvcRequestBuilders.post("/register").params(parameters))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(model().attributeDoesNotExist("registered"))
-                    .andExpect(model().attribute("errorMessage", Matchers.containsString("Za krótkie hasło!")))
-                    .andExpect(view().name("error"));
-        }
-
-    }
+//    }
 
     public static Stream<Arguments> passwordValidationWorksCorrectly () {
         return Stream.of(

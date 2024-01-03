@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "medisite_patient")
+@Table(name = "patient")
 public class PatientEntity {
 
     @Id

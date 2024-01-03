@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/patient/appointments/**","/patient/delete_appointment/**").hasAnyAuthority("PATIENT", "ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/patient", "/patient/doctors","patient/book_appointment").hasAuthority("PATIENT")
-                        .requestMatchers("/doctor/**","/doctor/add_appointment").hasAuthority("DOCTOR")
+                        .requestMatchers("/doctor/**","/doctor/add_appointment", "/doctor/edit_disease").hasAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")

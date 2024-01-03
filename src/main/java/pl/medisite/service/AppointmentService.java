@@ -11,6 +11,7 @@ import pl.medisite.controller.DTO.DoctorAppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
+import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.infrastructure.database.repository.AppointmentRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
@@ -147,5 +148,9 @@ public class AppointmentService {
         AppointmentEntity appointmentEntity = appointmentRepository.getById(appointmentId);
         appointmentEntity.setPatient(patientRepository.findByEmail(email));
         appointmentRepository.saveAndFlush(appointmentEntity);
+    }
+
+    public PatientEntity getPatient(Integer appointmentId) {
+        return appointmentRepository.getPatientByAppointmentId(appointmentId);
     }
 }

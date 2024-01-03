@@ -17,6 +17,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
     AppointmentEntity getById(Integer id);
 
+    @Query("SELECT p FROM PatientEntity p" +
+            " JOIN p.appointments a" +
+            " WHERE a.id = :appointmentId")
+    PatientEntity getPatientByAppointmentId(Integer appointmentId);
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.doctor d" +
             " JOIN d.loginDetails u" +
@@ -73,4 +77,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             " JOIN p.appointments a" +
             " WHERE a.id = :id")
     Set<DiseaseEntity> getDiseases(@Param("id") Integer appointmentId);
+
+
 }

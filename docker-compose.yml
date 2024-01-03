@@ -1,0 +1,31 @@
+version: '3.2'
+services:
+  # Usługa bazy danych PostgreSQL
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: medisite
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+    - ./postgresql-data:/var/lib/postgresql/data
+    healthcheck:
+        test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+  # Usługa aplikacji Java Spring Boot
+  app:
+    build:
+      context: .
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/medisite
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8190:8190"
+    depends_on:
+      - db

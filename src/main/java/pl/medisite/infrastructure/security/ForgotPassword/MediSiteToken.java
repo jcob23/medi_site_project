@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @Builder
 @Entity
-@Table(name = "medisite_user_token")
+@Table(name = "user_token")
 @AllArgsConstructor
 @NoArgsConstructor
 public class MediSiteToken {

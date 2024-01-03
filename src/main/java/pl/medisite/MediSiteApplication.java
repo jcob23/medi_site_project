@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class MediSiteApplication {
     public static void main(String[] args) {
         SpringApplication.run(MediSiteApplication.class, args);
-
     }
 
 

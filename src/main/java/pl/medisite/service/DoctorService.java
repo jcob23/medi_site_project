@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.AppointmentDTO;
+import pl.medisite.controller.DTO.DiseaseDTO;
 import pl.medisite.controller.DTO.DoctorDTO;
 import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
+import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
+import pl.medisite.infrastructure.database.entity.PatientEntity;
+import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
@@ -22,6 +26,7 @@ public class DoctorService {
     DoctorRepository doctorRepository;
     UserService userService;
     AppointmentService appointmentService;
+    DiseaseRepository diseaseRepository;
 
     @Transactional
     public void saveDoctor(DoctorDTO doctorDTO) {
@@ -64,5 +69,13 @@ public class DoctorService {
     public Set<AppointmentDTO> getAppointmentsDTO(String email) {
         return appointmentService.getDoctorAppointments(email).stream().map(AppointmentDTO::mapAppointment).
                 collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public void addDiseaseToPatientByAppointmentId(Integer appointmentId, DiseaseDTO diseaseDTO) {
+        Set<DiseaseEntity> patientDiseases = appointmentService.getPatientDiseases(appointmentId);
+        PatientEntity patient = appointmentService.getPatient(appointmentId);
+        DiseaseEntity diseaseEntity = DiseaseEntity.mapDTO(diseaseDTO, patient);
+        patientDiseases.add(diseaseEntity);
+        diseaseRepository.saveAllAndFlush(patientDiseases);
     }
 }

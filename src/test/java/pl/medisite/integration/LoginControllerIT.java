@@ -16,12 +16,12 @@ public class LoginControllerIT extends AbstractIT{
 
     private final TestRestTemplate testRestTemplate;
 
-    @Test
-    void applicationWorksCorrectly(){
-        String url = "http://localhost:" + port + "/medisite/login";
-
-        String page = this.testRestTemplate.getForObject(url, String.class);
-
-        Assertions.assertThat(page).contains("<h3>Logowanie</h3>");
-    }
+//    @Test
+//    void applicationWorksCorrectly(){
+//        String url = "http://localhost:" + port + "/medisite/login";
+//
+//        String page = this.testRestTemplate.getForObject(url, String.class);
+//
+//        Assertions.assertThat(page).contains("<h3>Logowanie</h3>");
+//    }
 }

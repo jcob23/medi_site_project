@@ -13,8 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
+import pl.medisite.controller.DTO.DiseaseDTO;
 import pl.medisite.controller.DTO.DoctorAppointmentDTO;
+import pl.medisite.controller.DTO.PatientDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
+import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 
@@ -45,6 +48,7 @@ public class DoctorController {
         model.addAttribute("appointments", appointments);
         return "doctor_appointments";
     }
+
     @PostMapping("/add_appointment")
     public String addAppointment(
             @Valid @ModelAttribute("doctorAppointmentDTO") DoctorAppointmentDTO doctorAppointmentDTO,
@@ -64,14 +68,38 @@ public class DoctorController {
         model.addAttribute("appointment", appointment);
         return "doctor_details_appointment";
     }
+
     @GetMapping("/patient_diseases")
-    public String getPatientDiseases(
+    public String showPatientDiseases(
             @RequestParam("appointmentId") Integer appointmentId,
             Model model
-    ){
-        Set<DiseaseEntity> diseases =  appointmentService.getPatientDiseases(appointmentId);
-        model.addAttribute("patientDiseases", diseases);
+    ) {
+        Set<DiseaseEntity> diseases = appointmentService.getPatientDiseases(appointmentId);
+        model.addAttribute("patientDiseasesList", diseases);
+        model.addAttribute("diseaseDTO", new DiseaseDTO());
+        model.addAttribute("appointmentId", appointmentId);
         return "patient_diseases";
+    }
+
+    @GetMapping("/edit_disease")
+    public String showEditPatientDiseases(
+            @RequestParam("disease") DiseaseEntity diseaseEntity,
+            @RequestParam("appointmentId") Integer appointmentId,
+            Model model
+    ) {
+        model.addAttribute("diseaseEntity", diseaseEntity);
+        return "doctor_edit_disease";
+    }
+
+
+    @PostMapping("/patient_disease")
+    public String addDisease(
+            @RequestParam("appointmentId") Integer appointmentId,
+            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseEntity,
+            RedirectAttributes redirectAttributes) {
+        doctorService.addDiseaseToPatientByAppointmentId(appointmentId, diseaseEntity);
+        redirectAttributes.addAttribute("appointmentId", appointmentId);
+        return "redirect:/doctor/patient_diseases";
     }
 
     @PutMapping("/update_note")
@@ -80,8 +108,8 @@ public class DoctorController {
             @RequestParam("note") String note,
             RedirectAttributes redirectAttributes
     ) {
-        appointmentService.updateAppointment(appointmentId,note);
-        redirectAttributes.addAttribute("appointmentId",appointmentId);
+        appointmentService.updateAppointment(appointmentId, note);
+        redirectAttributes.addAttribute("appointmentId", appointmentId);
         return "redirect:/doctor/details_appointment";
     }
 
