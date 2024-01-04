@@ -59,12 +59,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login", "/register/**", "/register/save", "/forget/**").permitAll()
-                        .requestMatchers("/home/**", "/patient/diseases/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
-                        .requestMatchers("/patient/appointments/**","/patient/delete_appointment/**").hasAnyAuthority("PATIENT", "ADMIN")
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/patient", "/patient/doctors","patient/book_appointment").hasAuthority("PATIENT")
-                        .requestMatchers("/doctor/**","/doctor/add_appointment", "/doctor/edit_disease").hasAuthority("DOCTOR")
+                        .requestMatchers(internetUserPages()).permitAll()
+                        .requestMatchers(medisiteUserPages()).hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
+                        .requestMatchers(patientAndAdminPages()).hasAnyAuthority("PATIENT", "ADMIN")
+                        .requestMatchers(adminPages()).hasAuthority("ADMIN")
+                        .requestMatchers(patientPages()).hasAuthority("PATIENT")
+                        .requestMatchers(doctorPages()).hasAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")
@@ -79,6 +79,47 @@ public class SecurityConfiguration {
                         .permitAll()
                 )
                 .build();
+    }
+
+    private String[] internetUserPages() {
+        return new String[]{
+                "/login",
+                "/register/**",
+                "/register/save",
+                "/forget/**"
+        };
+    }
+
+    private String[] medisiteUserPages() {
+        return new String[]{
+                "/home/**",
+                "/patient/diseases/**"
+        };
+    }
+
+    private String[] patientAndAdminPages() {
+        return new String[]{
+                "/patient/appointments/**",
+                "/patient/delete_appointment/**",
+                "/patient/appointments_future/**",
+                "/patient/appointments_past/**"
+        };
+    }
+
+    private String[] adminPages() {
+        return new String[]{"/admin/**"};
+    }
+    private String[] doctorPages() {
+        return new String[]{
+                "/doctor/**",
+                "/doctor/add_appointment",
+                "/doctor/edit_disease"};
+    }
+    private String[] patientPages() {
+        return new String[]{
+                "/patient",
+                "/patient/doctors",
+                "patient/book_appointment"};
     }
 
 //    @Bean

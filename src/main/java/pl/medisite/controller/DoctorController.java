@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.DiseaseDTO;
-import pl.medisite.controller.DTO.DoctorAppointmentDTO;
-import pl.medisite.controller.DTO.PatientDTO;
+import pl.medisite.controller.DTO.NewAppointmentDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
-import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 
@@ -44,18 +42,18 @@ public class DoctorController {
     ) {
         String email = (String) session.getAttribute("userEmail");
         Set<AppointmentDTO> appointments = doctorService.getAppointmentsDTO(email);
-        model.addAttribute("doctorAppointmentDTO", new DoctorAppointmentDTO());
+        model.addAttribute("newAppointmentDTO", new NewAppointmentDTO());
         model.addAttribute("appointments", appointments);
         return "doctor_appointments";
     }
 
     @PostMapping("/add_appointment")
     public String addAppointment(
-            @Valid @ModelAttribute("doctorAppointmentDTO") DoctorAppointmentDTO doctorAppointmentDTO,
+            @Valid @ModelAttribute("newAppointmentDTO") NewAppointmentDTO newAppointmentDTO,
             HttpSession session
     ) throws ParseException {
         String email = (String) session.getAttribute("userEmail");
-        appointmentService.createNewAppointment(doctorAppointmentDTO, email);
+        appointmentService.createNewAppointment(newAppointmentDTO, email);
         return "redirect:/doctor/appointments";
     }
 

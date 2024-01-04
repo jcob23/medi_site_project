@@ -66,7 +66,7 @@ public class PatientController {
                                           Authentication authentication
     ) throws AccessDeniedException {
         securityHelper.checkAuthority(email, authentication);
-        Set<AppointmentEntity> appointments = appointmentService.getPatientAppointments(email);
+        Set<AppointmentDTO> appointments = appointmentService.getPatientAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -77,7 +77,7 @@ public class PatientController {
                                                 Authentication authentication
     ) throws AccessDeniedException {
         securityHelper.checkAuthority(email, authentication);
-        Set<AppointmentEntity> appointments = appointmentService.getPatientFutureAppointments(email);
+        Set<AppointmentDTO> appointments = appointmentService.getPatientFutureAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -88,7 +88,7 @@ public class PatientController {
                                               Authentication authentication
     ) throws AccessDeniedException {
         securityHelper.checkAuthority(email, authentication);
-        Set<AppointmentEntity> appointments = appointmentService.getPatientPastAppointments(email);
+        Set<AppointmentDTO> appointments = appointmentService.getPatientPastAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -96,13 +96,14 @@ public class PatientController {
     @GetMapping("/book_appointment")
     public String showBookAppointment(
             @RequestParam(name = "email") String email,
-            Model model){
+            Model model) {
         DoctorEntity doctorEntity = doctorService.findByEmail(email);
         Set<AppointmentDTO> appointments = appointmentService.getDoctorFutureFreeAppointments(email);
-        model.addAttribute("doctor",doctorEntity);
+        model.addAttribute("doctor", doctorEntity);
         model.addAttribute("appointments", appointments);
         return "patient_book_appointment";
     }
+
     @PutMapping("/book_appointment")
     public String bookAppointment(
             @RequestParam(name = "userEmail") String userEmail,

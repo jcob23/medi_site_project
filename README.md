@@ -20,7 +20,7 @@ The project is developed using:
 * Gradle
 
 ## Setup
-To run this project...
+To Start application you can use Docker Compose and then access the site by link: http://localhost:8190/medisite/
 
 ## Description
 The application caters to both Patients and Doctors.
@@ -36,7 +36,7 @@ To become a patient user has to register to site, Doctors are added by Admin to 
 
 ## How to use
 To use this application, you can access the web app and interact with the web interface or use the REST API.
-To Start application you can use Docker Compose and then access the site by link: http://localhost:8190/medisite/
+
 
 ## TO DO
 * Improve security

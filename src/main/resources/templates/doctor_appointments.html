@@ -13,7 +13,7 @@
     <div class="page-header" id="banner">
         <h2>Wizyty</h2>
     </div>
-    <form action="#" th:action="@{/doctor/add_appointment}" method="POST" th:object="${doctorAppointmentDTO}">
+    <form action="#" th:action="@{/doctor/add_appointment}" method="POST" th:object="${newAppointmentDTO}">
         <div class="form-group">
 
             <select id="type" name="type" onchange="toggleTextField()">

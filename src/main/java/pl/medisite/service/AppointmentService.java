@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.AppointmentDTO;
-import pl.medisite.controller.DTO.DoctorAppointmentDTO;
+import pl.medisite.controller.DTO.NewAppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
@@ -31,23 +31,34 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
     private DoctorRepository doctorRepository;
     private PatientRepository patientRepository;
-
     private DateTimeHelper dateTimeHelper;
 
-    public Set<AppointmentEntity> getPatientAppointments(String email) {
-        return appointmentRepository.getPatientAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentDTO> getPatientAppointments(String email) {
+        return appointmentRepository.getPatientAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
+                .stream()
+                .map(AppointmentDTO::mapAppointment)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public Set<AppointmentEntity> getPatientFutureAppointments(String email) {
-        return appointmentRepository.getPatientFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentDTO> getPatientFutureAppointments(String email) {
+        return appointmentRepository.getPatientFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
+                .stream()
+                .map(AppointmentDTO::mapAppointment)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public Set<AppointmentEntity> getPatientPastAppointments(String email) {
-        return appointmentRepository.getPatientPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentDTO> getPatientPastAppointments(String email) {
+        return appointmentRepository.getPatientPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
+                .stream()
+                .map(AppointmentDTO::mapAppointment)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public Set<AppointmentEntity> getDoctorAppointments(String email) {
-        return appointmentRepository.getDoctorAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"));
+    public Set<AppointmentDTO> getDoctorAppointments(String email) {
+        return appointmentRepository.getDoctorAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
+                .stream()
+                .map(AppointmentDTO::mapAppointment)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
     public Set<AppointmentDTO> getDoctorFutureFreeAppointments(String email) {
         return appointmentRepository
@@ -83,13 +94,13 @@ public class AppointmentService {
         appointmentRepository.deleteAppointment(id);
     }
 
-    public void createNewAppointment(DoctorAppointmentDTO doctorAppointmentDTO, String email) throws ParseException {
+    public void createNewAppointment(NewAppointmentDTO newAppointmentDTO, String email) throws ParseException {
         DoctorEntity doctorEntity = doctorRepository.findByEmail(email);
-        if( doctorAppointmentDTO.getType().equals("type1") ) {
-            createAppointment(doctorAppointmentDTO.getDate_input(), doctorAppointmentDTO.getHours_input1(),
-                    doctorAppointmentDTO.getHours_input2(), doctorEntity);
+        if( newAppointmentDTO.getType().equals("type1") ) {
+            createAppointment(newAppointmentDTO.getDate_input(), newAppointmentDTO.getHours_input1(),
+                    newAppointmentDTO.getHours_input2(), doctorEntity);
         } else {
-            createAppointments(doctorAppointmentDTO, doctorEntity);
+            createAppointments(newAppointmentDTO, doctorEntity);
         }
     }
 
@@ -103,13 +114,13 @@ public class AppointmentService {
     }
 
     @Transactional
-    private void createAppointments(DoctorAppointmentDTO doctorAppointmentDTO, DoctorEntity doctorEntity) throws ParseException {
-        generateAppointments(doctorAppointmentDTO.getDate_input(),
-                doctorAppointmentDTO.getRange_date_input(),
-                doctorAppointmentDTO.getHours_input1(),
-                doctorAppointmentDTO.getHours_input2(),
-                doctorAppointmentDTO.getBreak_input(),
-                doctorAppointmentDTO.getVisit_time_input(),
+    private void createAppointments(NewAppointmentDTO newAppointmentDTO, DoctorEntity doctorEntity) throws ParseException {
+        generateAppointments(newAppointmentDTO.getDate_input(),
+                newAppointmentDTO.getRange_date_input(),
+                newAppointmentDTO.getHours_input1(),
+                newAppointmentDTO.getHours_input2(),
+                newAppointmentDTO.getBreak_input(),
+                newAppointmentDTO.getVisit_time_input(),
                 doctorEntity);
     }
 

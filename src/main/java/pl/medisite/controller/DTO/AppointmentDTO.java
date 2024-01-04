@@ -13,14 +13,22 @@ import java.time.ZonedDateTime;
 public class AppointmentDTO {
     private int id;
     private String patientName;
+    private String doctorName;
+    private String doctorSpecialization;
     private String date;
     private String time;
     private String note;
     private LocalDateTime appointmentEnd;
 
     public static AppointmentDTO mapAppointment(AppointmentEntity appointmentEntity) {
-        String name = appointmentEntity.getPatient() != null ?
+        String patientName = appointmentEntity.getPatient() != null ?
                 appointmentEntity.getPatient().getName() + " " + appointmentEntity.getPatient().getSurname() : " ";
+
+        String doctorName = appointmentEntity.getDoctor() != null ?
+                appointmentEntity.getDoctor().getName() + " " + appointmentEntity.getDoctor().getSurname() : " ";
+
+        String doctorSpecialization = appointmentEntity.getDoctor() != null ?
+                appointmentEntity.getDoctor().getSpecialization() : " ";
 
         String date = appointmentEntity.getAppointmentStart().getYear() + "."
                 + appointmentEntity.getAppointmentStart().getMonthValue() + "."
@@ -46,7 +54,9 @@ public class AppointmentDTO {
 
 
         return new AppointmentDTO(appointmentEntity.getId(),
-                name,
+                patientName,
+                doctorName,
+                doctorSpecialization,
                 date,
                 time,
                 appointmentEntity.getNote(),

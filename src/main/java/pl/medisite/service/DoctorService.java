@@ -62,13 +62,8 @@ public class DoctorService {
         return doctorRepository.findByEmail(email);
     }
 
-    public Set<AppointmentEntity> getAppointments(String email) {
-       return appointmentService.getDoctorAppointments(email);
-    }
-
     public Set<AppointmentDTO> getAppointmentsDTO(String email) {
-        return appointmentService.getDoctorAppointments(email).stream().map(AppointmentDTO::mapAppointment).
-                collect(Collectors.toCollection(LinkedHashSet::new));
+        return appointmentService.getDoctorAppointments(email);
     }
 
     public void addDiseaseToPatientByAppointmentId(Integer appointmentId, DiseaseDTO diseaseDTO) {

@@ -30,10 +30,10 @@
             <th></th>
         </tr>
         <tr th:each="appointment : ${patientAppointments}">
-            <td th:text="${appointment.doctor.surname}"></td>
-            <td th:text="${appointment.doctor.specialization}"></td>
-            <td th:text="${appointment.appointmentStart}"></td>
-            <td th:text="${appointment.appointmentEnd}"></td>
+            <td th:text="${appointment.doctorName}"></td>
+            <td th:text="${appointment.doctorSpecialization}"></td>
+            <td th:text="${appointment.date}"></td>
+            <td th:text="${appointment.time}"></td>
             <td th:text="${appointment.note}"></td>
             <td>
                 <form action="#" th:action="@{/patient/delete_appointment}" th:method="DELETE">
