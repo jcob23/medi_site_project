@@ -10,13 +10,11 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonDTO {
 
-    @Id
-    private  String email;
+    private String email;
 
     private String name;
 
@@ -27,17 +25,18 @@ public class PersonDTO {
     private String phone;
 
     @Getter
-    @Entity
-    @AllArgsConstructor
     @NoArgsConstructor
     public static class DoctorDTO extends PersonDTO {
 
-        @Column(name = "specialization")
         private String specialization;
 
-        @Column(name = "description")
         private String description;
 
+        public DoctorDTO(String email, String name, String surname, String role, String phone, String specialization, String description) {
+            super(email, name, surname, role, phone);
+            this.specialization = specialization;
+            this.description = description;
+        }
     }
 }
 

@@ -27,6 +27,7 @@
 
             <th:block th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
                 <li><a th:href="@{/doctor}">PROFIL</a></li>
+                <li><a th:href="@{/doctor/patients}">PACJENCI</a></li>
                 <li><a th:href="@{/doctor/appointments}">KALENDARZ</a></li>
             </th:block>
         </ul>

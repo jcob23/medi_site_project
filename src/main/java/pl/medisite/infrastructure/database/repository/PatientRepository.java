@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
 
+import java.util.List;
+import java.util.Set;
+
 public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     @Query("SELECT p FROM PatientEntity p" +
@@ -20,4 +23,8 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     void deleteByMail(String email);
 
 
+    @Query("SELECT p FROM PatientEntity p " +
+            "JOIN FETCH p.loginDetails u  "
+    )
+    Set<PatientEntity> getAllPatients();
 }

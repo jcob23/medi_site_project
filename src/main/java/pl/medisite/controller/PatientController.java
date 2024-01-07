@@ -43,8 +43,8 @@ public class PatientController {
     }
 
     @GetMapping("/doctors")
-    public String showPatientDoctorsList(Model model) {
-        List<PersonDTO.DoctorDTO> doctorsInformation = userService.getDoctorsInformation();
+    public String showDoctorsList(Model model) {
+        Set<PersonDTO.DoctorDTO> doctorsInformation = userService.getDoctorsInformation();
         model.addAttribute("personsData", doctorsInformation);
         return "patient_doctor_list";
     }

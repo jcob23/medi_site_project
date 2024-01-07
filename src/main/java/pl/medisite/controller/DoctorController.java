@@ -12,10 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.medisite.controller.DTO.AppointmentDTO;
-import pl.medisite.controller.DTO.DiseaseDTO;
-import pl.medisite.controller.DTO.NewAppointmentDTO;
+import pl.medisite.controller.DTO.*;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
+import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 
@@ -43,18 +42,9 @@ public class DoctorController {
         String email = (String) session.getAttribute("userEmail");
         Set<AppointmentDTO> appointments = doctorService.getAppointmentsDTO(email);
         model.addAttribute("newAppointmentDTO", new NewAppointmentDTO());
+        model.addAttribute("newAppointmentsDTO", new NewAppointmentsDTO());
         model.addAttribute("appointments", appointments);
         return "doctor_appointments";
-    }
-
-    @PostMapping("/add_appointment")
-    public String addAppointment(
-            @Valid @ModelAttribute("newAppointmentDTO") NewAppointmentDTO newAppointmentDTO,
-            HttpSession session
-    ) throws ParseException {
-        String email = (String) session.getAttribute("userEmail");
-        appointmentService.createNewAppointment(newAppointmentDTO, email);
-        return "redirect:/doctor/appointments";
     }
 
     @GetMapping("/details_appointment")
@@ -79,6 +69,15 @@ public class DoctorController {
         return "patient_diseases";
     }
 
+    @GetMapping("/patients")
+    public String showPatients(HttpSession session, Model model) {
+        String email = (String) session.getAttribute("userEmail");
+        Set<PersonDTO> patients = doctorService.getPatients(email);
+        log.info("### size: " + patients.size());
+        model.addAttribute("patientsList", patients);
+        return "doctor_patients";
+    }
+
     @GetMapping("/edit_disease")
     public String showEditPatientDiseases(
             @RequestParam("disease") DiseaseEntity diseaseEntity,
@@ -87,6 +86,29 @@ public class DoctorController {
     ) {
         model.addAttribute("diseaseEntity", diseaseEntity);
         return "doctor_edit_disease";
+    }
+
+    @PostMapping("/add_single_appointment")
+    public String addAppointment(
+            @Valid @ModelAttribute("newAppointmentDTO") NewAppointmentDTO newAppointmentDTO,
+            HttpSession session
+    ) {
+        String email = (String) session.getAttribute("userEmail");
+        log.info("getAppointmentDate: " + newAppointmentDTO.getAppointmentDate());
+        log.info("getAppointmentTimeStart: " + newAppointmentDTO.getAppointmentTimeStart());
+        log.info("getAppointmentTimeEnd: " + newAppointmentDTO.getAppointmentTimeEnd());
+        appointmentService.createSingleAppointment(newAppointmentDTO, email);
+        return "redirect:/doctor/appointments";
+    }
+
+    @PostMapping("/add_multiple_appointments")
+    public String addAppointments(
+            @Valid @ModelAttribute("newAppointmentDTO") NewAppointmentsDTO newAppointmentsDTO,
+            HttpSession session
+    ){
+        String email = (String) session.getAttribute("userEmail");
+        appointmentService.createMultipleAppointments(newAppointmentsDTO, email);
+        return "redirect:/doctor/appointments";
     }
 
 
@@ -112,9 +134,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("/delete_appointment")
-    public String deleteAppointment(
-            @RequestParam("appointmentId") Integer appointmentId
-    ) throws BadRequestException {
+    public String deleteAppointment(@RequestParam("appointmentId") Integer appointmentId) throws BadRequestException {
         appointmentService.deleteAppointment(appointmentId);
         return "redirect:/doctor/appointments";
     }

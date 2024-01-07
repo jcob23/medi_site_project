@@ -52,8 +52,8 @@ public class SecurityConfiguration {
                 .build();
     }
 
-    // obsługa błędu 403
-    //https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
+//    obsługa błędu 403
+//    https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
@@ -84,9 +84,12 @@ public class SecurityConfiguration {
     private String[] internetUserPages() {
         return new String[]{
                 "/login",
+                "error",
                 "/register/**",
                 "/register/save",
-                "/forget/**"
+                "/forget/**",
+                "/api/**",
+                "/swagger-ui.html","/swagger-ui/**", "/v3/api-docs/**"
         };
     }
 
@@ -112,7 +115,9 @@ public class SecurityConfiguration {
     private String[] doctorPages() {
         return new String[]{
                 "/doctor/**",
-                "/doctor/add_appointment",
+                "/doctor/patients",
+                "/doctor/add_single_appointment",
+                "/doctor/add_multiple_appointments",
                 "/doctor/edit_disease"};
     }
     private String[] patientPages() {
@@ -123,9 +128,8 @@ public class SecurityConfiguration {
     }
 
 //    @Bean
-//    @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "false")
 //    public SecurityFilterChain filterChainDisabled(HttpSecurity httpSecurity) throws Exception {
-//        return httpSecurity.csrf(csrf -> csrf.disable())
+//        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
 //                .authorizeHttpRequests(request -> request
 //                        .anyRequest()
 //                        .permitAll()

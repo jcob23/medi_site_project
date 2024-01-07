@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Historia chorób</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>IMIĘ</th>
+        <th>NAZWISKO</th>
+        <th>NUMER TELEFONU</th>
+        <th>
+        <th>
+    </tr>
+    <tr th:each="patient : ${patientsList}">
+        <td th:text="${patient.name}"></td>
+        <td th:text="${patient.surname}"></td>
+        <td th:text="${patient.phone}"></td>
+        <td>
+            <form action="#" th:action="@{/doctor/patient_diseases}" th:method="GET">
+                <input type="hidden" name="appointmentId" th:value="${patient.email}" />
+                <button type="submit" class="btn btn-info">Historia chorób pacjenta</button>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{/doctor/patient_appointments}" th:method="GET">
+                <input type="hidden" name="appointmentId" th:value="${patient.email}" />
+                <button type="submit" class="btn btn-info">Wizyty pacjenta</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -13,54 +13,71 @@
     <div class="page-header" id="banner">
         <h2>Wizyty</h2>
     </div>
-    <form action="#" th:action="@{/doctor/add_appointment}" method="POST" th:object="${newAppointmentDTO}">
+
+    <select id="type" name="type" onchange="toggleTextField()">
+        <option value="singleAppointmentForm">Pojedyncza wizyta</option>
+        <option value="multipleAppointmentsForm">Grupa wizyt</option>
+    </select>
+
+    <form id="singleAppointmentsForm" action="#" th:action="@{/doctor/add_single_appointment}" method="POST"
+          th:object="${NewAppointmentDTO}">
         <div class="form-group">
-
-            <select id="type" name="type" onchange="toggleTextField()">
-                <option value="type1">Pojedyncza wizyta</option>
-                <option value="type2">Grupa wizyt</option>
-            </select>
-
-            <div id="single_date">
-                <label for="date_input" >Data</label>
-                <input type="date" id="date_input" name="date_input">
-            </div>
-
-            <div id="range_date" style="display: none">
-                <label for="range_date_input">Do</label>
-                <input type="date" id="range_date_input" name="range_date_input">
-            </div>
-
-            <div id="hours">
-                <label for="hours_input1">Godziny</label>
-                <input type="time" id="hours_input1" name="hours_input1">
-                <input type="time" id="hours_input2" name="hours_input2">
-            </div>
-
-            <div id="visit_time" style="display: none;">
-                <label for="break_input">Czas wizyty</label>
-                <input type="time" id="visit_time_input" name="visit_time_input">
-            </div>
-
-            <div id="break" style="display: none;">
-                <label for="break_input">Przerwa pomiędzy wizytami</label>
-                <input type="time" id="break_input" name="break_input">
-            </div>
+            <label for="appointmentDate">Data</label>
+            <input type="date" id="appointmentDate" name="appointmentDate">
+            <br>
+            <label for="appointmentTimeStart">Godziny</label>
+            <input type="time" id="appointmentTimeStart" name="appointmentTimeStart">
+            <input type="time" id="appointmentTimeEnd" name="appointmentTimeEnd">
         </div>
-        <div class="form-group" id="submit_btn">
+        <div class="form-group">
             <input type="submit" value="Dodaj wizytę" name="button"/>
         </div>
     </form>
+
+    <form id="multipleAppointmentsForm" action="#" style="display: none"
+          th:action="@{/doctor/add_multiple_appointments}" method="POST" th:object="${NewAppointmentsDTO}">
+        <div class="form-group">
+            <label for="appointmentsDate">Daty od: </label>
+            <input type="date" id="appointmentsDate" name="appointmentDate">
+
+            <label for="endDate">do: </label>
+            <input type="date" id="endDate" name="endDate">
+            <br>
+
+            <label for="appointmentsTimeStart">Godziny od:</label>
+            <input type="time" id="appointmentsTimeStart" name="appointmentTimeStart">
+            <label for="appointmentsTimeEnd">do: </label>
+            <input type="time" id="appointmentsTimeEnd" name="appointmentTimeEnd">
+            <br>
+
+            <label for="visitTime">Czas wizyty</label>
+            <input type="time" id="visitTime" name="visitTime">
+            <br>
+
+            <label for="breakTime">Przerwa pomiędzy wizytami</label>
+            <input type="time" id="breakTime" name="breakTime">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Dodaj wizyty" name="button"/>
+        </div>
+    </form>
+
     <table class="table table-striped table-hover">
         <tr>
-            <td><a th:href="@{/doctor/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Nadchodzące</a></td>
-            <td><a th:href="@{/doctor/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Odbyte</a></td>
-            <td><a th:href="@{/doctor/appointments/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Wszystkie</a></td>
+            <td><a th:href="@{/doctor/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info"
+                   role="button">Nadchodzące</a></td>
+            <td><a th:href="@{/doctor/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info"
+                   role="button">Odbyte</a></td>
+            <td><a th:href="@{/doctor/appointments/{email}(email=${session.userEmail})}" class="btn btn-info"
+                   role="button">Wszystkie</a></td>
         </tr>
         <tr>
-            <td><a th:href="@{/doctor/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Wolne</a></td>
-            <td><a th:href="@{/doctor/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Zajęte</a></td>
-            <td><a th:href="@{/doctor/appointments/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Wszystkie</a></td>
+            <td><a th:href="@{/doctor/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info"
+                   role="button">Wolne</a></td>
+            <td><a th:href="@{/doctor/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info"
+                   role="button">Zajęte</a></td>
+            <td><a th:href="@{/doctor/appointments/{email}(email=${session.userEmail})}" class="btn btn-info"
+                   role="button">Wszystkie</a></td>
         </tr>
     </table>
     <table class="table table-striped table-hover">
@@ -79,13 +96,13 @@
             <td th:text="${appointment.note}"></td>
             <td>
                 <form action="#" th:action="@{/doctor/details_appointment}" th:method="GET">
-                    <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+                    <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
                     <button type="submit" class="btn btn-info">Szczegóły</button>
                 </form>
             </td>
             <td>
                 <form action="#" th:action="@{/doctor/delete_appointment}" th:method="DELETE">
-                    <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+                    <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
                     <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
                 </form>
             </td>
@@ -96,24 +113,15 @@
 <script>
     function toggleTextField() {
         var opcjeSelect = document.getElementById("type");
-        var poleTekstowe1 = document.getElementById("break");
-        var poleTekstowe2 = document.getElementById("visit_time");
-        var date = document.getElementById("single_date");
-        var date_range = document.getElementById("range_date");
-        var submitBtn = document.getElementById("submit_btn");
+        var singleAppointmentForm = document.getElementById("singleAppointmentsForm");
+        var multipleAppointmentForm = document.getElementById("multipleAppointmentsForm");
 
-        if (opcjeSelect.value === "type2") {
-            poleTekstowe1.style.display = "block";
-            poleTekstowe2.style.display = "block";
-            date_range.style.display = "block";
-            date.value = "Data od";
-            submitBtn.value = "Dodaj wizyty";
+        if (opcjeSelect.value === "singleAppointmentForm") {
+            multipleAppointmentForm.style.display = "none";
+            singleAppointmentForm.style.display = "block";
         } else {
-            poleTekstowe1.style.display = "none";
-            poleTekstowe2.style.display = "none";
-            date_range.style.display = "none";
-            date.value = "Data";
-            submitBtn.value = "Dodaj wizytę";
+            multipleAppointmentForm.style.display = "block";
+            singleAppointmentForm.style.display = "none";
         }
     }
 </script>

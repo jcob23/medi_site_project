@@ -1,21 +1,21 @@
 package pl.medisite.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.medisite.controller.DTO.AppointmentDTO;
-import pl.medisite.controller.DTO.DiseaseDTO;
-import pl.medisite.controller.DTO.DoctorDTO;
-import pl.medisite.controller.DTO.UserDTO;
+import pl.medisite.controller.DTO.*;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
+import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
 import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,7 +31,7 @@ public class DoctorService {
     @Transactional
     public void saveDoctor(DoctorDTO doctorDTO) {
         UserEntity userEntity = userService
-                .saveUser(UserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(), 3);
+                .saveUser(UserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(),3);
 
         DoctorEntity doctorEntity = DoctorEntity.builder()
                 .name(doctorDTO.getName())
@@ -72,5 +72,12 @@ public class DoctorService {
         DiseaseEntity diseaseEntity = DiseaseEntity.mapDTO(diseaseDTO, patient);
         patientDiseases.add(diseaseEntity);
         diseaseRepository.saveAllAndFlush(patientDiseases);
+    }
+
+    public Set<PersonDTO> getPatients(String email) {
+        return doctorRepository.getPatientsForDoctor(email)
+                .stream()
+                .map(PatientEntityMapper::map)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

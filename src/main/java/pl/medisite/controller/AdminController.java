@@ -15,6 +15,7 @@ import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -77,7 +78,7 @@ public class AdminController {
 
     @GetMapping("/patients")
     public String adminPatientsPage(Model model, Authentication authentication) {
-        List<PersonDTO> users = userService.getPatientsInformation();
+        Set<PersonDTO> users = userService.getPatientsInformation();
         model.addAttribute("patientView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
@@ -85,7 +86,7 @@ public class AdminController {
 
     @GetMapping("/doctors")
     public String adminDoctorsPage(Model model, Authentication authentication) {
-        List<PersonDTO.DoctorDTO> users = userService.getDoctorsInformation();
+        Set<PersonDTO.DoctorDTO> users = userService.getDoctorsInformation();
         model.addAttribute("doctorView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
@@ -94,7 +95,7 @@ public class AdminController {
 
     @GetMapping("/users")
     public String adminUsersPage(Model model, Authentication authentication) {
-        List<PersonDTO> users = userService.getAllUsersInformation();
+        Set<PersonDTO> users = userService.getAllUsersInformation();
         model.addAttribute("personsData", users);
         return "admin_list";
     }
