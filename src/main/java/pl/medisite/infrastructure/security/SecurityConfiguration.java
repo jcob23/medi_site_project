@@ -96,6 +96,7 @@ public class SecurityConfiguration {
     private String[] medisiteUserPages() {
         return new String[]{
                 "/home/**",
+                "/img/**",
                 "/patient/diseases/**"
         };
     }
@@ -114,11 +115,14 @@ public class SecurityConfiguration {
     }
     private String[] doctorPages() {
         return new String[]{
-                "/doctor/**",
+                "/doctor",
                 "/doctor/patients",
+                "/doctor/appointments/**",
+                "/doctor/patient_appointments/**",
                 "/doctor/add_single_appointment",
                 "/doctor/add_multiple_appointments",
-                "/doctor/edit_disease"};
+                "/doctor/edit_disease"
+        };
     }
     private String[] patientPages() {
         return new String[]{

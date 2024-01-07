@@ -1,11 +1,9 @@
 package pl.medisite.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.*;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
@@ -15,7 +13,6 @@ import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,10 +59,6 @@ public class DoctorService {
         return doctorRepository.findByEmail(email);
     }
 
-    public Set<AppointmentDTO> getAppointmentsDTO(String email) {
-        return appointmentService.getDoctorAppointments(email);
-    }
-
     public void addDiseaseToPatientByAppointmentId(Integer appointmentId, DiseaseDTO diseaseDTO) {
         Set<DiseaseEntity> patientDiseases = appointmentService.getPatientDiseases(appointmentId);
         PatientEntity patient = appointmentService.getPatient(appointmentId);
@@ -79,5 +72,9 @@ public class DoctorService {
                 .stream()
                 .map(PatientEntityMapper::map)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public Set<AppointmentDTO> getPatientsAppointmentForDoctor(String patientEmail, String doctorEmail) {
+        return appointmentService.getPatientFutureAppointmentsForDoctor(patientEmail,doctorEmail);
     }
 }

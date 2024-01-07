@@ -14,6 +14,7 @@ import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
+import pl.medisite.infrastructure.database.mapper.AppointmentMapper;
 import pl.medisite.infrastructure.database.repository.AppointmentRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
@@ -37,28 +38,28 @@ public class AppointmentService {
     public Set<AppointmentDTO> getPatientAppointments(String email) {
         return appointmentRepository.getPatientAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
                 .stream()
-                .map(AppointmentDTO::mapAppointment)
+                .map(AppointmentMapper::mapAppointment)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<AppointmentDTO> getPatientFutureAppointments(String email) {
         return appointmentRepository.getPatientFutureAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
                 .stream()
-                .map(AppointmentDTO::mapAppointment)
+                .map(AppointmentMapper::mapAppointment)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<AppointmentDTO> getPatientPastAppointments(String email) {
         return appointmentRepository.getPatientPastAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
                 .stream()
-                .map(AppointmentDTO::mapAppointment)
+                .map(AppointmentMapper::mapAppointment)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<AppointmentDTO> getDoctorAppointments(String email) {
         return appointmentRepository.getDoctorAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
                 .stream()
-                .map(AppointmentDTO::mapAppointment)
+                .map(AppointmentMapper::mapAppointment)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
@@ -66,7 +67,7 @@ public class AppointmentService {
         return appointmentRepository
                 .getDoctorFutureFreeAppointments(email, Sort.by(Sort.Direction.ASC, "appointmentStart"))
                 .stream()
-                .map(AppointmentDTO::mapAppointment)
+                .map(AppointmentMapper::mapAppointment)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
@@ -88,7 +89,7 @@ public class AppointmentService {
     }
 
     public AppointmentDTO getAppointment(Integer id) {
-        return AppointmentDTO.mapAppointment(getAppointmentById(id));
+        return AppointmentMapper.mapAppointment(getAppointmentById(id));
     }
 
     @Transactional
@@ -190,4 +191,13 @@ public class AppointmentService {
     public PatientEntity getPatient(Integer appointmentId) {
         return appointmentRepository.getPatientByAppointmentId(appointmentId);
     }
+
+    public Set<AppointmentDTO> getPatientFutureAppointmentsForDoctor(String patientEmail, String doctorEmail) {
+        return appointmentRepository.getPatientFutureAppointmentsForDoctor(patientEmail,doctorEmail, Sort.by(Sort.Direction.ASC, "appointmentStart"))
+                .stream()
+                .map(AppointmentMapper::mapAppointment)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+
 }

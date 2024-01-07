@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.*;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
-import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
+import pl.medisite.service.PatientService;
 
-import java.text.ParseException;
 import java.util.Set;
 
 @Controller
@@ -28,6 +27,7 @@ import java.util.Set;
 public class DoctorController {
 
     private DoctorService doctorService;
+    private PatientService patientService;
     private AppointmentService appointmentService;
 
     @GetMapping()
@@ -40,7 +40,7 @@ public class DoctorController {
                                      HttpSession session
     ) {
         String email = (String) session.getAttribute("userEmail");
-        Set<AppointmentDTO> appointments = doctorService.getAppointmentsDTO(email);
+        Set<AppointmentDTO> appointments = appointmentService.getDoctorAppointments(email);
         model.addAttribute("newAppointmentDTO", new NewAppointmentDTO());
         model.addAttribute("newAppointmentsDTO", new NewAppointmentsDTO());
         model.addAttribute("appointments", appointments);
@@ -57,8 +57,31 @@ public class DoctorController {
         return "doctor_details_appointment";
     }
 
+    @GetMapping("/patients")
+    public String showPatients(HttpSession session, Model model) {
+        String email = (String) session.getAttribute("userEmail");
+        Set<PersonDTO> patients = doctorService.getPatients(email);
+        model.addAttribute("patientsList", patients);
+        return "doctor_patients";
+    }
+
+    @GetMapping("/patient_appointments")
+    public String showPatientAppointments(
+            @RequestParam("patientEmail") String patientEmail,
+            HttpSession session,
+            Model model) {
+        String doctorEmail = (String) session.getAttribute("userEmail");
+        PersonDTO patient = patientService.getPatient(patientEmail);
+        Set<AppointmentDTO> appointments = doctorService.getPatientsAppointmentForDoctor(patientEmail,doctorEmail);
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("patientAppointments", appointments);
+        return "doctor_patient_appointment";
+    }
+
+
     @GetMapping("/patient_diseases")
-    public String showPatientDiseases(
+    public String showPatientDiseasesByAppointment(
             @RequestParam("appointmentId") Integer appointmentId,
             Model model
     ) {
@@ -69,19 +92,22 @@ public class DoctorController {
         return "patient_diseases";
     }
 
-    @GetMapping("/patients")
-    public String showPatients(HttpSession session, Model model) {
-        String email = (String) session.getAttribute("userEmail");
-        Set<PersonDTO> patients = doctorService.getPatients(email);
-        log.info("### size: " + patients.size());
-        model.addAttribute("patientsList", patients);
-        return "doctor_patients";
+    @GetMapping("/patient_diseases_email")
+    public String showPatientDiseasesByEmail(
+            @RequestParam("patientEmail") String patientEmail,
+            Model model
+    ) {
+        Set<DiseaseEntity> diseases = patientService.getDiseases(patientEmail);
+        model.addAttribute("patientDiseasesList", diseases);
+        model.addAttribute("diseaseDTO", new DiseaseDTO());
+        return "patient_diseases";
     }
+
+
 
     @GetMapping("/edit_disease")
     public String showEditPatientDiseases(
             @RequestParam("disease") DiseaseEntity diseaseEntity,
-            @RequestParam("appointmentId") Integer appointmentId,
             Model model
     ) {
         model.addAttribute("diseaseEntity", diseaseEntity);

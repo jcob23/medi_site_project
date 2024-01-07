@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
+import pl.medisite.controller.DTO.DiseaseDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
@@ -48,6 +49,7 @@ public class PatientController {
         model.addAttribute("personsData", doctorsInformation);
         return "patient_doctor_list";
     }
+
 
     @GetMapping("/diseases/{email}")
     public String showPatientDiseases(@PathVariable String email,

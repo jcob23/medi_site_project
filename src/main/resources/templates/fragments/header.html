@@ -33,7 +33,10 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li th:unless="${#strings.equals(session.userRole, 'ADMIN')}">
-                <a href="#" th:href="@{/profile}">
+                <a th:if="${#strings.equals(session.userRole, 'PATIENT')}" href="#" th:href="@{/patient}">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </a>
+                <a th:if="${#strings.equals(session.userRole, 'DOCTOR')}" href="#" th:href="@{/doctor}">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 </a>
             </li>

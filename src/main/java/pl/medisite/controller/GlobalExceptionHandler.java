@@ -18,6 +18,16 @@ import java.util.Optional;
 @Slf4j
 public class GlobalExceptionHandler {
 
+
+//    @ExceptionHandler(Exception.class)
+//    public ModelAndView handleException(Exception ex) {
+//        String message = String.format("Wystąpił błąd: [%s]", ex.getMessage());
+//        log.error(message, ex);
+//        ModelAndView modelView = new ModelAndView("error");
+//        modelView.addObject("errorMessage", message);
+//        return modelView;
+//    }
+
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleBindException(BindException ex) {
@@ -25,7 +35,6 @@ public class GlobalExceptionHandler {
         if( "password".equals(ex.getFieldError().getField()) ) {
             message = "Za krótkie hasło!";
         } else {
-
             message = String.format("Błędne żądanie dla pola: [%s], nieprawidłowa wartość: [%s].",
                     Optional.ofNullable(ex.getFieldError()).map(FieldError::getField).orElse(null),
                     Optional.ofNullable(ex.getFieldError()).map(FieldError::getRejectedValue).orElse(null)
@@ -39,15 +48,6 @@ public class GlobalExceptionHandler {
 
     // obsługa błędu 403
 //    https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ModelAndView handleForbiddenError(AccessDeniedException ex) {
-        String message = "Odmowa dostępu, brak odpowiednich uprawnień";
-        log.error(message, ex);
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("errorMessage", message);
-        return modelAndView;
-    }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

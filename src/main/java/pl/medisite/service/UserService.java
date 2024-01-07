@@ -66,7 +66,6 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    @Transactional
     public Set<PersonDTO> getAllUsersInformation() {
         Set<PersonDTO.DoctorDTO> personInformation = getDoctorsInformation();
         Set<PersonDTO> personDTO2 = getPatientsInformation();

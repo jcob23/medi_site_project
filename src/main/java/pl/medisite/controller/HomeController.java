@@ -21,7 +21,6 @@ public class HomeController {
         String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
         session.setAttribute("userRole", userRole);
         session.setAttribute("userEmail", userEmail);
-        log.info("### UserRole:" + userRole);
         return "home";
     }
 }

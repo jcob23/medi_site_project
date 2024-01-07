@@ -1,11 +1,13 @@
 package pl.medisite.controller.rest;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
@@ -52,6 +54,13 @@ public class DoctorRestController {
     @GetMapping("/patient_diseases/{patientEmail}")
     public Set<DiseaseEntity> getDiseasesList(@PathVariable @Email String patientEmail) {
         return patientService.getDiseases(patientEmail);
+    }
+
+    @GetMapping("/patient_appointments/{doctorEmail}/{patientEmail}")
+    public Set<AppointmentDTO>  getPatientAppointmentsForDoctor(
+            @PathVariable @Email String patientEmail,
+            @PathVariable @Email String doctorEmail) {
+        return doctorService.getPatientsAppointmentForDoctor(patientEmail,doctorEmail);
     }
 
     @PatchMapping("/update_note/{appointmentId}")

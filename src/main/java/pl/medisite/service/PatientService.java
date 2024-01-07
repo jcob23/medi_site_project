@@ -6,9 +6,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.PatientDTO;
+import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
+import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
 import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.infrastructure.security.UserEntity;
@@ -61,5 +63,9 @@ public class PatientService {
 
     public PatientEntity findByEmail(String email) {
         return patientRepository.findByEmail(email);
+    }
+
+    public PersonDTO getPatient(String email){
+        return PatientEntityMapper.map(patientRepository.findByEmail(email));
     }
 }
