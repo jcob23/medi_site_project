@@ -122,7 +122,7 @@ public class SecurityConfiguration {
                 "/doctor/update_note/**",
                 "/doctor/add_single_appointment",
                 "/doctor/add_multiple_appointments",
-                "/doctor/delete_appointment",
+                "/doctor/delete_appointment/**",
                 "/doctor/edit_disease"
         };
     }

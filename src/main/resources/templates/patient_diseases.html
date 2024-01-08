@@ -29,7 +29,7 @@
         <th>OPIS</th>
         <th th:if="${#strings.equals(session.userRole, 'DOCTOR')}"></th>
     </tr>
-    <tr th:each="disease : ${patientDiseasesList}">
+    <tr th:each="disease : ${patientDiseases}">
         <td th:text="${disease.name}"></td>
         <td th:text="${disease.since}"></td>
         <td th:text="${disease.cured ? 'TAK' : 'NIE'}"></td>

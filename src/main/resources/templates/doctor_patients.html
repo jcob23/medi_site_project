@@ -29,8 +29,7 @@
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{/doctor/patient_appointments}" th:method="GET">
-                <input type="hidden" name="patientEmail" th:value="${patient.email}" />
+            <form action="#" th:action="@{/doctor/patient_appointments/{email}(email=${patient.email})}" th:method="GET">
                 <button type="submit" class="btn btn-info">Wizyty pacjenta</button>
             </form>
         </td>

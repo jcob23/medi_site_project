@@ -87,13 +87,12 @@
             </td>
             <td>
                 <div th:unless="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
-                    <form action="#" th:action="@{/patient/delete_appointment}" th:method="DELETE">
-                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+                    <form action="#" th:action="@{/doctor/delete_appointment/{appointmentId}(appointmentId=${appointment.id})}" th:method="DELETE">
                         <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
                     </form>
                 </div>
                 <div th:if="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}" >
-                    <form action="#" th:action="@{/patient/delete_appointment}" th:method="DELETE">
+                    <form action="#"  th:method="DELETE">
                         <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
                         <button type="submit" class="btn btn-secondary" th:disabled="${true}" >Odwołaj wizytę</button>
                     </form>

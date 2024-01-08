@@ -26,11 +26,9 @@ import java.util.Set;
 @Slf4j
 public class DiseaseController {
 
+    private DiseaseService diseaseService;
 
-    PatientService patientService;
-    DoctorService doctorService;
-    SecurityHelper securityHelper;
-    DiseaseService diseaseService;
+    private SecurityHelper securityHelper;
 
     @GetMapping("/patient/diseases/{email}")
     public String showPatientDiseases(@PathVariable String email,
@@ -39,6 +37,7 @@ public class DiseaseController {
     ) throws AccessDeniedException {
         securityHelper.checkUserAccessToPatientInformation(email, (User) authentication.getPrincipal());
         Set<DiseaseEntity> diseases = diseaseService.getDiseases(email);
+        log.info("### size: " + diseases.size());
         model.addAttribute("patientDiseases", diseases);
         return "patient_diseases";
     }
@@ -52,7 +51,7 @@ public class DiseaseController {
         securityHelper.checkDoctorAccessToPatientInformation(
                 patientEmail, (String) session.getAttribute("userEmail"));
         Set<DiseaseEntity> diseases = diseaseService.getDiseases(patientEmail);
-        model.addAttribute("patientDiseasesList", diseases);
+        model.addAttribute("patientDiseases", diseases);
         model.addAttribute("diseaseDTO", new DiseaseDTO());
         return "patient_diseases";
     }

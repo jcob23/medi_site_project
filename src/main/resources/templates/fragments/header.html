@@ -18,6 +18,7 @@
                 <li><a th:href="@{/patient}">PROFIL</a></li>
                 <li><a th:href="@{/patient/appointments}">WIZYTY</a></li>
                 <li><a th:href="@{/patient/doctors}">LEKARZE</a></li>
+                <li><a th:href="@{/patient/diseases/{email}(email=${session.userEmail})}">HISTORIA CHORÓB</a></li>
             </th:block>
 
             <th:block th:if="${#strings.equals(session.userRole, 'ADMIN')}">

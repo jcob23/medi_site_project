@@ -27,7 +27,7 @@ public class AdminController {
 
     @GetMapping("/edit_patient/{email}")
     public String showEditPatient(@PathVariable("email") String email, Model model) {
-
+        //TODO coś tu brakuje
         model.addAttribute("user", null);
         return "admin_edit";
     }

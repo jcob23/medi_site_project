@@ -29,6 +29,7 @@ public class DoctorController {
     private DoctorService doctorService;
     private PatientService patientService;
     private AppointmentService appointmentService;
+
     private SecurityHelper securityHelper;
 
     @GetMapping()
@@ -37,7 +38,9 @@ public class DoctorController {
     }
 
     @GetMapping("/patients")
-    public String showPatients(HttpSession session, Model model) {
+    public String showPatients(
+            HttpSession session,
+            Model model) {
         String email = (String) session.getAttribute("userEmail");
         Set<PersonDTO> patients = doctorService.getPatients(email);
         model.addAttribute("patientsList", patients);
@@ -58,9 +61,9 @@ public class DoctorController {
         return "doctor_appointments";
     }
 
-    @GetMapping("/patient_appointments")
+    @GetMapping("/patient_appointments/{patientEmail}")
     public String showPatientAppointments(
-            @RequestParam("patientEmail") String patientEmail,
+            @PathVariable("patientEmail") String patientEmail,
             HttpSession session,
             Model model) {
         String doctorEmail = (String) session.getAttribute("userEmail");
@@ -117,8 +120,8 @@ public class DoctorController {
         return "redirect:/doctor/appointment_details/" + appointmentId;
     }
 
-    @DeleteMapping("/delete_appointment")
-    public String deleteAppointment(@RequestParam("appointmentId") Integer appointmentId) throws BadRequestException {
+    @DeleteMapping("/delete_appointment/{appointmentId}")
+    public String deleteAppointment(@PathVariable("appointmentId") Integer appointmentId) throws BadRequestException {
         appointmentService.deleteAppointment(appointmentId);
         return "redirect:/doctor/appointments";
     }

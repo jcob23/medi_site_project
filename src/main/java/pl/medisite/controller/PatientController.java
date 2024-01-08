@@ -1,6 +1,7 @@
 package pl.medisite.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -63,7 +64,7 @@ public class PatientController {
 
     @GetMapping("/book_appointment")
     public String showBookAppointment(
-            @RequestParam(name = "email") String email,
+            @RequestParam(name = "email") @Email String email,
             Model model) {
         PersonDTO.DoctorDTO doctor = doctorService.getDoctor(email);
         Set<AppointmentDTO> appointments = appointmentService.getDoctorFutureFreeAppointments(email);
@@ -74,23 +75,24 @@ public class PatientController {
 
     @PutMapping("/book_appointment")
     public String bookAppointment(
-            @RequestParam(name = "userEmail") String userEmail,
             @RequestParam(name = "appointmentId") Integer appointmentId,
-            @RequestParam(name = "email") String email) {
+            @RequestParam(name = "email") @Email String email,
+            HttpSession session) {
+        String userEmail = (String) session.getAttribute("userEmail");
         appointmentService.bookAppointment(appointmentId, userEmail);
         return "redirect:/patient/book_appointment?email=" + email;
     }
 
-    @DeleteMapping("/delete_appointment")
+    @DeleteMapping("/delete_appointment/{appointmentId}")
     public String deleteAppointment(
-            @RequestParam("appointmentId") Integer appointmentId
+            @PathVariable("appointmentId") Integer appointmentId
     ) throws BadRequestException {
         appointmentService.deleteAppointment(appointmentId);
         return "redirect:/patient/appointments";
     }
 
     @DeleteMapping()
-    public String deletePatient(@RequestParam(name = "email") String email, Model model) {
+    public String deletePatient(@RequestParam(name = "email") @Email String email, Model model) {
         patientService.deletePatient(email);
         model.addAttribute("deleted", true);
         SecurityContextHolder.getContext().setAuthentication(null);

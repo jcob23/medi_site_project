@@ -13,9 +13,7 @@
             <div class="page-header" id="banner">
                 <h2>Pacjent</h2>
             </div>
-            <form action="#" th:action="@{/patient/diseases/{email}(email=${session.userEmail})}" th:method="GET">
-                <button type="submit" class="btn btn-info">Historia chorób</button>
-            </form>
+
             <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
 
             <form action="#" th:action="@{/patient}" th:method="DELETE">
