@@ -104,8 +104,6 @@ public class SecurityConfiguration {
         return new String[]{
                 "/patient/appointments/**",
                 "/patient/delete_appointment/**",
-                "/patient/appointments_future/**",
-                "/patient/appointments_past/**"
         };
     }
 
@@ -121,6 +119,7 @@ public class SecurityConfiguration {
                 "/doctor/appointments/**",
                 "/doctor/patient_appointments/**",
                 "/doctor/appointment_details/**",
+                "/doctor/update_note/**",
                 "/doctor/add_single_appointment",
                 "/doctor/add_multiple_appointments",
                 "/doctor/delete_appointment",

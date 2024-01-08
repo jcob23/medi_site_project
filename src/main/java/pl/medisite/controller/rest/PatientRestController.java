@@ -12,10 +12,10 @@ import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.AppointmentService;
+import pl.medisite.service.DiseaseService;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -24,8 +24,8 @@ import java.util.Set;
 public class PatientRestController {
 
     private UserService userService;
-    private PatientService patientService;
     private AppointmentService appointmentService;
+    private DiseaseService diseaseService;
 
     @GetMapping("/doctors")
     public Set<PersonDTO.DoctorDTO> getDoctorsList() {
@@ -34,12 +34,12 @@ public class PatientRestController {
 
     @GetMapping("/diseases/{email}")
     public Set<DiseaseEntity> getDiseasesList(@PathVariable String email) {
-        return patientService.getDiseases(email);
+        return diseaseService.getDiseases(email);
     }
 
     @GetMapping("/appointments/{email}")
     public Set<AppointmentDTO> getAppointments(@PathVariable String email) {
-        return appointmentService.getPatientAppointments(email);
+        return appointmentService.getPatientAppointments(email, null);
     }
 
     @DeleteMapping("/delete_appointment/{appointmentId}")

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.NewAppointmentDTO;
+import pl.medisite.controller.DTO.Note;
 import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.AppointmentService;
+import pl.medisite.service.DiseaseService;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
 
@@ -30,11 +32,11 @@ public class DoctorRestController {
 
     private AppointmentService appointmentService;
     private DoctorService doctorService;
-    private PatientService patientService;
+    private DiseaseService diseaseService;
 
     @GetMapping("/appointments/{email}")
     public Set<AppointmentDTO> getAppointments(@PathVariable @Email String email) {
-        return appointmentService.getDoctorAppointments(email);
+        return appointmentService.getDoctorAppointments(email,null);
     }
 
     @PostMapping("/add_appointment/{doctorEmail}")
@@ -53,20 +55,20 @@ public class DoctorRestController {
 
     @GetMapping("/patient_diseases/{patientEmail}")
     public Set<DiseaseEntity> getDiseasesList(@PathVariable @Email String patientEmail) {
-        return patientService.getDiseases(patientEmail);
+        return diseaseService.getDiseases(patientEmail);
     }
 
     @GetMapping("/patient_appointments/{doctorEmail}/{patientEmail}")
     public Set<AppointmentDTO>  getPatientAppointmentsForDoctor(
             @PathVariable @Email String patientEmail,
             @PathVariable @Email String doctorEmail) {
-        return doctorService.getPatientsAppointmentForDoctor(patientEmail,doctorEmail);
+        return appointmentService.getPatientFutureAppointmentsForDoctor(patientEmail,doctorEmail);
     }
 
     @PatchMapping("/update_note/{appointmentId}")
     public ResponseEntity<?> updateNote(
             @PathVariable("appointmentId") Integer appointmentId,
-            @RequestBody() String note
+            @RequestBody() Note note
     ) {
         appointmentService.updateAppointment(appointmentId, note);
         return ResponseEntity.ok().build();

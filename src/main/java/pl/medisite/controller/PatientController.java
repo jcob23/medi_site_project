@@ -49,47 +49,14 @@ public class PatientController {
         return "patient_doctor_list";
     }
 
-
-    @GetMapping("/diseases/{email}")
-    public String showPatientDiseases(@PathVariable String email,
-                                      Model model,
-                                      Authentication authentication
+    @GetMapping("/appointments")
+    public String showPatientAppointments(
+            Model model,
+            HttpSession session,
+            @RequestParam(name = "filter", required = false) String filter
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, (User) authentication.getPrincipal());
-        Set<DiseaseEntity> diseases = patientService.getDiseases(email);
-        model.addAttribute("patientDiseases", diseases);
-        return "patient_diseases";
-    }
-
-    @GetMapping("/appointments/{email}")
-    public String showPatientAppointments(@PathVariable String email,
-                                          Model model,
-                                          Authentication authentication
-    ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email,(User) authentication.getPrincipal());
-        Set<AppointmentDTO> appointments = appointmentService.getPatientAppointments(email);
-        model.addAttribute("patientAppointments", appointments);
-        return "patient_appointments";
-    }
-
-    @GetMapping("/appointments_future/{email}")
-    public String showPatientFutureAppointments(@PathVariable String email,
-                                                Model model,
-                                                Authentication authentication
-    ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, (User) authentication.getPrincipal());
-        Set<AppointmentDTO> appointments = appointmentService.getPatientFutureAppointments(email);
-        model.addAttribute("patientAppointments", appointments);
-        return "patient_appointments";
-    }
-
-    @GetMapping("/appointments_past/{email}")
-    public String showPatientPastAppointments(@PathVariable String email,
-                                              Model model,
-                                              Authentication authentication
-    ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, (User) authentication.getPrincipal());
-        Set<AppointmentDTO> appointments = appointmentService.getPatientPastAppointments(email);
+        String email = (String) session.getAttribute("userEmail");
+        Set<AppointmentDTO> appointments = appointmentService.getPatientAppointments(email, filter);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
     }
@@ -98,9 +65,9 @@ public class PatientController {
     public String showBookAppointment(
             @RequestParam(name = "email") String email,
             Model model) {
-        DoctorEntity doctorEntity = doctorService.findByEmail(email);
+        PersonDTO.DoctorDTO doctor = doctorService.getDoctor(email);
         Set<AppointmentDTO> appointments = appointmentService.getDoctorFutureFreeAppointments(email);
-        model.addAttribute("doctor", doctorEntity);
+        model.addAttribute("doctor", doctor);
         model.addAttribute("appointments", appointments);
         return "patient_book_appointment";
     }
@@ -116,14 +83,10 @@ public class PatientController {
 
     @DeleteMapping("/delete_appointment")
     public String deleteAppointment(
-            RedirectAttributes redirectAttributes,
-            HttpSession session,
             @RequestParam("appointmentId") Integer appointmentId
     ) throws BadRequestException {
-        String email = (String) session.getAttribute("userEmail");
         appointmentService.deleteAppointment(appointmentId);
-        redirectAttributes.addAttribute("email", email);
-        return "redirect:/patient/appointments/{email}";
+        return "redirect:/patient/appointments";
     }
 
     @DeleteMapping()

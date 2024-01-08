@@ -19,7 +19,7 @@ public class AppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appointment_id")
-    private int id;
+    private int appointmentId;
 
     @Column(name = "appointment_start")
     private ZonedDateTime appointmentStart;

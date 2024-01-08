@@ -61,26 +61,12 @@
             <input type="submit" value="Dodaj wizyty" name="button"/>
         </div>
     </form>
-
     <table class="table table-striped table-hover">
         <tr>
-            <td><a th:href="@{/doctor/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info"
-                   role="button">Nadchodzące</a></td>
-            <td><a th:href="@{/doctor/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info"
-                   role="button">Odbyte</a></td>
-            <td><a th:href="@{/doctor/appointments/{email}(email=${session.userEmail})}" class="btn btn-info"
-                   role="button">Wszystkie</a></td>
+            <td><a th:href="@{/doctor/appointments?dateFilter=future}" class="btn btn-info" role="button">Nadchodzące</a></td>
+            <td><a th:href="@{/doctor/appointments?dateFilter=past}" class="btn btn-info" role="button">Odbyte</a></td>
+            <td><a th:href="@{/doctor/appointments}" class="btn btn-info" role="button">Wszystkie</a></td>
         </tr>
-        <tr>
-            <td><a th:href="@{/doctor/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info"
-                   role="button">Wolne</a></td>
-            <td><a th:href="@{/doctor/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info"
-                   role="button">Zajęte</a></td>
-            <td><a th:href="@{/doctor/appointments/{email}(email=${session.userEmail})}" class="btn btn-info"
-                   role="button">Wszystkie</a></td>
-        </tr>
-    </table>
-    <table class="table table-striped table-hover">
         <tr>
             <th>PACJENT</th>
             <th>DATA</th>

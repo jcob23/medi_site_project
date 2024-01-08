@@ -10,14 +10,11 @@
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
 <div class="container">
-    <div class="page-header" id="banner">
-        <h2>Pacjent</h2>
-    </div>
     <table class="table table-striped table-hover">
         <tr>
-            <td><a th:href="@{/patient/appointments_future/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Nadchodzące</a></td>
-            <td><a th:href="@{/patient/appointments_past/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Odbyte</a></td>
-            <td><a th:href="@{/patient/appointments/{email}(email=${session.userEmail})}" class="btn btn-info" role="button">Wszystkie</a></td>
+            <td><a th:href="@{/patient/appointments?filter=future}" class="btn btn-info" role="button">Nadchodzące</a></td>
+            <td><a th:href="@{/patient/appointments?filter=past}" class="btn btn-info" role="button">Odbyte</a></td>
+            <td><a th:href="@{/patient/appointments}" class="btn btn-info" role="button">Wszystkie</a></td>
         </tr>
     </table>
     <table class="table table-striped table-hover">

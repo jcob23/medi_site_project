@@ -7,7 +7,7 @@ import pl.medisite.util.DateTimeHelper;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-public class AppointmentMapper {
+public class AppointmentEntityMapper {
     public static AppointmentDTO mapAppointment(AppointmentEntity appointmentEntity) {
         String patientName = appointmentEntity.getPatient() != null ?
                 appointmentEntity.getPatient().getName() + " " + appointmentEntity.getPatient().getSurname() : " ";
@@ -41,7 +41,8 @@ public class AppointmentMapper {
                 appointmentEnd.getSecond());
 
 
-        return new AppointmentDTO(appointmentEntity.getId(),
+        return new AppointmentDTO(
+                appointmentEntity.getAppointmentId(),
                 patientName,
                 doctorName,
                 doctorSpecialization,

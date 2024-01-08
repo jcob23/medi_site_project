@@ -14,4 +14,6 @@ public interface DiseaseRepository extends JpaRepository<DiseaseEntity, Long> {
             " JOIN p.loginDetails u" +
             " WHERE u.email = :email")
     Set<DiseaseEntity> getDiseases(@Param("email") String email, Sort sort);
+
+
 }

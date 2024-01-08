@@ -1,5 +1,6 @@
 package pl.medisite.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -11,10 +12,12 @@ import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
+import pl.medisite.infrastructure.database.repository.AppointmentRepository;
 import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -24,8 +27,6 @@ public class PatientService {
 
     private UserService userService;
     private PatientRepository patientRepository;
-    private DiseaseRepository diseaseRepository;
-
 
     @Transactional
     public void savePatient(PatientDTO patientDTO) {
@@ -56,16 +57,25 @@ public class PatientService {
         userService.deleteUser(email);
     }
 
-    public Set<DiseaseEntity> getDiseases(String email) {
-        return diseaseRepository.getDiseases(email, Sort.by(Sort.Direction.ASC, "since"));
+    public PatientEntity checkIfPatientExist(String email) {
+        PatientEntity patient = patientRepository.findByEmail(email);
+        if( Objects.isNull(patient) ) {
+            throw new EntityNotFoundException("Nie ma pacjenta o takim adresie email");
+        }
+        return patient;
+    }
+
+    public PatientEntity getPatient(Integer appointmentId) {
+        return patientRepository.getPatientByAppointmentId(appointmentId);
     }
 
 
-    public PatientEntity findByEmail(String email) {
-        return patientRepository.findByEmail(email);
-    }
 
     public PersonDTO getPatient(String email){
         return PatientEntityMapper.map(patientRepository.findByEmail(email));
+    }
+
+    public PatientEntity getPatientByAppointmentId(Integer appointmentId) {
+        return patientRepository.getPatientByAppointmentId(appointmentId);
     }
 }

@@ -39,14 +39,6 @@ public class DiseaseEntity {
     private PatientEntity patient;
 
 
-    public static DiseaseEntity mapDTO(DiseaseDTO diseaseDTO, PatientEntity patient){
-        return DiseaseEntity.builder()
-                .patient(patient)
-                .cured(false)
-                .name(diseaseDTO.getName())
-                .description(diseaseDTO.getDescription())
-                .since(diseaseDTO.getSince())
-                .build();
-    }
+
 
 }

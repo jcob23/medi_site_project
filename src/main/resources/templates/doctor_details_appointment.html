@@ -29,12 +29,11 @@
         <p class="wrapping-text"><span th:text="${appointment.note}"></span></p>
     </div>
     <div th:if="${appointment.appointmentEnd != null and #temporals.createNow().isAfter(appointment.appointmentEnd)}">
-        <form action="#" th:action="@{/doctor/update_note}" th:method="POST">
+        <form th:action="@{/doctor/update_note/{appointmentId}(appointmentId=${appointment.id})}" th:method="POST" th:object="${note}">
             <input type="hidden" name="_method" value="PUT" />
             <p><label for="noteTextarea">Notatka:</label></p>
-            <textarea id="noteTextarea" name="note" rows="5" cols="150" th:text="${appointment.note}"></textarea>
+            <textarea id="noteTextarea" name="note" rows="5" cols="100" th:field="*{text}"></textarea>
             <br/>
-            <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
             <button type="submit" class="btn btn-info">Aktualizuj notatkę</button>
         </form>
     </div>

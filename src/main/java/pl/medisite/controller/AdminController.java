@@ -14,7 +14,6 @@ import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -28,8 +27,8 @@ public class AdminController {
 
     @GetMapping("/edit_patient/{email}")
     public String showEditPatient(@PathVariable("email") String email, Model model) {
-        PatientEntity patientEntity = patientService.findByEmail(email);
-        model.addAttribute("user", patientEntity);
+
+        model.addAttribute("user", null);
         return "admin_edit";
     }
 
@@ -41,7 +40,7 @@ public class AdminController {
 
     @GetMapping("/edit_doctor/{email}")
     public String showEditDoctor(@PathVariable("email") String email, Model model) {
-        DoctorEntity doctorEntity = doctorService.findByEmail(email);
+        DoctorEntity doctorEntity = doctorService.checkIfDoctorExist(email);
         model.addAttribute("user", doctorEntity);
         return "admin_edit";
     }
