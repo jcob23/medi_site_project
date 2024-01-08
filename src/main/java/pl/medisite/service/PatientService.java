@@ -30,12 +30,12 @@ public class PatientService {
     @Transactional
     public void savePatient(PatientDTO patientDTO) {
         UserEntity userEntity = userService
-                .saveUser(UserDTO.builder().email(patientDTO.getEmail()).password(patientDTO.getPassword()).build(), 2);
+                .saveUser(UserDTO.builder().email(patientDTO.getEmail().stripTrailing()).password(patientDTO.getPassword()).build(), 2);
 
         PatientEntity patientEntity = PatientEntity.builder()
                 .name(patientDTO.getName())
                 .surname(patientDTO.getSurname())
-                .phone(patientDTO.getPhone())
+                .phone(patientDTO.getPhone().stripTrailing())
                 .loginDetails(userEntity)
                 .build();
         patientRepository.save(patientEntity);

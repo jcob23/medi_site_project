@@ -1,28 +1,27 @@
 package pl.medisite.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
-import pl.medisite.controller.DTO.DiseaseDTO;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
+import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
-import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 import pl.medisite.util.SecurityHelper;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -56,7 +55,7 @@ public class PatientController {
                                       Model model,
                                       Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, authentication);
+        securityHelper.checkAuthority(email, (User) authentication.getPrincipal());
         Set<DiseaseEntity> diseases = patientService.getDiseases(email);
         model.addAttribute("patientDiseases", diseases);
         return "patient_diseases";
@@ -67,7 +66,7 @@ public class PatientController {
                                           Model model,
                                           Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, authentication);
+        securityHelper.checkAuthority(email,(User) authentication.getPrincipal());
         Set<AppointmentDTO> appointments = appointmentService.getPatientAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
@@ -78,7 +77,7 @@ public class PatientController {
                                                 Model model,
                                                 Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, authentication);
+        securityHelper.checkAuthority(email, (User) authentication.getPrincipal());
         Set<AppointmentDTO> appointments = appointmentService.getPatientFutureAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
@@ -89,7 +88,7 @@ public class PatientController {
                                               Model model,
                                               Authentication authentication
     ) throws AccessDeniedException {
-        securityHelper.checkAuthority(email, authentication);
+        securityHelper.checkAuthority(email, (User) authentication.getPrincipal());
         Set<AppointmentDTO> appointments = appointmentService.getPatientPastAppointments(email);
         model.addAttribute("patientAppointments", appointments);
         return "patient_appointments";
@@ -118,9 +117,10 @@ public class PatientController {
     @DeleteMapping("/delete_appointment")
     public String deleteAppointment(
             RedirectAttributes redirectAttributes,
-            @RequestParam("email") String email,
+            HttpSession session,
             @RequestParam("appointmentId") Integer appointmentId
     ) throws BadRequestException {
+        String email = (String) session.getAttribute("userEmail");
         appointmentService.deleteAppointment(appointmentId);
         redirectAttributes.addAttribute("email", email);
         return "redirect:/patient/appointments/{email}";

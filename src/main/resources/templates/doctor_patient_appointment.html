@@ -16,8 +16,7 @@
                 PACJENT: <span th:text="${patient.surname + ' ' + patient.name}"></span>
             </th>
             <th>
-                <form action="#" th:action="@{/doctor/patient_diseases_email}" th:method="GET">
-                    <input type="hidden" name="appointmentId" th:value="${patient.email}"/>
+                <form action="#" th:action="@{/doctor/patient_diseases_email/{email}(email=${patient.email})}" th:method="GET">
                     <button type="submit" class="btn btn-info">Historia chorób pacjenta</button>
                 </form>
             </th>
@@ -38,10 +37,18 @@
             <td th:text="${appointment.time}"></td>
             <td th:text="${appointment.note}"></td>
             <td>
-                <form action="#" th:action="@{/patient/delete_appointment}" th:method="DELETE">
-                    <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
-                    <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
-                </form>
+                <div th:unless="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
+                    <form action="#" th:action="@{/patient/delete_appointment}" th:method="DELETE">
+                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+                        <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
+                    </form>
+                </div>
+                <div th:if="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}" >
+                    <form action="#" th:action="@{/patient/delete_appointment}" th:method="DELETE">
+                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+                        <button type="submit" class="btn btn-secondary" th:disabled="${true}" >Odwołaj wizytę</button>
+                    </form>
+                </div>
             </td>
         </tr>
     </table>

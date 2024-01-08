@@ -22,14 +22,6 @@
                 <th>DATA: <span th:text="${appointment.date}"></span></th>
                 <th>GODZINA: <span th:text="${appointment.time}"></span></th>
             </tr>
-            <tr>
-                <th colspan="3">
-                    <form action="#" th:action="@{/doctor/patient_diseases}" th:method="GET">
-                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
-                        <button type="submit" class="btn btn-info">Historia chorób pacjenta</button>
-                    </form>
-                </th>
-            </tr>
         </table>
     </div>
     <div th:if="${appointment.appointmentEnd != null and #temporals.createNow().isAfter(appointment.appointmentEnd)}">

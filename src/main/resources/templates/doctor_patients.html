@@ -24,8 +24,7 @@
         <td th:text="${patient.surname}"></td>
         <td th:text="${patient.phone}"></td>
         <td>
-            <form action="#" th:action="@{/doctor/patient_diseases_email}" th:method="GET">
-                <input type="hidden" name="patientEmail" th:value="${patient.email}" />
+            <form action="#" th:action="@{/doctor/patient_diseases_email/{email}(email=${patient.email})}" th:method="GET">
                 <button type="submit" class="btn btn-info">Historia chorób pacjenta</button>
             </form>
         </td>

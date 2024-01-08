@@ -74,6 +74,7 @@ public class DoctorService {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
+
     public Set<AppointmentDTO> getPatientsAppointmentForDoctor(String patientEmail, String doctorEmail) {
         return appointmentService.getPatientFutureAppointmentsForDoctor(patientEmail,doctorEmail);
     }
