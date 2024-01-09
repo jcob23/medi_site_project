@@ -82,7 +82,9 @@
     </table>
 </div>
 </div>
-
+    <span th:each="pageNumber : ${#numbers.sequence(1, numberOfPages)}">
+        <a th:href="@{'/admin/users?page=' + ${pageNumber}}" th:text="${pageNumber}" class="page-link"></a>
+    </span>
 </body>
 
 </html>

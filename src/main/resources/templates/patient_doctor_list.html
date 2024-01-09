@@ -32,4 +32,11 @@
         </td>
     </tr>
 </table>
+
+<div>
+
+    <span th:each="pageNumber : ${#numbers.sequence(1, numberOfPages)}">
+        <a th:href="@{'/patient/doctors?page=' + ${pageNumber}}" th:text="${pageNumber}" class="page-link"></a>
+    </span>
+</div>
 </html>

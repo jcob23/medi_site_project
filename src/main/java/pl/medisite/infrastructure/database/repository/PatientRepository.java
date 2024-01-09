@@ -17,11 +17,6 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Integer>
             " WHERE u.email = :email")
     PatientEntity findByEmail(@Param("email") String email);
 
-    @Query("SELECT p FROM PatientEntity p " +
-            "JOIN FETCH p.loginDetails u  "
-    )
-    Set<PatientEntity> getAllPatients();
-
     @Modifying
     @Transactional
     @Query("DELETE FROM PatientEntity p WHERE p.loginDetails.email = :email")

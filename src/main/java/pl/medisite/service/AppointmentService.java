@@ -3,23 +3,16 @@ package pl.medisite.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
-import pl.medisite.controller.DTO.AppointmentDTO;
-import pl.medisite.controller.DTO.NewAppointmentDTO;
-import pl.medisite.controller.DTO.NewAppointmentsDTO;
-import pl.medisite.controller.DTO.Note;
+import pl.medisite.controller.DTO.*;
 import pl.medisite.exception.AppointmentCancellationException;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
-import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.infrastructure.database.mapper.AppointmentEntityMapper;
 import pl.medisite.infrastructure.database.repository.AppointmentRepository;
-import pl.medisite.infrastructure.database.repository.DoctorRepository;
-import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.util.DateTimeHelper;
 
 import java.time.*;
@@ -50,39 +43,46 @@ public class AppointmentService {
     public AppointmentDTO getAppointment(Integer id) {
         return AppointmentEntityMapper.mapAppointment(checkIfAppointmentExist(id));
     }
-    public Set<AppointmentDTO> getPatientAppointments(String email, String filter) {
-        patientService.checkIfPatientExist(email);
-        Set<AppointmentEntity> appointments;
-        Sort sort = Sort.by(Sort.Direction.ASC, "appointmentStart");
-        if( "past".equals(filter) ) {
-            appointments = appointmentRepository.getPatientPastAppointments(email, sort);
-        } else if( "future".equals(filter) ) {
-            appointments = appointmentRepository.getPatientFutureAppointments(email, sort);
-        } else {
-            appointments = appointmentRepository.getPatientAppointments(email, sort);
-        }
-        return appointments
-                .stream()
-                .map(AppointmentEntityMapper::mapAppointment)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+    public List<AppointmentDTO> getPatientAppointments(String email){
+        return appointmentRepository.getPatientAppointments(email).stream()
+                .map(AppointmentEntityMapper::mapAppointment).collect(Collectors.toList());
     }
 
-    public Set<AppointmentDTO> getDoctorAppointments(String email, String filter) {
-        doctorService.checkIfDoctorExist(email);
-        Set<AppointmentEntity> appointments;
-        Sort sort = Sort.by(Sort.Direction.ASC, "appointmentStart");
+    public AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> getPatientAppointments(String email, String filter, PageRequest pageable) {
+        patientService.checkIfPatientExist(email);
+        Page<AppointmentEntity> appointments;
         if( "past".equals(filter) ) {
-            appointments = appointmentRepository.getDoctorPastAppointments(email, sort);
+            appointments = appointmentRepository.getPatientPastAppointments(email,  pageable);
         } else if( "future".equals(filter) ) {
-            appointments = appointmentRepository.getDoctorFutureAppointments(email, sort);
-        } else {
-            appointments = appointmentRepository.getDoctorAppointments(email, sort);
+            appointments = appointmentRepository.getPatientFutureAppointments(email,  pageable);
+        } else  {
+            appointments = appointmentRepository.getPatientAppointments(email,  pageable);
         }
-        return appointments
-                .stream()
-                .map(AppointmentEntityMapper::mapAppointment)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        Page<AppointmentDTO> mappedAppointments = appointments.map(AppointmentEntityMapper::mapAppointment);
+        return new AbstractMap.SimpleEntry<>(mappedAppointments.getTotalPages(),mappedAppointments.getContent());
     }
+
+    public List<AppointmentDTO> getDoctorAppointments(String email){
+        return appointmentRepository.getDoctorAppointments(email).stream()
+                .map(AppointmentEntityMapper::mapAppointment).collect(Collectors.toList());
+    }
+
+    public AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> getDoctorAppointments(String email, String filter,PageRequest pageable) {
+        doctorService.checkIfDoctorExist(email);
+        Page<AppointmentEntity> appointments;
+        if( "past".equals(filter) ) {
+            appointments = appointmentRepository.getDoctorPastAppointments(email,  pageable);
+        } else if( "future".equals(filter) ) {
+            appointments = appointmentRepository.getDoctorFutureAppointments(email,  pageable);
+        } else  {
+            appointments = appointmentRepository.getDoctorAppointments(email,  pageable);
+        }
+        Page<AppointmentDTO> mappedAppointments = appointments.map(AppointmentEntityMapper::mapAppointment);
+        return new AbstractMap.SimpleEntry<>(mappedAppointments.getTotalPages(),mappedAppointments.getContent());
+    }
+
+
 
     public Set<AppointmentDTO> getDoctorFutureFreeAppointments(String email) {
         doctorService.checkIfDoctorExist(email);
@@ -116,7 +116,7 @@ public class AppointmentService {
                         ZonedDateTime.of(newAppointment.getAppointmentDate(),timeEnd, ZoneId.of("Europe/Warsaw")))
                 .doctor(doctorEntity)
                 .build();
-        Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(email, null);
+        Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(email);
         dateTimeHelper.checkIfDateIsAvailable(appointmentEntity,doctorAppointments);
         appointmentRepository.saveAndFlush(appointmentEntity);
     }
@@ -133,7 +133,7 @@ public class AppointmentService {
                 newAppointmentsDTO.getVisitTime(),
                 doctorEntity);
 
-        Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(doctorEmail, null);
+        Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(doctorEmail);
         for(AppointmentEntity appointment : appointmentEntityList) {
             dateTimeHelper.checkIfDateIsAvailable(appointment, doctorAppointments);
         }

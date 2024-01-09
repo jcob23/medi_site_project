@@ -47,7 +47,7 @@ public class SecurityHelper {
     }
 
     public  void checkDoctorAccessToAppointmentInformation(Integer appointmentId, String email) throws AccessDeniedException {
-        Set<Integer> patientEmails = appointmentService.getDoctorAppointments(email, null)
+        Set<Integer> patientEmails = appointmentService.getDoctorAppointments(email)
                 .stream()
                 .map(AppointmentDTO::getId)
                 .collect(Collectors.toSet());

@@ -1,15 +1,17 @@
 package pl.medisite.infrastructure.database.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
-import pl.medisite.infrastructure.database.entity.DiseaseEntity;
-import pl.medisite.infrastructure.database.entity.PatientEntity;
 
+import java.util.List;
 import java.util.Set;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Integer> {
@@ -22,45 +24,57 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             " JOIN a.doctor d" +
             " JOIN d.loginDetails u" +
             " WHERE u.email = :email")
-    Set<AppointmentEntity> getDoctorAppointments(String email, Sort sort);
+    Set<AppointmentEntity> getDoctorAppointments(String email);
+
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.doctor d" +
+            " JOIN d.loginDetails u" +
+            " WHERE u.email = :email")
+    Page<AppointmentEntity> getDoctorAppointments(String email, PageRequest pageAble);
+
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.doctor d" +
             " JOIN d.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart < CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getDoctorPastAppointments(String email, Sort sort);
+    Page<AppointmentEntity> getDoctorPastAppointments(String email,PageRequest pageAble);
 
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.doctor d" +
             " JOIN d.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getDoctorFutureAppointments(String email, Sort sort);
+    Page<AppointmentEntity> getDoctorFutureAppointments(String email, PageRequest pageAble);
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.patient p" +
+            " JOIN p.loginDetails u" +
+            " WHERE u.email = :email")
+    Page<AppointmentEntity> getPatientAppointments(String email, PageRequest pageable);
+
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.patient p" +
+            " JOIN p.loginDetails u" +
+            " WHERE u.email = :email")
+    List<AppointmentEntity> getPatientAppointments(String email);
+
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.patient p" +
+            " JOIN p.loginDetails u" +
+            " WHERE u.email = :email AND a.appointmentStart < CURRENT_TIMESTAMP")
+    Page<AppointmentEntity> getPatientPastAppointments(String email, PageRequest pageable);
+
+
+    @Query("SELECT a FROM AppointmentEntity a" +
+            " JOIN a.patient p" +
+            " JOIN p.loginDetails u" +
+            " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
+    Page<AppointmentEntity> getPatientFutureAppointments(String email,  PageRequest pageable);
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.doctor d" +
             " JOIN d.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP AND a.patient IS NULL")
     Set<AppointmentEntity> getDoctorFutureFreeAppointments(String email, Sort sort);
-
-    @Query("SELECT a FROM AppointmentEntity a" +
-            " JOIN a.patient p" +
-            " JOIN p.loginDetails u" +
-            " WHERE u.email = :email")
-    Set<AppointmentEntity> getPatientAppointments(String email, Sort sort);
-
-    @Query("SELECT a FROM AppointmentEntity a" +
-            " JOIN a.patient p" +
-            " JOIN p.loginDetails u" +
-            " WHERE u.email = :email AND a.appointmentStart < CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getPatientPastAppointments(String email, Sort sort);
-
-
-    @Query("SELECT a FROM AppointmentEntity a" +
-            " JOIN a.patient p" +
-            " JOIN p.loginDetails u" +
-            " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getPatientFutureAppointments(String email, Sort sort);
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.patient p" +
@@ -75,8 +89,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Query("DELETE FROM AppointmentEntity a" +
             " WHERE a.id = :appointmentId")
     void deleteAppointment(@Param("appointmentId") Integer appointmentId);
-
-
 
 
 

@@ -5,51 +5,101 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        .page{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 90vh;
+        }
+        .center-text {
+            text-align: center;
+        }
+    </style>
+
 </head>
 
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
-    <table class="table table-striped table-hover">
-        <tr>
-            <td><a th:href="@{/patient/appointments?filter=future}" class="btn btn-info" role="button">Nadchodzące</a></td>
-            <td><a th:href="@{/patient/appointments?filter=past}" class="btn btn-info" role="button">Odbyte</a></td>
-            <td><a th:href="@{/patient/appointments}" class="btn btn-info" role="button">Wszystkie</a></td>
-        </tr>
-    </table>
-    <table class="table table-striped table-hover">
-        <tr>
-            <th>LEKARZ</th>
-            <th>SPECIALIZACJA LEKARZA</th>
-            <th>DATA</th>
-            <th>GODZINA</th>
-            <th>NOTATKA OD LEKARZA</th>
-            <th></th>
-        </tr>
-        <tr th:each="appointment : ${patientAppointments}">
-            <td th:text="${appointment.doctorName}"></td>
-            <td th:text="${appointment.doctorSpecialization}"></td>
-            <td th:text="${appointment.date}"></td>
-            <td th:text="${appointment.time}"></td>
-            <td th:text="${appointment.note}"></td>
-            <td>
-                <div th:unless="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
-                    <form action="#" th:action="@{/patient/delete_appointment/{appointmentId}(appointmentId=${appointment.id})}" th:method="DELETE">
-                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
-                        <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
-                    </form>
-                </div>
-                <div th:if="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}" >
-                    <form action="#" th:method="DELETE">
-                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
-                        <button type="submit" class="btn btn-secondary" th:disabled="${true}" >Odwołaj wizytę</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-    </table>
+<div id="page">
+    <div th:if="${booked}" class="alert alert-info" id="bookAlert">
+        Pomyślnie zarezerwowano wizytę u doktora.
+    </div>
+    <div th:if="${deleted}" class="alert alert-info" id="deleteAlert">
+        Wizyta u doktora została odwołana.
+    </div>
+
+    <div class="container">
+        <table class="table table-striped table-hover">
+            <tr>
+                <td><a th:href="@{/patient/appointments?filter=future}" class="btn btn-info" role="button">Nadchodzące</a></td>
+                <td></td>
+                <td><a th:href="@{/patient/appointments?filter=past}" class="btn btn-info" role="button">Odbyte</a></td>
+                <td></td>
+                <td><a th:href="@{/patient/appointments}" class="btn btn-info" role="button">Wszystkie</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>LEKARZ</th>
+                <th>SPECIALIZACJA LEKARZA</th>
+                <th>DATA</th>
+                <th>GODZINA</th>
+                <th>NOTATKA OD LEKARZA</th>
+                <th></th>
+            </tr>
+            <tr th:each="appointment : ${patientAppointments}">
+                <td th:text="${appointment.doctorName}"></td>
+                <td th:text="${appointment.doctorSpecialization}"></td>
+                <td th:text="${appointment.date}"></td>
+                <td th:text="${appointment.time}"></td>
+                <td th:text="${appointment.note}"></td>
+                <td>
+                    <div th:unless="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
+                        <form action="#"
+                              th:action="@{/patient/delete_appointment/{appointmentId}(appointmentId=${appointment.id})}"
+                              th:method="DELETE">
+                            <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
+                            <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
+                        </form>
+                    </div>
+                    <div th:if="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
+                        <form action="#" th:method="DELETE">
+                            <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
+                            <button type="submit" class="btn btn-secondary" th:disabled="${true}">Odwołaj wizytę
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="center-text">
+             <span th:each="pageNumber : ${#numbers.sequence(1, numberOfPages)}">
+        <a th:if="${filter != null}" th:href="@{'/patient/appointments?page=' + ${pageNumber} + '&filter=' + ${filter}}"
+           th:text="${pageNumber}" class="page-link"></a>
+        <a th:if="${filter == null}" th:href="@{'/patient/appointments?page=' + ${pageNumber}}" th:text="${pageNumber}"
+           class="page-link"></a>
+            </span>
+        </div>
+    </div>
 </div>
 
 
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function(){
+            var infoMessage = document.getElementById('bookAlert');
+            var infoMessage2 = document.getElementById('deleteAlert');
+
+            if (infoMessage) {
+                infoMessage.style.display = 'none';
+            }
+            else if (infoMessage2) {
+                infoMessage2.style.display = 'none';
+            }
+
+        }, 7000);
+    });
+</script>
 </body>
 </html>

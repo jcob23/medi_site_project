@@ -1,11 +1,15 @@
 package pl.medisite.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.NewUserDTO;
 import pl.medisite.controller.DTO.PersonDTO;
+import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.mapper.DoctorEntityMapper;
 import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
@@ -14,6 +18,8 @@ import pl.medisite.infrastructure.security.RoleRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 import pl.medisite.infrastructure.security.UserRepository;
 
+import java.util.AbstractMap;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,27 +59,31 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Set<PersonDTO> getAllPatients() {
-        return patientRepository.getAllPatients().stream()
+    public List<PersonDTO> getAllPatients() {
+        return patientRepository.findAll().stream()
                 .map(PatientEntityMapper::map)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<PersonDTO.DoctorDTO> getAllDoctors() {
-        return doctorRepository.getAllDoctors().stream()
+    public List<PersonDTO.DoctorDTO> getAllDoctors() {
+        return doctorRepository.findAll().stream()
                 .map(DoctorEntityMapper::map)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+    }
+    public AbstractMap.SimpleEntry<Integer,List<PersonDTO.DoctorDTO>> getAllDoctors(Pageable pageable) {
+        Page<DoctorEntity> allData = doctorRepository.findAll(pageable);
+        Page<PersonDTO.DoctorDTO> doctors = allData.map(DoctorEntityMapper::map);
+        return new AbstractMap.SimpleEntry<>(doctors.getTotalPages(),doctors.getContent());
     }
 
-    public Set<PersonDTO> getAllUsersInformation() {
-        Set<PersonDTO.DoctorDTO> personInformation = getAllDoctors();
-        Set<PersonDTO> personDTO2 = getAllPatients();
+    public AbstractMap.SimpleEntry<Integer,List<PersonDTO>> getAllUsersInformation(Pageable pageable) {
+        List<PersonDTO.DoctorDTO> personInformation = getAllDoctors();
+        List<PersonDTO> personDTO2 = getAllPatients();
         personDTO2.addAll(personInformation);
 
-        return personDTO2;
+        Page<PersonDTO> page = new PageImpl<>(personDTO2,pageable,personDTO2.size());
+        return new AbstractMap.SimpleEntry<>(page.getTotalPages(),page.getContent());
     }
-
-
     public UserEntity getUserFromToken(UUID token) {
         return userRepository.findByToken(token);
     }

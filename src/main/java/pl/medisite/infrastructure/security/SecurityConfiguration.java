@@ -135,17 +135,7 @@ public class SecurityConfiguration {
                 "/patient/update",
                 "/patient/doctors",
                 "/patient/book_appointment",
+                "/patient/book_appointment/**",
                 "/patient/diseases/**"};
     }
-
-//    @Bean
-//    public SecurityFilterChain filterChainDisabled(HttpSecurity httpSecurity) throws Exception {
-//        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(request -> request
-//                        .anyRequest()
-//                        .permitAll()
-//                )
-//                .build();
-//    }
-
 }

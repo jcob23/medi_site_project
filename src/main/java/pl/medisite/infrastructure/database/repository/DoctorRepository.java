@@ -24,10 +24,6 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, Integer> {
             " WHERE u.email = :email")
     DoctorEntity findByEmail(@Param("email") String email);
 
-    @Query("SELECT d FROM DoctorEntity d " +
-            "JOIN FETCH d.loginDetails u  "
-    )
-    Set<DoctorEntity> getAllDoctors();
 
     @Query("SELECT DISTINCT a.patient " +
             "FROM AppointmentEntity a " +

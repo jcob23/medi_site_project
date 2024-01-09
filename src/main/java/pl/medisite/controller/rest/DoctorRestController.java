@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
@@ -20,8 +22,10 @@ import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DiseaseService;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
+import pl.medisite.util.Constants;
 
 import java.text.ParseException;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Set;
 
@@ -35,9 +39,16 @@ public class DoctorRestController {
     private DoctorService doctorService;
     private DiseaseService diseaseService;
 
+
     @GetMapping("/appointments/{email}")
-    public Set<AppointmentDTO> getAppointments(@PathVariable @Email String email) {
-        return appointmentService.getDoctorAppointments(email,null);
+    public List<AppointmentDTO> getAppointments(@PathVariable @Email String email) {
+        return appointmentService.getDoctorAppointments(email);
+    }
+    @GetMapping("/appointments_pageable/{email}")
+    public List<AppointmentDTO> getAppointments(@PathVariable @Email String email,@RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> doctorAppointments = appointmentService.getDoctorAppointments(email, null, pageable);
+        return doctorAppointments.getValue();
     }
 
     @PostMapping("/add_appointment/{doctorEmail}")

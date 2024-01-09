@@ -2,6 +2,8 @@ package pl.medisite.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +14,10 @@ import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
+import pl.medisite.util.Constants;
 
+import java.util.AbstractMap;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -75,16 +80,16 @@ public class AdminController {
     }
 
     @GetMapping("/patients")
-    public String adminPatientsPage(Model model, Authentication authentication) {
-        Set<PersonDTO> users = userService.getAllPatients();
+    public String adminPatientsPage(Model model) {
+        List<PersonDTO> users = userService.getAllPatients();
         model.addAttribute("patientView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
     }
 
     @GetMapping("/doctors")
-    public String adminDoctorsPage(Model model, Authentication authentication) {
-        Set<PersonDTO.DoctorDTO> users = userService.getAllDoctors();
+    public String adminDoctorsPage(Model model) {
+        List<PersonDTO.DoctorDTO> users = userService.getAllDoctors();
         model.addAttribute("doctorView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
@@ -92,9 +97,11 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public String adminUsersPage(Model model, Authentication authentication) {
-        Set<PersonDTO> users = userService.getAllUsersInformation();
-        model.addAttribute("personsData", users);
+    public String adminUsersPage(Model model,@RequestParam(defaultValue = "1") Integer page ) {
+        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+        AbstractMap.SimpleEntry<Integer, List<PersonDTO>> users = userService.getAllUsersInformation(pageable);
+        model.addAttribute("personsData", users.getValue());
+        model.addAttribute("numberOfPages", users.getKey());
         return "admin_list";
     }
 }

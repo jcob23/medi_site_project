@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -19,8 +21,12 @@ import pl.medisite.controller.DTO.*;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
+import pl.medisite.util.Constants;
 import pl.medisite.util.SecurityHelper;
 
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Controller
@@ -56,14 +62,20 @@ public class DoctorController {
     @GetMapping("/appointments")
     public String showDoctorAppointments(
             Model model,
-            @RequestParam(name = "dateFilter", required = false) String dateFilter
+            @RequestParam(name = "dateFilter", required = false) String dateFilter,
+            @RequestParam(defaultValue = "1") Integer page
     ) {
+        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
         String email = (String) session.getAttribute("userEmail");
-        Set<AppointmentDTO> appointments = appointmentService.getDoctorAppointments(email, dateFilter);
+        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> appointments = appointmentService.getDoctorAppointments(email, dateFilter,pageable);
 
         model.addAttribute("newAppointmentDTO", new NewAppointmentDTO());
         model.addAttribute("newAppointmentsDTO", new NewAppointmentsDTO());
-        model.addAttribute("appointments", appointments);
+        model.addAttribute("appointments", appointments.getValue());
+        model.addAttribute("numberOfPages", appointments.getKey());
+        if( !Objects.isNull(dateFilter) ){
+            model.addAttribute("filter", dateFilter);
+        }
         return "doctor_appointments";
     }
 

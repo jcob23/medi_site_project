@@ -5,16 +5,22 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.PersonDTO;
+import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DiseaseService;
 import pl.medisite.service.UserService;
+import pl.medisite.util.Constants;
 
+import java.util.AbstractMap;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -27,7 +33,7 @@ public class PatientRestController {
     private DiseaseService diseaseService;
 
     @GetMapping("/doctors")
-    public Set<PersonDTO.DoctorDTO> getDoctorsList() {
+    public List<PersonDTO.DoctorDTO> getDoctorsList() {
         return userService.getAllDoctors();
     }
 
@@ -37,8 +43,14 @@ public class PatientRestController {
     }
 
     @GetMapping("/appointments/{email}")
-    public Set<AppointmentDTO> getAppointments(@PathVariable String email) {
-        return appointmentService.getPatientAppointments(email, null);
+    public List<AppointmentDTO> getAppointments(@PathVariable String email) {
+        return appointmentService.getPatientAppointments(email);
+    }
+    @GetMapping("/appointments_pageable/{email}")
+    public List<AppointmentDTO> getAppointments(@PathVariable String email,@RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> patientAppointments = appointmentService.getPatientAppointments(email, null, pageable);
+        return patientAppointments.getValue();
     }
 
     @DeleteMapping("/delete_appointment/{appointmentId}")
