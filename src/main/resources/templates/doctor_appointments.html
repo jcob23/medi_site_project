@@ -14,6 +14,16 @@
         <h2>Wizyty</h2>
     </div>
 
+    <div th:if="${added}" class="alert alert-info" id="addAlert">
+        Pomyślnie dodano wizytę
+    </div>
+    <div th:if="${added2}" class="alert alert-info" id="add2Alert">
+        Pomyślnie dodano wizyty
+    </div>
+    <div th:if="${deleted}" class="alert alert-danger" id="deleteAlert">
+        Odwołano wizytę
+    </div>
+
     <select id="type" name="type" onchange="toggleTextField()">
         <option value="singleAppointmentForm">Pojedyncza wizyta</option>
         <option value="multipleAppointmentsForm">Grupa wizyt</option>
@@ -66,6 +76,8 @@
             <td><a th:href="@{/doctor/appointments?dateFilter=future}" class="btn btn-info" role="button">Nadchodzące</a></td>
             <td><a th:href="@{/doctor/appointments?dateFilter=past}" class="btn btn-info" role="button">Odbyte</a></td>
             <td><a th:href="@{/doctor/appointments}" class="btn btn-info" role="button">Wszystkie</a></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <th>PACJENT</th>
@@ -101,6 +113,24 @@
         </tr>
     </table>
 </div>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function(){
+            var infoMessage = document.getElementById('deleteAlert');
+            var infoMessage2 = document.getElementById('addAlert');
+            var infoMessage3 = document.getElementById('add2Alert');
+            if (infoMessage) {
+                infoMessage.style.display = 'none';
+            }
+            else if (infoMessage2) {
+                infoMessage2.style.display = 'none';
+            }
+            else if (infoMessage3) {
+                infoMessage3.style.display = 'none';
+            }
+        }, 7000);
+    });
+</script>
 
 <script>
     function toggleTextField() {

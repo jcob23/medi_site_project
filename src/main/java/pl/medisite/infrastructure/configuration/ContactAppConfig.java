@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.format.Formatter;
 
 import java.time.LocalDate;
+import java.util.TimeZone;
 
 @Configuration
 public class ContactAppConfig {
@@ -24,4 +26,5 @@ public class ContactAppConfig {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
+
 }

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
@@ -43,7 +44,7 @@ public class DoctorRestController {
     public NewAppointmentDTO addAppointment(
             @Valid @RequestBody NewAppointmentDTO newAppointmentDTO,
             @PathVariable String doctorEmail
-    ) {
+    ) throws BindException {
         appointmentService.createSingleAppointment(newAppointmentDTO, doctorEmail);
         return newAppointmentDTO;
     }
@@ -77,7 +78,7 @@ public class DoctorRestController {
     @DeleteMapping("/delete_appointment/{appointmentId}")
     public ResponseEntity<?> deleteAppointment(
             @PathVariable("appointmentId") Integer appointmentId
-    ) throws BadRequestException {
+    )  {
         appointmentService.deleteAppointment(appointmentId);
         return ResponseEntity.noContent().build();
     }

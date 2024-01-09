@@ -41,7 +41,6 @@ public class GlobalExceptionRestHandler extends ResponseEntityExceptionHandler {
         final String errorID = UUID.randomUUID().toString();
         log.error("Exception: ID={},HttpStatus={}", errorID, statusCode, ex);
 
-
         return super.handleExceptionInternal(ex, ExceptionMessage.of(errorID), headers, statusCode, request);
     }
 

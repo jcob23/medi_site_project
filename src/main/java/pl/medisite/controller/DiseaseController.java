@@ -66,17 +66,18 @@ public class DiseaseController {
 
     @PostMapping("/doctor/patient_diseases")
     public String addDisease(
-            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseDTO) {
+            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseDTO,RedirectAttributes redirectAttributes) {
         diseaseService.addDiseaseToPatient(diseaseDTO);
+        redirectAttributes.addFlashAttribute("added", true);
         return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail() + "?";
     }
     @PutMapping("/doctor/edit_disease")
     public String editDisease(
-            @ModelAttribute DiseaseDTO diseaseDTO,
-            Model model
+            @Valid @ModelAttribute DiseaseDTO diseaseDTO,
+            RedirectAttributes redirectAttributes
     ) {
         diseaseService.updateDisease(diseaseDTO);
-        model.addAttribute("edited", true);
+        redirectAttributes.addFlashAttribute("edited", true);
         return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail()+"?";
     }
 }

@@ -17,11 +17,6 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Integer>
             " WHERE u.email = :email")
     PatientEntity findByEmail(@Param("email") String email);
 
-    @Query("SELECT p FROM PatientEntity p" +
-            " JOIN p.appointments a" +
-            " WHERE a.id = :appointmentId")
-    PatientEntity getPatientByAppointmentId(Integer appointmentId);
-
     @Query("SELECT p FROM PatientEntity p " +
             "JOIN FETCH p.loginDetails u  "
     )

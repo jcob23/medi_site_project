@@ -7,10 +7,12 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindException;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.NewAppointmentDTO;
 import pl.medisite.controller.DTO.NewAppointmentsDTO;
 import pl.medisite.controller.DTO.Note;
+import pl.medisite.exception.AppointmentCancellationException;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
@@ -48,12 +50,6 @@ public class AppointmentService {
     public AppointmentDTO getAppointment(Integer id) {
         return AppointmentEntityMapper.mapAppointment(checkIfAppointmentExist(id));
     }
-
-    public PatientEntity getPatientByAppointmentId(Integer appointmentId) {
-        checkIfAppointmentExist(appointmentId);
-        return patientService.getPatientByAppointmentId(appointmentId);
-    }
-
     public Set<AppointmentDTO> getPatientAppointments(String email, String filter) {
         patientService.checkIfPatientExist(email);
         Set<AppointmentEntity> appointments;
@@ -76,11 +72,11 @@ public class AppointmentService {
         Set<AppointmentEntity> appointments;
         Sort sort = Sort.by(Sort.Direction.ASC, "appointmentStart");
         if( "past".equals(filter) ) {
-            appointments = appointmentRepository.getDoctorAppointments(email, sort);
+            appointments = appointmentRepository.getDoctorPastAppointments(email, sort);
         } else if( "future".equals(filter) ) {
             appointments = appointmentRepository.getDoctorFutureAppointments(email, sort);
         } else {
-            appointments = appointmentRepository.getDoctorPastAppointments(email, sort);
+            appointments = appointmentRepository.getDoctorAppointments(email, sort);
         }
         return appointments
                 .stream()
@@ -99,55 +95,54 @@ public class AppointmentService {
 
 
     @Transactional
-    public void deleteAppointment(Integer id) throws BadRequestException {
+    public void deleteAppointment(Integer id) {
         AppointmentEntity appointmentEntity = checkIfAppointmentExist(id);
         if( appointmentEntity.getAppointmentEnd().isBefore(ZonedDateTime.now()) ) {
-            throw new BadRequestException();
+            throw new AppointmentCancellationException("Nie można odwołać wizyty która się już odbyła");
         }
         appointmentRepository.deleteAppointment(id);
     }
 
-    public void createSingleAppointment(NewAppointmentDTO newAppointment, String email) {
+    public void createSingleAppointment(NewAppointmentDTO newAppointment, String email) throws BindException {
+        LocalTime timeStart = LocalTime.parse(newAppointment.getAppointmentTimeStart(), DateTimeFormatter.ISO_TIME);
+        LocalTime timeEnd = LocalTime.parse(newAppointment.getAppointmentTimeEnd(), DateTimeFormatter.ISO_TIME);
+        dateTimeHelper.checkIfAppointmentTimeIsValid(timeStart,timeEnd);
+
         DoctorEntity doctorEntity = doctorService.checkIfDoctorExist(email);
         AppointmentEntity appointmentEntity = AppointmentEntity.builder()
                 .appointmentStart(
-                        ZonedDateTime.of(
-                                newAppointment.getAppointmentDate(),
-                                LocalTime.parse(
-                                        newAppointment.getAppointmentTimeStart(),
-                                        DateTimeFormatter.ISO_TIME),
-                                ZoneId.of("Europe/Warsaw")
-                        ))
+                        ZonedDateTime.of(newAppointment.getAppointmentDate(), timeStart, ZoneId.of("Europe/Warsaw")))
                 .appointmentEnd(
-                        ZonedDateTime.of(
-                                newAppointment.getAppointmentDate(),
-                                LocalTime.parse(
-                                        newAppointment.getAppointmentTimeEnd(),
-                                        DateTimeFormatter.ISO_TIME),
-                                ZoneId.of("Europe/Warsaw")
-                        ))
+                        ZonedDateTime.of(newAppointment.getAppointmentDate(),timeEnd, ZoneId.of("Europe/Warsaw")))
                 .doctor(doctorEntity)
                 .build();
+        Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(email, null);
+        dateTimeHelper.checkIfDateIsAvailable(appointmentEntity,doctorAppointments);
         appointmentRepository.saveAndFlush(appointmentEntity);
     }
 
     @Transactional
-    public void createMultipleAppointments(NewAppointmentsDTO newAppointmentsDTO, String doctorEmail) {
+    public void createMultipleAppointments(NewAppointmentsDTO newAppointmentsDTO, String doctorEmail) throws BindException {
         DoctorEntity doctorEntity = doctorService.checkIfDoctorExist(doctorEmail);
 
-        List<AppointmentEntity> appointmentEntityList = generateAppointments(newAppointmentsDTO.getAppointmentDate(),
+        Set<AppointmentEntity> appointmentEntityList = generateAppointments(newAppointmentsDTO.getAppointmentDate(),
                 newAppointmentsDTO.getEndDate(),
                 LocalTime.parse(newAppointmentsDTO.getAppointmentTimeStart(), DateTimeFormatter.ISO_TIME),
                 LocalTime.parse(newAppointmentsDTO.getAppointmentTimeEnd(), DateTimeFormatter.ISO_TIME),
                 newAppointmentsDTO.getBreakTime(),
                 newAppointmentsDTO.getVisitTime(),
                 doctorEntity);
+
+        Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(doctorEmail, null);
+        for(AppointmentEntity appointment : appointmentEntityList) {
+            dateTimeHelper.checkIfDateIsAvailable(appointment, doctorAppointments);
+        }
         appointmentRepository.saveAllAndFlush(appointmentEntityList);
     }
 
 
-    private List<AppointmentEntity> generateAppointments(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd, String breakTime, String appointmentTime, DoctorEntity doctorEntity) {
-        List<AppointmentEntity> appointmentEntityList = new ArrayList<>();
+    private Set<AppointmentEntity> generateAppointments(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd, String breakTime, String appointmentTime, DoctorEntity doctorEntity) throws BindException {
+        Set<AppointmentEntity> appointmentEntitySet = new HashSet<>();
         Duration breakTimeInterval = dateTimeHelper.parseDuration(breakTime);
         Duration appointmentTimeInterval = dateTimeHelper.parseDuration(appointmentTime);
         LocalDate currentDate = dateStart;
@@ -159,7 +154,8 @@ public class AppointmentService {
                         .appointmentEnd(ZonedDateTime.of(currentDate, currentTime.plus(appointmentTimeInterval), ZoneId.of("Europe/Warsaw")))
                         .doctor(doctorEntity)
                         .build();
-                appointmentEntityList.add(appointmentEntity);
+                dateTimeHelper.checkIfAppointmentTimeIsValid(currentTime,currentTime.plus(appointmentTimeInterval));
+                appointmentEntitySet.add(appointmentEntity);
                 currentTime = currentTime.plus(appointmentTimeInterval).plus(breakTimeInterval);
                 if( currentTime.isAfter(timeEnd) || currentTime.equals(timeEnd) ) {
                     break;
@@ -167,7 +163,7 @@ public class AppointmentService {
             }
             currentDate = currentDate.plusDays(1);
         }
-        return appointmentEntityList;
+        return appointmentEntitySet;
     }
 
     @Transactional

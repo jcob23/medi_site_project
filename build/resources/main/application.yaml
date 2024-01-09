@@ -8,15 +8,6 @@ server:
 #    url: https://petstore3.swagger.io.api/v3/
 
 spring:
-  webflux:
-    format:
-      date: ISO
-      time: ISO
-      date-time: ISO
-#  jackson:
-#    date-format: yyyy-MM-dd
-#    serialization:
-#      write-dates-as-timestamps: false
   mail:
     host: smtp.gmail.com
     port: 587

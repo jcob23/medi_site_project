@@ -62,10 +62,4 @@ public class PatientService {
         patientRepository.deleteByMail(email);
         userService.deleteUser(email);
     }
-
-
-
-    public PatientEntity getPatientByAppointmentId(Integer appointmentId) {
-        return patientRepository.getPatientByAppointmentId(appointmentId);
-    }
 }

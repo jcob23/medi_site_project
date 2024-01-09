@@ -41,6 +41,8 @@ public class GlobalExceptionHandler {
         } else if("appointmentDate".equals(ex.getFieldError().getField())) {
             message = String.format("Data [%s] już się odbyła, nie można dodać spotkania",
                     Optional.ofNullable(ex.getFieldError()).map(FieldError::getRejectedValue).orElse(null));
+        } else if( "appointmentTimeEnd".equals(ex.getFieldError().getField()) ) {
+            message = "Czas zakończenia spotkania nie może być wcześniejszy niż czas rozpoczęcia.";
         } else {
             message = String.format("Błędne żądanie dla pola: [%s], nieprawidłowa wartość: [%s].",
                     Optional.ofNullable(ex.getFieldError()).map(FieldError::getField).orElse(null),

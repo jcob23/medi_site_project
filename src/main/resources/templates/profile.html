@@ -26,7 +26,7 @@
             <div class="form-group">
                 IMIĘ:     <input type="text" th:field="*{name}"/><br>
                 NAZWISKO: <input type="text" th:field="*{surname}"/><br>
-                TELEFON:  <input type="text" th:field="*{phone}"/><br>
+                TELEFON:  <input type="text" th:field="*{phone}" placeholder="+xx xxx xxx xxx"/><br>
             </div>
             <button type="submit" class="btn btn-info">ZAKTUALIZUJ</button>
         </form>
@@ -45,7 +45,7 @@
             <div class="form-group">
                 IMIĘ: <input type="text" th:field="*{name}"/><br>
                 NAZWISKO: <input type="text" th:field="*{surname}"/><br>
-                TELEFON: <input type="text" th:field="*{phone}"/><br>
+                TELEFON: <input type="text" th:field="*{phone}" placeholder="+xx xxx xxx xxx"/><br>
                 SPECIALIZACJA: <input type="text" th:field="*{specialization}"/><br>
                 OPIS: <input width="500px" height="300px" type="text" th:field="*{description}"><br>
             </div>

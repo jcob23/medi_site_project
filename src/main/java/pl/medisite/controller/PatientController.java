@@ -83,7 +83,7 @@ public class PatientController {
     @DeleteMapping("/delete_appointment/{appointmentId}")
     public String deleteAppointment(
             @PathVariable("appointmentId") Integer appointmentId
-    ) throws BadRequestException {
+    )  {
         appointmentService.deleteAppointment(appointmentId);
         return "redirect:/patient/appointments";
     }

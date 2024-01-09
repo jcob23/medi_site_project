@@ -4,8 +4,8 @@ import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.util.DateTimeHelper;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
+
 
 public class AppointmentEntityMapper {
     public static AppointmentDTO mapAppointment(AppointmentEntity appointmentEntity) {
@@ -22,14 +22,7 @@ public class AppointmentEntityMapper {
                 + appointmentEntity.getAppointmentStart().getMonthValue() + "."
                 + appointmentEntity.getAppointmentStart().getDayOfMonth();
 
-        String timeStart = DateTimeHelper.createDisplayTime(
-                appointmentEntity.getAppointmentStart().getHour(),
-                appointmentEntity.getAppointmentStart().getMinute());
-
-        String timeEnd = DateTimeHelper.createDisplayTime(
-                appointmentEntity.getAppointmentEnd().getHour(),
-                appointmentEntity.getAppointmentEnd().getMinute());
-        String time = timeStart + " - " + timeEnd;
+        String time = getAppointmentTime(appointmentEntity);
 
         ZonedDateTime appointmentEnd = appointmentEntity.getAppointmentEnd();
         LocalDateTime localAppointmentEnd = LocalDateTime.of(
@@ -50,5 +43,17 @@ public class AppointmentEntityMapper {
                 time,
                 appointmentEntity.getNote(),
                 localAppointmentEnd);
+    }
+
+    private static String getAppointmentTime(AppointmentEntity appointmentEntity) {
+
+        String timeStart = DateTimeHelper.createDisplayTime(
+                appointmentEntity.getAppointmentStart().withZoneSameInstant(ZoneId.of("Europe/Warsaw")).getHour(),
+                appointmentEntity.getAppointmentStart().getMinute());
+
+        String timeEnd = DateTimeHelper.createDisplayTime(
+                appointmentEntity.getAppointmentEnd().withZoneSameInstant(ZoneId.of("Europe/Warsaw")).getHour(),
+                appointmentEntity.getAppointmentEnd().getMinute());
+        return timeStart + " - " + timeEnd;
     }
 }

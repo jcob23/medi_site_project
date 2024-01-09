@@ -2,7 +2,9 @@ package pl.medisite.infrastructure.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 
 @Data
@@ -35,5 +37,11 @@ public class AppointmentEntity {
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private DoctorEntity doctor;
+
+    @Override
+    public String toString() {
+        return  appointmentStart.toLocalDate() +
+                " w godzinach: " + appointmentStart.toLocalTime() + " - " + appointmentEnd.toLocalTime();
+    }
 }
 

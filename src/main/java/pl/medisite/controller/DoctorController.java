@@ -3,6 +3,7 @@ package pl.medisite.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -11,7 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.*;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
@@ -57,6 +60,7 @@ public class DoctorController {
     ) {
         String email = (String) session.getAttribute("userEmail");
         Set<AppointmentDTO> appointments = appointmentService.getDoctorAppointments(email, dateFilter);
+
         model.addAttribute("newAppointmentDTO", new NewAppointmentDTO());
         model.addAttribute("newAppointmentsDTO", new NewAppointmentsDTO());
         model.addAttribute("appointments", appointments);
@@ -65,7 +69,7 @@ public class DoctorController {
 
     @GetMapping("/patient_appointments/{patientEmail}")
     public String showPatientAppointments(
-            @PathVariable("patientEmail") String patientEmail,
+            @PathVariable("patientEmail") @Email String patientEmail,
             Model model) {
         String doctorEmail = (String) session.getAttribute("userEmail");
         PersonDTO patient = patientService.getPatient(patientEmail);
@@ -76,16 +80,22 @@ public class DoctorController {
     }
 
     @PostMapping("/add_single_appointment")
-    public String addAppointment(@Valid @ModelAttribute("newAppointmentDTO") NewAppointmentDTO newAppointmentDTO) {
+    public String addAppointment(
+            @Valid @ModelAttribute("newAppointmentDTO") NewAppointmentDTO newAppointmentDTO,
+            RedirectAttributes redirectAttributes) throws BindException {
         String email = (String) session.getAttribute("userEmail");
         appointmentService.createSingleAppointment(newAppointmentDTO, email);
+        redirectAttributes.addFlashAttribute("added", true);
         return "redirect:/doctor/appointments";
     }
 
     @PostMapping("/add_multiple_appointments")
-    public String addAppointments(@Valid @ModelAttribute("newAppointmentDTO") NewAppointmentsDTO newAppointmentsDTO) {
+    public String addAppointments(
+            @Valid @ModelAttribute("newAppointmentDTO") NewAppointmentsDTO newAppointmentsDTO,
+            RedirectAttributes redirectAttributes) throws BindException {
         String email = (String) session.getAttribute("userEmail");
         appointmentService.createMultipleAppointments(newAppointmentsDTO, email);
+        redirectAttributes.addFlashAttribute("added2",true);
         return "redirect:/doctor/appointments";
     }
 
@@ -118,8 +128,12 @@ public class DoctorController {
     }
 
     @DeleteMapping("/delete_appointment/{appointmentId}")
-    public String deleteAppointment(@PathVariable("appointmentId") Integer appointmentId) throws BadRequestException {
+    public String deleteAppointment(
+            @PathVariable("appointmentId") Integer appointmentId,
+            RedirectAttributes redirectAttributes
+    )  {
         appointmentService.deleteAppointment(appointmentId);
+        redirectAttributes.addFlashAttribute("deleted", true);
         return "redirect:/doctor/appointments";
     }
 

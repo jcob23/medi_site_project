@@ -22,12 +22,13 @@
     </form>
 </div>
 
-<div th:if="${edited}" class="alert alert-info">
+<div th:if="${edited}" class="alert alert-info" id="editAlert">
     Zaktualizowano dane o chorobie pacjenta.
 </div>
-<div th:if="${added}" class="alert alert-info">
+<div th:if="${added}" class="alert alert-info" id="addAlert">
     Zaktualizowano dane o chorobach pacjenta.
 </div>
+
 
 <table class="table table-striped table-hover">
     <tr>
@@ -50,5 +51,22 @@
         </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function(){
+            var infoMessage = document.getElementById('editAlert');
+            var infoMessage2 = document.getElementById('addAlert');
+            var infoMessage3 = document.getElementById('addAlert');
+            if (infoMessage) {
+                infoMessage.style.display = 'none';
+            }
+            else if (infoMessage2) {
+                infoMessage2.style.display = 'none';
+            }
+
+        }, 7000);
+    });
+</script>
 </body>
 </html>
