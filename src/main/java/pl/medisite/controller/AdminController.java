@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.medisite.controller.DTO.DoctorDTO;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
-import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
@@ -27,26 +26,26 @@ public class AdminController {
 
     @GetMapping("/edit_patient/{email}")
     public String showEditPatient(@PathVariable("email") String email, Model model) {
-        //TODO coś tu brakuje
-        model.addAttribute("user", null);
+        PersonDTO patient = patientService.getPatient(email);
+        model.addAttribute("user", patient);
         return "admin_edit";
     }
 
     @PutMapping("/edit_patient")
-    public String editPatient(@ModelAttribute("patient") PatientEntity patientEntity) {
-        patientService.updatePatient(patientEntity);
+    public String editPatient(@ModelAttribute("patient") PersonDTO patient) {
+        patientService.updatePatient(patient);
         return "redirect:/admin/patients";
     }
 
     @GetMapping("/edit_doctor/{email}")
     public String showEditDoctor(@PathVariable("email") String email, Model model) {
-        DoctorEntity doctorEntity = doctorService.checkIfDoctorExist(email);
+        PersonDTO.DoctorDTO doctorEntity = doctorService.getDoctor(email);
         model.addAttribute("user", doctorEntity);
         return "admin_edit";
     }
 
     @PutMapping("/edit_doctor")
-    public String editDoctor(@ModelAttribute("patient") DoctorEntity doctorEntity) {
+    public String editDoctor(@ModelAttribute("user") PersonDTO.DoctorDTO doctorEntity) {
         doctorService.updateDoctor(doctorEntity);
         return "redirect:/admin/doctors";
     }
@@ -77,7 +76,7 @@ public class AdminController {
 
     @GetMapping("/patients")
     public String adminPatientsPage(Model model, Authentication authentication) {
-        Set<PersonDTO> users = userService.getPatientsInformation();
+        Set<PersonDTO> users = userService.getAllPatients();
         model.addAttribute("patientView", true);
         model.addAttribute("personsData", users);
         return "admin_list";
@@ -85,7 +84,7 @@ public class AdminController {
 
     @GetMapping("/doctors")
     public String adminDoctorsPage(Model model, Authentication authentication) {
-        Set<PersonDTO.DoctorDTO> users = userService.getDoctorsInformation();
+        Set<PersonDTO.DoctorDTO> users = userService.getAllDoctors();
         model.addAttribute("doctorView", true);
         model.addAttribute("personsData", users);
         return "admin_list";

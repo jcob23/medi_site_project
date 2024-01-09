@@ -14,8 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.DiseaseDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.DiseaseService;
-import pl.medisite.service.DoctorService;
-import pl.medisite.service.PatientService;
 import pl.medisite.util.SecurityHelper;
 
 import java.util.Set;
@@ -30,6 +28,7 @@ public class DiseaseController {
 
     private SecurityHelper securityHelper;
 
+
     @GetMapping("/patient/diseases/{email}")
     public String showPatientDiseases(@PathVariable String email,
                                       Model model,
@@ -37,12 +36,21 @@ public class DiseaseController {
     ) throws AccessDeniedException {
         securityHelper.checkUserAccessToPatientInformation(email, (User) authentication.getPrincipal());
         Set<DiseaseEntity> diseases = diseaseService.getDiseases(email);
-        log.info("### size: " + diseases.size());
         model.addAttribute("patientDiseases", diseases);
         return "patient_diseases";
     }
 
-    @GetMapping("/doctor/patient_diseases_email/{patientEmail}")
+    @GetMapping("/doctor/edit_disease/{diseaseId}")
+    public String showEditPatientDiseases(
+            @PathVariable("diseaseId") Integer diseaseId,
+            Model model
+    ) {
+        DiseaseDTO diseaseDTO = diseaseService.getDisease(diseaseId);
+        model.addAttribute("diseaseDTO", diseaseDTO);
+        return "doctor_edit_disease";
+    }
+
+    @GetMapping("/doctor/patient_diseases/{patientEmail}")
     public String showPatientDiseasesByEmail(
             @PathVariable("patientEmail") String patientEmail,
             HttpSession session,
@@ -52,26 +60,23 @@ public class DiseaseController {
                 patientEmail, (String) session.getAttribute("userEmail"));
         Set<DiseaseEntity> diseases = diseaseService.getDiseases(patientEmail);
         model.addAttribute("patientDiseases", diseases);
-        model.addAttribute("diseaseDTO", new DiseaseDTO());
+        model.addAttribute("diseaseDTO", new DiseaseDTO(patientEmail));
         return "patient_diseases";
     }
 
-    @GetMapping("/doctor/edit_disease")
-    public String showEditPatientDiseases(
-            @RequestParam("disease") DiseaseEntity diseaseEntity,
+    @PostMapping("/doctor/patient_diseases")
+    public String addDisease(
+            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseDTO) {
+        diseaseService.addDiseaseToPatient(diseaseDTO);
+        return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail() + "?";
+    }
+    @PutMapping("/doctor/edit_disease")
+    public String editDisease(
+            @ModelAttribute DiseaseDTO diseaseDTO,
             Model model
     ) {
-        model.addAttribute("diseaseEntity", diseaseEntity);
-        return "doctor_edit_disease";
-    }
-
-    @PostMapping("/doctor/patient_disease")
-    public String addDisease(
-            @RequestParam("appointmentId") Integer appointmentId,
-            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseEntity,
-            RedirectAttributes redirectAttributes) {
-        diseaseService.addDiseaseToPatientByAppointmentId(appointmentId, diseaseEntity);
-        redirectAttributes.addAttribute("appointmentId", appointmentId);
-        return "redirect:/doctor/patient_diseases";
+        diseaseService.updateDisease(diseaseDTO);
+        model.addAttribute("edited", true);
+        return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail()+"?";
     }
 }

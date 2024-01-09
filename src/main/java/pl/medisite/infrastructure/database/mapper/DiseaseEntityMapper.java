@@ -15,4 +15,16 @@ public class DiseaseEntityMapper {
                 .since(diseaseDTO.getSince())
                 .build();
     }
+
+    public static DiseaseDTO mapDiseaseEntity(DiseaseEntity disease){
+        return new DiseaseDTO(
+                disease.getDiseaseId(),
+                disease.getName(),
+                disease.getDescription(),
+                disease.getSince(),
+                disease.getPatient().getLoginDetails().getEmail(),
+                disease.getCured()
+        );
+
+    }
 }

@@ -13,7 +13,7 @@
         <div class="page-header" id="banner">
             <h3>Zarejestruj się</h3>
         </div>
-        <form action="#" th:action="@{/register}" method='POST' th:object="${patientDTO}">
+        <form action="#" th:action="@{/register}" method='POST' th:object="${newPatientDTO}">
             <div class="form-group">
                 IMIĘ: <input type="text" th:field="*{name}"/><br>
                 NAZWISKO: <input type="text" th:field="*{surname}"/><br>

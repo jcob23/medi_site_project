@@ -8,7 +8,6 @@ import pl.medisite.controller.DTO.*;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.infrastructure.database.mapper.DoctorEntityMapper;
 import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
-import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
@@ -31,10 +30,14 @@ public class DoctorService {
         }
         return doctor;
     }
+
+    public PersonDTO.DoctorDTO getDoctor(String email) {
+        return DoctorEntityMapper.map(checkIfDoctorExist(email));
+    }
     @Transactional
     public void saveDoctor(DoctorDTO doctorDTO) {
         UserEntity userEntity = userService
-                .saveUser(UserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(),3);
+                .saveUser(NewUserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(),3);
 
         DoctorEntity doctorEntity = DoctorEntity.builder()
                 .name(doctorDTO.getName())
@@ -47,11 +50,13 @@ public class DoctorService {
     }
 
     @Transactional
-    public void updateDoctor(DoctorEntity doctorEntity) {
-        DoctorEntity existingDoctor = doctorRepository.findByEmail(doctorEntity.getLoginDetails().getEmail());
+    public void updateDoctor(PersonDTO.DoctorDTO doctorEntity) {
+        DoctorEntity existingDoctor = doctorRepository.findByEmail(doctorEntity.getEmail());
         existingDoctor.setName(doctorEntity.getName());
         existingDoctor.setSurname(doctorEntity.getSurname());
         existingDoctor.setPhone(doctorEntity.getPhone());
+        existingDoctor.setSpecialization(doctorEntity.getSpecialization());
+        existingDoctor.setDescription(doctorEntity.getDescription());
         doctorRepository.save(existingDoctor);
     }
 
@@ -72,7 +77,4 @@ public class DoctorService {
 
 
 
-    public PersonDTO.DoctorDTO getDoctor(String email) {
-        return DoctorEntityMapper.map(checkIfDoctorExist(email));
-    }
 }

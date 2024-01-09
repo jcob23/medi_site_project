@@ -8,7 +8,7 @@ import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 
 import java.util.Set;
 
-public interface DiseaseRepository extends JpaRepository<DiseaseEntity, Long> {
+public interface DiseaseRepository extends JpaRepository<DiseaseEntity, Integer> {
     @Query("SELECT d FROM DiseaseEntity d" +
             " JOIN d.patient p" +
             " JOIN p.loginDetails u" +
@@ -16,4 +16,5 @@ public interface DiseaseRepository extends JpaRepository<DiseaseEntity, Long> {
     Set<DiseaseEntity> getDiseases(@Param("email") String email, Sort sort);
 
 
+    DiseaseEntity getByDiseaseId(Integer diseaseId);
 }

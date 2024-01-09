@@ -13,7 +13,6 @@ import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DiseaseService;
-import pl.medisite.service.PatientService;
 import pl.medisite.service.UserService;
 
 import java.util.Set;
@@ -29,7 +28,7 @@ public class PatientRestController {
 
     @GetMapping("/doctors")
     public Set<PersonDTO.DoctorDTO> getDoctorsList() {
-        return userService.getDoctorsInformation();
+        return userService.getAllDoctors();
     }
 
     @GetMapping("/diseases/{email}")

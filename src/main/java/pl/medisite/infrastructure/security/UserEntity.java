@@ -1,10 +1,7 @@
 package pl.medisite.infrastructure.security;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.medisite.infrastructure.security.ForgotPassword.MediSiteToken;
 
 @Data
@@ -12,6 +9,8 @@ import pl.medisite.infrastructure.security.ForgotPassword.MediSiteToken;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(of = "email")
+@ToString(exclude = "role")
 @Table(name = "medisite_user")
 public class UserEntity {
 

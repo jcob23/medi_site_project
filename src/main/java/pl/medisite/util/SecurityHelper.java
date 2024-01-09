@@ -21,10 +21,17 @@ public class SecurityHelper {
      AppointmentService appointmentService;
      DoctorService doctorService;
 
-    public  void checkUserAccessToPatientInformation(String email, User user) throws AccessDeniedException {
+    public void checkUserAccessToPatientInformation(String email, User user) throws AccessDeniedException {
         String userName = user.getUsername();
         var authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if( authorities.contains("PATIENT") && !email.equals(userName) ) {
+            throw new AccessDeniedException("Dostęp do danych innego użytkownika jest zabroniony");
+        }
+    }
+    public void compareUserEmailWithRequestEmail(User user, String requestEmail) throws AccessDeniedException {
+        String userEmail = user.getUsername();
+        var authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        if(!requestEmail.equals(userEmail) && !authorities.contains("ADMIN")) {
             throw new AccessDeniedException("Dostęp do danych innego użytkownika jest zabroniony");
         }
     }

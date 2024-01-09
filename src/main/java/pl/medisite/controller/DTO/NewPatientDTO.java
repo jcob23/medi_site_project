@@ -19,7 +19,8 @@ import java.util.Optional;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientDTO {
+public class NewPatientDTO {
+    //Class used for creating new user, DO NOT USE
 
     @Id
     @NotBlank
@@ -29,8 +30,10 @@ public class PatientDTO {
     @Size(min = 4)
     String password;
 
+    @NotBlank
     String name;
 
+    @NotBlank
     String surname;
 
     String role;

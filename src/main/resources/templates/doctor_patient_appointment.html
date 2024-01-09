@@ -16,7 +16,7 @@
                 PACJENT: <span th:text="${patient.surname + ' ' + patient.name}"></span>
             </th>
             <th>
-                <form action="#" th:action="@{/doctor/patient_diseases_email/{email}(email=${patient.email})}" th:method="GET">
+                <form action="#" th:action="@{/doctor/patient_diseases/{email}(email=${patient.email})}" th:method="GET">
                     <button type="submit" class="btn btn-info">Historia chorób pacjenta</button>
                 </form>
             </th>

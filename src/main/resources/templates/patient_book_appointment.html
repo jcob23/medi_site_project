@@ -34,7 +34,7 @@
                     <form action="#" th:action="@{/patient/book_appointment}" th:method="POST">
                         <input type="hidden" name="_method" value="PUT" />
                         <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
-                        <input type="hidden" name="email" th:value="${doctor.loginDetails.email}" />
+                        <input type="hidden" name="email" th:value="${doctor.email}" />
                         <button type="submit" class="btn btn-info">Zarezerwuj wizytę</button>
                     </form>
                 </td>

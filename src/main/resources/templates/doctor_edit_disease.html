@@ -9,8 +9,10 @@
 
 <body>
     <div th:insert="~{fragments/header :: header}"></div>
-    <form action="#" th:action="@{/doctor/edit_disease}" method='POST' th:object="${diseaseEntity}">
+    <form action="#" th:action="@{/doctor/edit_disease}" method='POST' th:object="${diseaseDTO}">
         <input type="hidden" name="_method" value="PUT"/>
+        <input type="hidden" name="patientEmail" th:value="*{patientEmail}">
+        <input type="hidden" name="diseaseId" th:value="*{diseaseId}">
         <div class="form-group">
             NAZWA: <input type="text" th:field="*{name}"/>
             Data ROZPOCZĘCIA: <input type="date" th:field="*{since}"/>

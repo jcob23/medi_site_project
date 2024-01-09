@@ -1,13 +1,9 @@
 package pl.medisite.controller;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.ui.ExtendedModelMap;
-import pl.medisite.controller.DTO.UserDTO;
 import pl.medisite.infrastructure.security.UserRepository;
 import pl.medisite.service.UserService;
 

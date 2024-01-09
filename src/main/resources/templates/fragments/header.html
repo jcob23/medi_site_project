@@ -33,7 +33,7 @@
             </th:block>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li th:unless="${#strings.equals(session.userRole, 'ADMIN')}">
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
                 <a th:if="${#strings.equals(session.userRole, 'PATIENT')}" href="#" th:href="@{/patient}">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 </a>

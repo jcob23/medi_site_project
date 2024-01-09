@@ -1,29 +1,29 @@
 package pl.medisite.util;
 
 import lombok.experimental.UtilityClass;
-import pl.medisite.controller.DTO.UserDTO;
+import pl.medisite.controller.DTO.NewUserDTO;
 import pl.medisite.infrastructure.security.RoleEntity;
 import pl.medisite.infrastructure.security.UserEntity;
 
 @UtilityClass
 public class UserFixtures {
 
-    public static UserDTO userDTO1 (){
-        return UserDTO.builder()
+    public static NewUserDTO userDTO1 (){
+        return NewUserDTO.builder()
                 .email("test1@email.com")
                 .password("12345")
                 .build();
     }
 
-    public static UserDTO userDTO2 (){
-        return UserDTO.builder()
+    public static NewUserDTO userDTO2 (){
+        return NewUserDTO.builder()
                 .email("test2@email.com")
                 .password("12345")
                 .build();
     }
 
-    public static UserDTO userDTO3 (){
-        return UserDTO.builder()
+    public static NewUserDTO userDTO3 (){
+        return NewUserDTO.builder()
                 .email("test3@email.com")
                 .password("12345")
                 .build();

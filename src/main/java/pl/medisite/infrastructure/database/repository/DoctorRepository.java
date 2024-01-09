@@ -11,7 +11,7 @@ import pl.medisite.infrastructure.database.entity.PatientEntity;
 import java.util.Set;
 
 
-public interface DoctorRepository extends JpaRepository<DoctorEntity, Long> {
+public interface DoctorRepository extends JpaRepository<DoctorEntity, Integer> {
     @Modifying
     @Transactional
     @Query("DELETE FROM DoctorEntity d" +

@@ -10,7 +10,7 @@ import pl.medisite.infrastructure.database.entity.PatientEntity;
 import java.util.List;
 import java.util.Set;
 
-public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
+public interface PatientRepository extends JpaRepository<PatientEntity, Integer> {
 
     @Query("SELECT p FROM PatientEntity p" +
             " JOIN FETCH p.loginDetails u" +

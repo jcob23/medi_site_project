@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profil</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container">
+    <div class="page-header" id="banner">
+        <h2>Profil</h2>
+        <br>
+        <div th:if="${update}" class="alert alert-info">
+            Poprawnie zaktualizowano dane osobowe
+        </div>
+    </div>
+
+    <div th:if="${#strings.equals(session.userRole, 'PATIENT')}">
+
+        <form action="#" th:action="@{/patient/update}" method='POST' th:object="${patient}">
+            <input type="hidden" name="_method" value="PUT"/>
+            <input type="hidden" name="email" th:field="*{email}"/>
+            <div class="form-group">
+                IMIĘ:     <input type="text" th:field="*{name}"/><br>
+                NAZWISKO: <input type="text" th:field="*{surname}"/><br>
+                TELEFON:  <input type="text" th:field="*{phone}"/><br>
+            </div>
+            <button type="submit" class="btn btn-info">ZAKTUALIZUJ</button>
+        </form>
+        <br>
+        <br>
+        <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
+        <form action="#" th:action="@{/patient/{email}(email=${session.userEmail})}" th:method="DELETE">
+            <button type="submit" class="btn btn-danger">Usuń konto</button>
+        </form>
+    </div>
+
+    <div th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
+        <form action="#" th:action="@{/doctor/update}" method='POST' th:object="${doctor}">
+            <input type="hidden" name="_method" value="PUT"/>
+            <input type="hidden" name="email" th:field="*{email}"/>
+            <div class="form-group">
+                IMIĘ: <input type="text" th:field="*{name}"/><br>
+                NAZWISKO: <input type="text" th:field="*{surname}"/><br>
+                TELEFON: <input type="text" th:field="*{phone}"/><br>
+                SPECIALIZACJA: <input type="text" th:field="*{specialization}"/><br>
+                OPIS: <input width="500px" height="300px" type="text" th:field="*{description}"><br>
+            </div>
+            <button type="submit" class="btn btn-info">ZAKTUALIZUJ</button>
+        </form>
+        <br>
+        <br>
+        <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
+        <form action="#" th:action="@{/doctor/{email}(email=${session.userEmail})}" th:method="DELETE">
+            <button type="submit" class="btn btn-danger">Usuń konto</button>
+        </form>
+    </div>
+    <br>
+
+
+</div>
+</body>
+</html>

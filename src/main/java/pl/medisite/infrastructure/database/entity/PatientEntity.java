@@ -2,10 +2,7 @@ package pl.medisite.infrastructure.database.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.medisite.infrastructure.security.UserEntity;
 
 import java.util.Set;
@@ -15,7 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(of = "loginDetails")
 @Table(name = "patient")
+@ToString(exclude = {"appointments","loginDetails"})
 public class PatientEntity {
 
     @Id
@@ -38,4 +37,6 @@ public class PatientEntity {
 
     @OneToMany(mappedBy = "patient")
     private Set<AppointmentEntity> appointments;
+
+
 }

@@ -1,6 +1,7 @@
 package pl.medisite.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +13,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.PersonDTO;
-import pl.medisite.infrastructure.database.entity.DiseaseEntity;
-import pl.medisite.infrastructure.database.entity.DoctorEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
@@ -32,29 +30,31 @@ import java.util.Set;
 @Slf4j
 public class PatientController {
 
-    private PatientService patientService;
-    private AppointmentService appointmentService;
     private UserService userService;
+    private PatientService patientService;
     private DoctorService doctorService;
+    private AppointmentService appointmentService;
+
     private SecurityHelper securityHelper;
+    private HttpSession session;
 
     @GetMapping()
-    public String showPatientPage() {
-        return "patient_profile";
+    public String showPatientPage(Model model) {
+        String email = (String) session.getAttribute("userEmail");
+        PersonDTO patient = patientService.getPatient(email);
+        model.addAttribute("patient", patient);
+        return "profile";
     }
 
     @GetMapping("/doctors")
     public String showDoctorsList(Model model) {
-        Set<PersonDTO.DoctorDTO> doctorsInformation = userService.getDoctorsInformation();
+        Set<PersonDTO.DoctorDTO> doctorsInformation = userService.getAllDoctors();
         model.addAttribute("personsData", doctorsInformation);
         return "patient_doctor_list";
     }
 
     @GetMapping("/appointments")
-    public String showPatientAppointments(
-            Model model,
-            HttpSession session,
-            @RequestParam(name = "filter", required = false) String filter
+    public String showPatientAppointments(Model model, @RequestParam(name = "filter", required = false) String filter
     ) throws AccessDeniedException {
         String email = (String) session.getAttribute("userEmail");
         Set<AppointmentDTO> appointments = appointmentService.getPatientAppointments(email, filter);
@@ -63,9 +63,7 @@ public class PatientController {
     }
 
     @GetMapping("/book_appointment")
-    public String showBookAppointment(
-            @RequestParam(name = "email") @Email String email,
-            Model model) {
+    public String showBookAppointment(@RequestParam(name = "email") @Email String email, Model model) {
         PersonDTO.DoctorDTO doctor = doctorService.getDoctor(email);
         Set<AppointmentDTO> appointments = appointmentService.getDoctorFutureFreeAppointments(email);
         model.addAttribute("doctor", doctor);
@@ -76,8 +74,7 @@ public class PatientController {
     @PutMapping("/book_appointment")
     public String bookAppointment(
             @RequestParam(name = "appointmentId") Integer appointmentId,
-            @RequestParam(name = "email") @Email String email,
-            HttpSession session) {
+            @RequestParam(name = "email") @Email String email) {
         String userEmail = (String) session.getAttribute("userEmail");
         appointmentService.bookAppointment(appointmentId, userEmail);
         return "redirect:/patient/book_appointment?email=" + email;
@@ -91,8 +88,17 @@ public class PatientController {
         return "redirect:/patient/appointments";
     }
 
-    @DeleteMapping()
-    public String deletePatient(@RequestParam(name = "email") @Email String email, Model model) {
+    @PutMapping("/update")
+    public String updateInformation(@Valid @ModelAttribute("patient") PersonDTO user, Model model){
+        patientService.updatePatient(user);
+        model.addAttribute("update", true);
+        return "profile";
+    }
+
+
+    @DeleteMapping("/{email}")
+    public String deletePatient(@PathVariable(name = "email") @Email String email, Model model, Authentication authentication) {
+        securityHelper.compareUserEmailWithRequestEmail((User) authentication.getPrincipal(),email);
         patientService.deletePatient(email);
         model.addAttribute("deleted", true);
         SecurityContextHolder.getContext().setAuthentication(null);

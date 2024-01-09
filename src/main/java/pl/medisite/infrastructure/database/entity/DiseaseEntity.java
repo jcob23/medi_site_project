@@ -1,26 +1,26 @@
 package pl.medisite.infrastructure.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import pl.medisite.controller.DTO.DiseaseDTO;
+import lombok.*;
 
 import java.time.LocalDate;
 
+
+
 @Data
 @Entity
-@Table(name = "patient_diseases")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "diseaseId")
+@ToString(exclude = "patient")
+@Table(name = "patient_diseases")
 public class DiseaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "disease_id")
-    private int disease_id;
+    private int diseaseId;
 
     @Column(name = "name")
     private String name;

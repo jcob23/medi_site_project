@@ -10,15 +10,23 @@
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
 <div th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
-    <form  action="#" th:action="@{/doctor/patient_disease}" method='POST' th:object="${diseaseDTO}">
-        <input type="hidden" name="appointmentId" th:value="${appointmentId}" />
+
+    <form action="#" th:action="@{/doctor/patient_diseases}" method='POST' th:object="${diseaseDTO}">
         <div class="form-group">
             NAZWA: <input type="text" th:field="*{name}"/>
             Data rozpoczęcia: <input type="date" th:field="*{since}"/>
             OPIS: <input type="text" th:field="*{description}"/>
+            <input type="hidden" name="patientEmail" th:value="*{patientEmail}">
         </div>
         <button type="submit" class="btn btn-info">Dodaj chorobę</button>
     </form>
+</div>
+
+<div th:if="${edited}" class="alert alert-info">
+    Zaktualizowano dane o chorobie pacjenta.
+</div>
+<div th:if="${added}" class="alert alert-info">
+    Zaktualizowano dane o chorobach pacjenta.
 </div>
 
 <table class="table table-striped table-hover">
@@ -35,8 +43,8 @@
         <td th:text="${disease.cured ? 'TAK' : 'NIE'}"></td>
         <td th:text="${disease.description}"></td>
         <td th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
-            <form action="#" th:action="@{/doctor/edit_disease}" th:method="GET">
-                <input type="hidden" name="disease" th:value="${disease}"/>
+            <form action="#" th:action="@{/doctor/edit_disease/{diseaseId}(diseaseId=${disease.diseaseId})}"
+                  th:method="GET">
                 <button type="submit" class="btn btn-info">Edytuj</button>
             </form>
         </td>

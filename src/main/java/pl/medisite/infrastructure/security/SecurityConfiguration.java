@@ -52,7 +52,7 @@ public class SecurityConfiguration {
                 .build();
     }
 
-//    obsługa błędu 403
+    //    obsługa błędu 403
 //    https://mkyong.com/spring-security/customize-http-403-access-denied-page-in-spring-security/
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
@@ -89,7 +89,7 @@ public class SecurityConfiguration {
                 "/register/save",
                 "/forget/**",
                 "/api/**",
-                "/swagger-ui.html","/swagger-ui/**", "/v3/api-docs/**"
+                "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
         };
     }
 
@@ -110,25 +110,29 @@ public class SecurityConfiguration {
     private String[] adminPages() {
         return new String[]{"/admin/**"};
     }
+
     private String[] doctorPages() {
         return new String[]{
                 "/doctor",
-                "/doctor/patient_diseases/**",
-                "/doctor/patient_diseases_email/**",
+                "/doctor/update",
                 "/doctor/patients",
+                "/doctor/patient_diseases",
+                "/doctor/add_single_appointment",
+                "/doctor/add_multiple_appointments",
+                "/doctor/edit_disease/**",
+                "/doctor/patient_diseases/**",
                 "/doctor/appointments/**",
                 "/doctor/patient_appointments/**",
                 "/doctor/appointment_details/**",
                 "/doctor/update_note/**",
-                "/doctor/add_single_appointment",
-                "/doctor/add_multiple_appointments",
-                "/doctor/delete_appointment/**",
-                "/doctor/edit_disease"
+                "/doctor/delete_appointment/**"
         };
     }
+
     private String[] patientPages() {
         return new String[]{
                 "/patient",
+                "/patient/update",
                 "/patient/doctors",
                 "/patient/book_appointment",
                 "/patient/diseases/**"};
