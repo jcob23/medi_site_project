@@ -4,12 +4,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.medisite.controller.DTO.DoctorDTO;
-import pl.medisite.infrastructure.database.entity.DoctorEntity;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.medisite.controller.DTO.NewPatientDTO;
 import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
@@ -18,7 +17,6 @@ import pl.medisite.util.Constants;
 
 import java.util.AbstractMap;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -69,29 +67,38 @@ public class AdminController {
 
     @GetMapping("/add")
     public String adminAddPage(Model model) {
-        model.addAttribute("doctorDTO", new DoctorDTO());
+        model.addAttribute("newDoctorDTO", new NewPatientDTO.NewDoctorDTO());
         return "admin_add";
     }
 
     @PostMapping("/add")
-    public String adminAddDoctor(@Valid @ModelAttribute("doctorDTO") DoctorDTO doctorDTO) {
-        doctorService.saveDoctor(doctorDTO);
+    public String adminAddDoctor(
+            @Valid @ModelAttribute("doctorDTO") NewPatientDTO.NewDoctorDTO newDoctorDTO,
+            RedirectAttributes redirectAttributes) {
+        doctorService.saveDoctor(newDoctorDTO);
+        redirectAttributes.addFlashAttribute("added", true);
         return "redirect:/admin/add";
     }
 
     @GetMapping("/patients")
-    public String adminPatientsPage(Model model) {
-        List<PersonDTO> users = userService.getAllPatients();
+    public String adminPatientsPage(Model model,@RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+        AbstractMap.SimpleEntry<Integer, List<PersonDTO>> users = userService.getAllPatients(pageable);
         model.addAttribute("patientView", true);
-        model.addAttribute("personsData", users);
+        model.addAttribute("personsData", users.getValue());
+        model.addAttribute("numberOfPages", users.getKey());
+        model.addAttribute("url","admin/patients");
         return "admin_list";
     }
 
     @GetMapping("/doctors")
-    public String adminDoctorsPage(Model model) {
-        List<PersonDTO.DoctorDTO> users = userService.getAllDoctors();
+    public String adminDoctorsPage(Model model,@RequestParam(defaultValue = "1") Integer page ) {
+        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+        AbstractMap.SimpleEntry<Integer, List<PersonDTO.DoctorDTO>> users = userService.getAllDoctors(pageable);
         model.addAttribute("doctorView", true);
-        model.addAttribute("personsData", users);
+        model.addAttribute("personsData", users.getValue());
+        model.addAttribute("numberOfPages", users.getKey());
+        model.addAttribute("url","admin/doctors");
         return "admin_list";
     }
 
@@ -102,6 +109,7 @@ public class AdminController {
         AbstractMap.SimpleEntry<Integer, List<PersonDTO>> users = userService.getAllUsersInformation(pageable);
         model.addAttribute("personsData", users.getValue());
         model.addAttribute("numberOfPages", users.getKey());
+        model.addAttribute("url","admin/users");
         return "admin_list";
     }
 }

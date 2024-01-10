@@ -47,6 +47,7 @@
                 </a>
             </li>
             <form style="visibility: hidden" id="logout" method="POST" action="#" th:action="@{/logout}"></form>
+            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
             <li th:unless="${#authorization.expression('isAuthenticated()')}">
                 <a th:href="@{/login}" onclick="$('#form').submit();">
                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Login

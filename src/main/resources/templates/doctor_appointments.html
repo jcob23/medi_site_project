@@ -38,6 +38,7 @@
 
     <form id="singleAppointmentsForm" action="#" th:action="@{/doctor/add_single_appointment}" method="POST"
           th:object="${NewAppointmentDTO}">
+        <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
         <div class="form-group">
             <label for="appointmentDate">Data</label>
             <input type="date" id="appointmentDate" name="appointmentDate">
@@ -53,6 +54,7 @@
 
     <form id="multipleAppointmentsForm" action="#" style="display: none"
           th:action="@{/doctor/add_multiple_appointments}" method="POST" th:object="${NewAppointmentsDTO}">
+        <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
         <div class="form-group">
             <label for="appointmentsDate">Daty od: </label>
             <input type="date" id="appointmentsDate" name="appointmentDate">
@@ -108,11 +110,13 @@
             <td>
                 <div th:unless="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
                     <form action="#" th:action="@{/doctor/delete_appointment/{appointmentId}(appointmentId=${appointment.id})}" th:method="DELETE">
+                        <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
                         <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
                     </form>
                 </div>
                 <div th:if="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}" >
                     <form action="#"  th:method="DELETE">
+                        <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
                         <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
                         <button type="submit" class="btn btn-secondary" th:disabled="${true}" >Odwołaj wizytę</button>
                     </form>

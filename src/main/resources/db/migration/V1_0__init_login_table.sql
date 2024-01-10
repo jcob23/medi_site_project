@@ -4,11 +4,6 @@ CREATE TABLE role
     role        VARCHAR(20) NOT NULL,
     PRIMARY KEY (role_id)
 );
-INSERT INTO role (role_id,role) values (1,'ADMIN');
-
-INSERT INTO role (role_id,role) values (2,'PATIENT');
-
-INSERT INTO role (role_id,role) values (3,'DOCTOR');
 
 CREATE TABLE user_token
 (

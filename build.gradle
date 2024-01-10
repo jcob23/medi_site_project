@@ -62,7 +62,7 @@ dependencies {
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
     implementation 'io.swagger:swagger-annotations:1.6.9'
 
-    // warmomg unknow enum constant When.MAYBE
+
     implementation "com.google.code.findbugs:jsr305:3.0.2"
 
     //tests

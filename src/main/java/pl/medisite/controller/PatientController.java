@@ -5,8 +5,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,11 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
-import pl.medisite.controller.DTO.DoctorDTO;
 import pl.medisite.controller.DTO.PersonDTO;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
-import pl.medisite.infrastructure.database.entity.DoctorEntity;
-import pl.medisite.infrastructure.database.mapper.DoctorEntityMapper;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DoctorService;
 import pl.medisite.service.PatientService;
@@ -30,12 +24,10 @@ import pl.medisite.service.UserService;
 import pl.medisite.util.Constants;
 import pl.medisite.util.SecurityHelper;
 
-import java.awt.print.Pageable;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -62,7 +54,7 @@ public class PatientController {
 
     @GetMapping("/doctors")
     public String showDoctorsList(Model model, @RequestParam(defaultValue = "1") Integer page) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "surname"));
         AbstractMap.SimpleEntry<Integer, List<PersonDTO.DoctorDTO>> allDoctors = userService.getAllDoctors(pageable);
         model.addAttribute("personsData", allDoctors.getValue());
         model.addAttribute("numberOfPages", allDoctors.getKey());
@@ -73,14 +65,14 @@ public class PatientController {
     public String showPatientAppointments(
             Model model,
             @RequestParam(name = "filter", required = false) String filter,
-            @RequestParam(defaultValue = "1")  Integer page
+            @RequestParam(defaultValue = "1") Integer page
     ) throws AccessDeniedException {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "appointmentStart"));
         String email = (String) session.getAttribute("userEmail");
-        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> appointments = appointmentService.getPatientAppointments(email, filter,pageable);
+        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> appointments = appointmentService.getPatientAppointments(email, filter, pageable);
         model.addAttribute("patientAppointments", appointments.getValue());
         model.addAttribute("numberOfPages", appointments.getKey());
-        if( !Objects.isNull(filter) ){
+        if( !Objects.isNull(filter) ) {
             model.addAttribute("filter", filter);
         }
         return "patient_appointments";
@@ -109,14 +101,14 @@ public class PatientController {
     public String deleteAppointment(
             @PathVariable("appointmentId") Integer appointmentId,
             RedirectAttributes redirectAttributes
-    )  {
+    ) {
         appointmentService.deleteAppointment(appointmentId);
         redirectAttributes.addFlashAttribute("deleted", true);
         return "redirect:/patient/appointments";
     }
 
     @PutMapping("/update")
-    public String updateInformation(@Valid @ModelAttribute("patient") PersonDTO user, Model model){
+    public String updateInformation(@Valid @ModelAttribute("patient") PersonDTO user, Model model) {
         patientService.updatePatient(user);
         model.addAttribute("update", true);
         return "profile";
@@ -125,7 +117,7 @@ public class PatientController {
 
     @DeleteMapping("/{email}")
     public String deletePatient(@PathVariable(name = "email") @Email String email, Model model, Authentication authentication) {
-        securityHelper.compareUserEmailWithRequestEmail((User) authentication.getPrincipal(),email);
+        securityHelper.compareUserEmailWithRequestEmail((User) authentication.getPrincipal(), email);
         patientService.deletePatient(email);
         model.addAttribute("deleted", true);
         SecurityContextHolder.getContext().setAuthentication(null);

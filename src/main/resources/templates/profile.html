@@ -22,6 +22,7 @@
 
         <form action="#" th:action="@{/patient/update}" method='POST' th:object="${patient}">
             <input type="hidden" name="_method" value="PUT"/>
+            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
             <input type="hidden" name="email" th:field="*{email}"/>
             <div class="form-group">
                 IMIĘ:     <input type="text" th:field="*{name}"/><br>
@@ -34,6 +35,7 @@
         <br>
         <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
         <form action="#" th:action="@{/patient/{email}(email=${session.userEmail})}" th:method="DELETE">
+            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-danger">Usuń konto</button>
         </form>
     </div>
@@ -41,6 +43,7 @@
     <div th:if="${#strings.equals(session.userRole, 'DOCTOR')}">
         <form action="#" th:action="@{/doctor/update}" method='POST' th:object="${doctor}">
             <input type="hidden" name="_method" value="PUT"/>
+            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
             <input type="hidden" name="email" th:field="*{email}"/>
             <div class="form-group">
                 IMIĘ: <input type="text" th:field="*{name}"/><br>
@@ -55,6 +58,7 @@
         <br>
         <a th:href="@{/logout}" class="btn btn-info" role="button">Wyloguj się</a>
         <form action="#" th:action="@{/doctor/{email}(email=${session.userEmail})}" th:method="DELETE">
+            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-danger">Usuń konto</button>
         </form>
     </div>

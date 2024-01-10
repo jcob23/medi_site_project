@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.medisite.infrastructure.pjp_api.api.AgregatyPomiarwApi;
+import pl.medisite.infrastructure.pjp_api.api.InformacjeOPrzekroczeniuApi;
 import pl.medisite.infrastructure.pjp_api.model.AggregateDTO;
 import pl.medisite.infrastructure.pjp_api.model.AggregatePM10DataDTO;
+import pl.medisite.infrastructure.pjp_api.model.ExceedingDTO;
+import pl.medisite.infrastructure.pjp_api.model.ExceedingLdDTO;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -17,17 +20,18 @@ import java.util.stream.Collectors;
 public class PjpClient {
 
     private final AgregatyPomiarwApi agregatyPomiarwApi;
-    private static final String allcounty = "Katowice,Gdańsk,Warszawa,Kraków,Wroclaw,Białystok,Szczecin,Poznań,Lublin";
+    private static final String allCounty = "Katowice,Gdańsk,Warszawa,Kraków,Wroclaw,Białystok,Szczecin,Poznań,Lublin";
 
     public List<AirInformation> getAirInformation(){
-        List<AirInformation> collect = getAirInformationFromApi().stream().map(AirInformationMapper::mapAggregateDTO).toList();
-        return collect;
+        return getAirInformationFromApi().stream().map(AirInformationMapper::mapAggregateDTO).toList();
     }
 
     private List<AggregateDTO> getAirInformationFromApi(){
-        AggregatePM10DataDTO countryAirInformation = Optional.ofNullable(agregatyPomiarwApi.getAggregatePm10DataUsingGET(0, 200, null, allcounty, null).block())
-                .orElseThrow(() -> new RuntimeException("Nie znaleziono informacji o pwietrzu w polsce"));
+        AggregatePM10DataDTO countryAirInformation =
+                Optional.ofNullable(agregatyPomiarwApi.getAggregatePm10DataUsingGET(0, 200, null, allCounty, null).block())
+                .orElseThrow(() -> new RuntimeException("Nie znaleziono informacji o powietrzu w Polsce"));
         return countryAirInformation.getListaDanychZagregowanych();
 
     }
+
 }

@@ -60,11 +60,13 @@
                               th:action="@{/patient/delete_appointment/{appointmentId}(appointmentId=${appointment.id})}"
                               th:method="DELETE">
                             <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
+                            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
                             <button type="submit" class="btn btn-danger">Odwołaj wizytę</button>
                         </form>
                     </div>
                     <div th:if="${appointment.appointmentEnd.isBefore(T(java.time.LocalDateTime).now())}">
                         <form action="#" th:method="DELETE">
+                            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
                             <input type="hidden" name="appointmentId" th:value="${appointment.id}"/>
                             <button type="submit" class="btn btn-secondary" th:disabled="${true}">Odwołaj wizytę
                             </button>

@@ -12,10 +12,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +33,19 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+//        UserDetails patient = User.withUsername("testPatient")
+//                .password(passwordEncoder.encode("1234"))
+//                .roles("PATIENT")
+//                .build();
+//        UserDetails doctor = User.withUsername("testDoctor")
+//                .password(passwordEncoder.encode("1234"))
+//                .roles("DOCTOR")
+//                .build();
+//        return new InMemoryUserDetailsManager(patient,doctor);
+//    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(
@@ -56,17 +73,20 @@ public class SecurityConfiguration {
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        return httpSecurity
+                .csrf(httpSecurityCsrfConfigurer ->
+                        httpSecurityCsrfConfigurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(internetUserPages()).permitAll()
                         .requestMatchers(medisiteUserPages()).hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
-                        .requestMatchers(patientAndAdminPages()).hasAnyAuthority("PATIENT", "ADMIN")
                         .requestMatchers(adminPages()).hasAuthority("ADMIN")
                         .requestMatchers(patientPages()).hasAuthority("PATIENT")
                         .requestMatchers(doctorPages()).hasAuthority("DOCTOR")
                 )
                 .formLogin(formLogin -> formLogin.permitAll()
                         .loginPage("/login")
+                        .loginProcessingUrl("/authentication")
                         .defaultSuccessUrl("/home", true)
                         .failureHandler(customAuthenticationFailureHandler)
                 )
@@ -99,13 +119,6 @@ public class SecurityConfiguration {
         };
     }
 
-    private String[] patientAndAdminPages() {
-        return new String[]{
-                "/patient/appointments/**",
-                "/patient/delete_appointment/**",
-        };
-    }
-
     private String[] adminPages() {
         return new String[]{"/admin/**"};
     }
@@ -133,6 +146,8 @@ public class SecurityConfiguration {
                 "/patient",
                 "/patient/update",
                 "/patient/doctors",
+                "/patient/appointments/**",
+                "/patient/delete_appointment/**",
                 "/patient/book_appointment",
                 "/patient/book_appointment/**",
                 "/patient/diseases/**"};

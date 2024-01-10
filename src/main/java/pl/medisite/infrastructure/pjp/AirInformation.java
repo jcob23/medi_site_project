@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Value
 @Builder
@@ -14,6 +14,6 @@ public class AirInformation {
     String county;
     BigDecimal maxValue;
     BigDecimal meanValue;
-    String date;
+    LocalDateTime date;
 
 }

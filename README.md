@@ -4,7 +4,7 @@
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Description](#Description)
-* [TO DO](#TO DO)
+* [TO DO](#TO-DO)
 
 ## General info
 This project is a simple online clinic web app created for the Zajavka course.
@@ -20,6 +20,7 @@ The project is developed using:
 * Gradle
 
 ## Setup
+Application uses PostgreSQL database, the schema is called medisite. Application works on port 8190
 To Start application you can use Docker Compose and then access the site by link: http://localhost:8190/medisite/
 
 ## Description
@@ -34,8 +35,13 @@ Every user can update personal information such as name, surname, phone number, 
 
 To become a patient user has to register to site, Doctors are added by Admin to ensure security.
 
+Application also provides information about pm10 concentration in the biggest cities of Poland.
+It's archived by consuming https://api.gios.gov.pl/pjp-api/swagger-ui/, source: https://powietrze.gios.gov.pl/pjp/content/api
+
+
 ## How to use
 To use this application, you can access the web app and interact with the web interface or use the REST API.
+Api can by accessed by swagger-ui, you can find medisite.json in project folder
 
 
 ## TO DO

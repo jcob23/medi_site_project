@@ -14,6 +14,7 @@
             <h3>Zarejestruj się</h3>
         </div>
         <form action="#" th:action="@{/register}" method='POST' th:object="${newPatientDTO}">
+            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
             <div class="form-group">
                 IMIĘ: <input type="text" th:field="*{name}"/><br>
                 NAZWISKO: <input type="text" th:field="*{surname}"/><br>

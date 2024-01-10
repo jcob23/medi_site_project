@@ -45,8 +45,11 @@ public class DoctorRestController {
         return appointmentService.getDoctorAppointments(email);
     }
     @GetMapping("/appointments_pageable/{email}")
-    public List<AppointmentDTO> getAppointments(@PathVariable @Email String email,@RequestParam(defaultValue = "1") Integer page) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+    public List<AppointmentDTO> getAppointments(
+            @PathVariable @Email String email,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer noOfElements) {
+        PageRequest pageable = PageRequest.of(page-1, noOfElements, Sort.by(Sort.Direction.ASC,"appointmentStart"));
         AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> doctorAppointments = appointmentService.getDoctorAppointments(email, null, pageable);
         return doctorAppointments.getValue();
     }

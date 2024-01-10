@@ -1,11 +1,9 @@
 package pl.medisite.infrastructure.pjp;
 
-import jakarta.validation.constraints.NotNull;
 import pl.medisite.infrastructure.pjp_api.model.AggregateDTO;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 public class AirInformationMapper {
 
@@ -15,9 +13,9 @@ public class AirInformationMapper {
         return AirInformation.builder()
                 .region(aggregateDTO.getWojewództwo())
                 .county(aggregateDTO.getPowiat())
-                .date(aggregateDTO.getData())
+                .date(LocalDateTime.parse(aggregateDTO.getData().replace(" ","T")))
                 .maxValue(mean == null ? null : BigDecimal.valueOf(mean))
-                .meanValue(max ==null? null : BigDecimal.valueOf(max))
+                .meanValue(max == null ? null : BigDecimal.valueOf(max))
                 .build();
     }
 }

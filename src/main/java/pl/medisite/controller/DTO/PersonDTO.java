@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonDTO {
@@ -28,6 +28,18 @@ public class PersonDTO {
     @Size(min = 7, max = 15)
     @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
     private String phone;
+
+    public void setName(String name) {
+        this.name = name.stripTrailing();
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname.stripTrailing();
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone.stripTrailing();
+    }
 
     @Getter
     @Setter

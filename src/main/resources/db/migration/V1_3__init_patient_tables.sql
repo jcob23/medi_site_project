@@ -26,19 +26,6 @@ CREATE TABLE patient_diseases
         FOREIGN KEY(patient_id)
             REFERENCES patient(patient_id)
 );
-INSERT INTO patient (patient_id,name,surname,email,phone)
-VALUES (1,'Romek','Księżycowy', 'user1@medisite.pl','+48 234 873 981');
 
-INSERT INTO patient (patient_id,name,surname,email,phone)
-VALUES (2,'Tomek','Gwiazdowy', 'user2@medisite.pl','+48 234 873 982');
-
-INSERT INTO patient_diseases (disease_id,name,description,cured,since,patient_id)
-VALUES (1,'choroba A', 'opis choroby A',false,'2020.01.01',1);
-
-INSERT INTO patient_diseases (disease_id,name,description,cured,since,patient_id)
-VALUES (2,'choroba B', 'opis choroby B',false,'2019.01.01',1);
-
-INSERT INTO patient_diseases (disease_id,name,description,cured,since,patient_id)
-VALUES (3,'choroba C', 'opis choroby C',true,'2021.01.01',1);
 
 

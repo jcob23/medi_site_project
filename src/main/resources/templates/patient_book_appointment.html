@@ -33,6 +33,7 @@
                 <td>
                     <form action="#" th:action="@{/patient/book_appointment/{appointmentId}(appointmentId=${appointment.id})}" th:method="POST">
                         <input type="hidden" name="_method" value="PUT" />
+                        <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
                         <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
                         <button type="submit" class="btn btn-info">Zarezerwuj wizytę</button>
                     </form>

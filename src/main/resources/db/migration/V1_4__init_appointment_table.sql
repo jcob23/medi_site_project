@@ -16,11 +16,4 @@ CREATE TABLE appointment
 );
 
 
-INSERT INTO appointment (appointment_start, appointment_end, patient_email, doctor_id, note)
-VALUES ('2023-12-25 10:00:00', '2024-01-15 11:00:00', 'user1@medisite.pl', 1, 'Dodatkowe informacje o wizycie 1');
 
-INSERT INTO appointment (appointment_start, appointment_end, patient_email, doctor_id, note)
-VALUES ('2023-12-22 10:00:00', '2023-12-27 11:00:00', 'user1@medisite.pl', 1, 'Dodatkowe informacje o wizycie 2');
-
-INSERT INTO appointment (appointment_start, appointment_end, patient_email, doctor_id, note)
-VALUES ('2023-12-10 10:00:00', '2023-12-10 11:00:00', 'user1@medisite.pl', 1, 'Dodatkowe informacje o wizycie 3');

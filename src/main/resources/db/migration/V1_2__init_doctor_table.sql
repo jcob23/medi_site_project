@@ -14,11 +14,6 @@ CREATE TABLE doctor
                REFERENCES medisite_user(email)
 );
 
-INSERT INTO doctor (name,surname,email,phone,specialization,description)
-VALUES ('Agata','Lekarka', 'doctor1@medisite.pl','+48 534 873 981','bezsenność','');
-
-INSERT INTO doctor (name,surname,email,phone,specialization,description)
-VALUES ('Krystyna','Doktorka','doctor2@medisite.pl','+48 634 873 982','strach','');
 
 
 

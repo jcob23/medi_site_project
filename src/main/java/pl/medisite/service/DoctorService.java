@@ -35,15 +35,16 @@ public class DoctorService {
         return DoctorEntityMapper.map(checkIfDoctorExist(email));
     }
     @Transactional
-    public void saveDoctor(DoctorDTO doctorDTO) {
+    public void saveDoctor(NewPatientDTO.NewDoctorDTO newDoctorDTO) {
         UserEntity userEntity = userService
-                .saveUser(NewUserDTO.builder().email(doctorDTO.getEmail()).password(doctorDTO.getPassword()).build(),3);
+                .saveUser(NewUserDTO.builder().email(newDoctorDTO.getEmail()).password(newDoctorDTO.getPassword()).build(),3);
 
         DoctorEntity doctorEntity = DoctorEntity.builder()
-                .name(doctorDTO.getName())
-                .surname(doctorDTO.getSurname())
-                .phone(doctorDTO.getPhone())
-                .specialization(doctorDTO.getSpecialization())
+                .name(newDoctorDTO.getName())
+                .surname(newDoctorDTO.getSurname())
+                .phone(newDoctorDTO.getPhone())
+                .specialization(newDoctorDTO.getSpecialization())
+                .description("")
                 .loginDetails(userEntity)
                 .build();
         doctorRepository.save(doctorEntity);

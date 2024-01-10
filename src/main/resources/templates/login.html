@@ -16,7 +16,8 @@
     <div th:if="${registered}">Użytkownik zarejestrowany pomyślnie! Zaloguj się teraz.</div>
     <div th:if="${reset}">Twoje hasło zostało pomyślnie zmienione! Zaloguj się teraz.</div>
         <div class="card-body">
-            <form name='f' action="login" method='POST'>
+            <form name='f' action="#" th:action="@{/authentication}" method='POST'>
+                <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
                 <table>
                     <tr>
                         <td>Email:
@@ -30,12 +31,12 @@
                        <td>
                            <br>
                            <button type="submit" class="btn btn-info">Zaloguj się</button>
-                            <a th:href="@{/register}" class="btn btn-info" role="button" >Rejestracja</a>
-                            <a th:href="@{/forget}">Zapomniałeś hasła?</a>
                        </td>
                     </tr>
                 </table>
             </form>
+            <a th:href="@{/register}" class="btn btn-info" role="button" >Rejestracja</a>
+            <a th:href="@{/forget}">Zapomniałeś hasła?</a>
         </div>
 
     </body>

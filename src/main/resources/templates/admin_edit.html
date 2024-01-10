@@ -12,6 +12,7 @@
 <div th:insert="~{fragments/header :: header}"></div>
     <form action="#" th:action="@{/admin/edit_patient}" method='POST' th:object="${user}">
         <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
         <input type="hidden" th:field="*{loginDetails.email}" th:value="${user.loginDetails.email}" />
         <div class="form-group">
             IMIĘ: <input type="text" th:field="*{name}" /><br>

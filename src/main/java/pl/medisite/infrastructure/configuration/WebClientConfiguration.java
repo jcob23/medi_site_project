@@ -8,12 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.util.MimeType;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import pl.medisite.infrastructure.pjp_api.ApiClient;
 import pl.medisite.infrastructure.pjp_api.api.AgregatyPomiarwApi;
-import pl.medisite.infrastructure.pjp_api.api.InformacjeOPrzekroczeniuApi;
 
 import java.util.Collections;
 

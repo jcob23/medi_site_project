@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.NewUserDTO;
 import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
+import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.infrastructure.database.mapper.DoctorEntityMapper;
 import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
 import pl.medisite.infrastructure.database.repository.DoctorRepository;
@@ -63,6 +64,11 @@ public class UserService {
         return patientRepository.findAll().stream()
                 .map(PatientEntityMapper::map)
                 .collect(Collectors.toList());
+    }
+    public AbstractMap.SimpleEntry<Integer,List<PersonDTO>> getAllPatients(Pageable pageable) {
+        Page<PatientEntity> allData = patientRepository.findAll(pageable);
+        Page<PersonDTO> doctors = allData.map(PatientEntityMapper::map);
+        return new AbstractMap.SimpleEntry<>(doctors.getTotalPages(),doctors.getContent());
     }
 
     public List<PersonDTO.DoctorDTO> getAllDoctors() {

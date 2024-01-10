@@ -10,8 +10,12 @@
 
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
+<div th:if="${added}" class="alert alert-info" id="addAlert">
+    Pomyślnie dodano doktora do systemu
+</div>
 <h2>Dodaj lekarza</h2>
-<form action="#" th:action="@{/admin/add}" method="POST" th:object="${doctorDTO}">
+<form action="#" th:action="@{/admin/add}" method="POST" th:object="${newDoctorDTO}">
+    <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
     <div class="form-group">
         IMIĘ: <input type="text" th:field="*{name}"/><br>
         NAZWISKO: <input type="text" th:field="*{surname}"/><br>
