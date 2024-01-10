@@ -3,9 +3,10 @@ server:
   servlet:
     context-path: /medisite
 
-#api:
-#  petStore:
-#    url: https://petstore3.swagger.io.api/v3/
+api:
+  pjp_api:
+    url: https://api.gios.gov.pl/
+
 
 spring:
   mail:

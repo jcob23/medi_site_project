@@ -43,8 +43,7 @@ public class SecurityConfiguration {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            HttpSecurity httpSecurity,
-            AuthenticationProvider authenticationProvider
+            HttpSecurity httpSecurity, AuthenticationProvider authenticationProvider
     ) throws Exception {
         return httpSecurity
                 .getSharedObject(AuthenticationManagerBuilder.class)

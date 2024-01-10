@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -54,6 +55,16 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("errorMessage", message);
         return modelAndView;
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView handleConstraintViolationException(AccessDeniedException ex) {
+        String message = "Użytkownik o takim adresie email już istnieje!";
+        log.error(message, ex);
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("errorMessage", message);
+        return modelAndView;
+    }
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleForbiddenError(AccessDeniedException ex) {
@@ -63,6 +74,8 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("errorMessage", message);
         return modelAndView;
     }
+
+
 
 
 

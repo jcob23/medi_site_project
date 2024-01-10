@@ -30,7 +30,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
-        model.addAttribute("patientDTO", new NewPatientDTO());
+        model.addAttribute("newPatientDTO", new NewPatientDTO());
         return "register";
     }
 
