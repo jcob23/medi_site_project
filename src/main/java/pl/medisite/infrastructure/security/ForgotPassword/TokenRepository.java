@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface TokenRepository extends JpaRepository<MediSiteToken, Long> {
+public interface TokenRepository extends JpaRepository<MediSiteToken, Integer> {
 
     @Modifying
     List<MediSiteToken> deleteByExpirationTimeBefore(LocalDateTime currentDateTime);

@@ -1,5 +1,6 @@
 package pl.medisite.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,7 +45,7 @@ public class UserService {
         UserEntity userEntity = UserEntity.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .role(roleRepository.getRoleById(roleId))
+                .role(roleRepository.findById(roleId).orElseThrow(()-> new EntityNotFoundException("Role Not Found")))
                 .build();
 
         return userRepository.saveAndFlush(userEntity);

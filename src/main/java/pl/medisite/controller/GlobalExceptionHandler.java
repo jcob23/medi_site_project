@@ -60,9 +60,10 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
-    @ExceptionHandler()
+
+    @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ModelAndView handleForbiddenError(AccessDeniedException ex) {
+    public ModelAndView handleAccessDeniedException(AccessDeniedException ex) {
         String message = "Odmowa dostępu, brak odpowiednich uprawnień";
         log.error(message, ex);
         ModelAndView modelAndView = new ModelAndView("error");

@@ -1,6 +1,6 @@
 CREATE TABLE patient
 (
-    patient_id           SERIAL             NOT NULL,
+    patient_id          SERIAL             NOT NULL,
     name                VARCHAR(20)         NOT NULL,
     surname             VARCHAR(20)         NOT NULL,
     phone               VARCHAR(32)         NOT NULL,

@@ -33,7 +33,7 @@
             </th:block>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li th:if="${#authorization.expression('isAuthenticated()')}">
+            <li th:if="${session.userRole != null}">
                 <a th:if="${#strings.equals(session.userRole, 'PATIENT')}" href="#" th:href="@{/patient}">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 </a>
@@ -41,14 +41,15 @@
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 </a>
             </li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}">
-                <a th:href="@{/logout}" onclick="$('#form').submit();">
+            <li th:if="${session.userRole != null}">
+                <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
                 </a>
+                <form id="logout-form" action="#" th:action="@{/logout}" method="post" th:object="${_csrf}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
             </li>
-            <form style="visibility: hidden" id="logout" method="POST" action="#" th:action="@{/logout}"></form>
-            <input type="hidden" name="XSRF-TOKEN" value="${_csrf.token}"/>
-            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+            <li th:if="${session.userRole == null}">
                 <a th:href="@{/login}" onclick="$('#form').submit();">
                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Login
                 </a>

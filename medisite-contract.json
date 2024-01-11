@@ -1,0 +1,1222 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Online clinic application",
+    "contact": {
+      "name": "Medisite",
+      "url": "https://medi-site.pl",
+      "email": "kontakt@medi-site.pl"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8190/medisite",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/doctor/add_appointment/{doctorEmail}": {
+      "post": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "addAppointment",
+        "parameters": [
+          {
+            "name": "doctorEmail",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewAppointmentDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewAppointmentDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patient/book_appointment/{appointmentId}": {
+      "patch": {
+        "tags": [
+          "patient-rest-controller"
+        ],
+        "operationId": "bookAppointment",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Email address",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              },
+              "example": "user@example.com"
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/update_note/{appointmentId}": {
+      "patch": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "updateNote",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pjp/all": {
+      "get": {
+        "tags": [
+          "pjp-rest-controller"
+        ],
+        "operationId": "pjpCountryPm10Info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AirInformation"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patient/doctors": {
+      "get": {
+        "tags": [
+          "patient-rest-controller"
+        ],
+        "operationId": "getDoctorsList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoctorDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patient/diseases/{email}": {
+      "get": {
+        "tags": [
+          "patient-rest-controller"
+        ],
+        "operationId": "getDiseasesList",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiseaseEntity"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patient/appointments_pageable/{email}": {
+      "get": {
+        "tags": [
+          "patient-rest-controller"
+        ],
+        "operationId": "getAppointments",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patient/appointments/{email}": {
+      "get": {
+        "tags": [
+          "patient-rest-controller"
+        ],
+        "operationId": "getAppointments_1",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/patients/email": {
+      "get": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "getPatients",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/patient_diseases/{patientEmail}": {
+      "get": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "getDiseasesList_1",
+        "parameters": [
+          {
+            "name": "patientEmail",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiseaseEntity"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/patient_appointments/{doctorEmail}/{patientEmail}": {
+      "get": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "getPatientAppointmentsForDoctor",
+        "parameters": [
+          {
+            "name": "patientEmail",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "doctorEmail",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/appointments_pageable/{email}": {
+      "get": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "getAppointments_2",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "noOfElements",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/appointments/{email}": {
+      "get": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "getAppointments_3",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patient/delete_appointment/{appointmentId}": {
+      "delete": {
+        "tags": [
+          "patient-rest-controller"
+        ],
+        "operationId": "deleteAppointment",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/delete_appointment/{appointmentId}": {
+      "delete": {
+        "tags": [
+          "doctor-rest-controller"
+        ],
+        "operationId": "deleteAppointment_1",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelAndView"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HttpStatusCode": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean"
+          },
+          "is3xxRedirection": {
+            "type": "boolean"
+          },
+          "is2xxSuccessful": {
+            "type": "boolean"
+          },
+          "is5xxServerError": {
+            "type": "boolean"
+          },
+          "is4xxClientError": {
+            "type": "boolean"
+          },
+          "is1xxInformational": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ModelAndView": {
+        "type": "object",
+        "properties": {
+          "view": {
+            "$ref": "#/components/schemas/View"
+          },
+          "model": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "viewName": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "boolean"
+          },
+          "modelMap": {
+            "type": "object",
+            "properties": {
+              "empty": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "View": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string"
+          }
+        }
+      },
+      "NewAppointmentDTO": {
+        "type": "object",
+        "properties": {
+          "Data wizyty": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-25"
+          },
+          "Godzina rozpoczęcia wizyty": {
+            "type": "string",
+            "example": "08:00"
+          },
+          "Godzina zakończenia wizyty": {
+            "type": "string",
+            "example": "09:00"
+          }
+        }
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "AirInformation": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "maxValue": {
+            "type": "number"
+          },
+          "meanValue": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DoctorDTO": {
+        "required": [
+          "name",
+          "surname"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "phone": {
+            "maxLength": 15,
+            "minLength": 7,
+            "pattern": "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$",
+            "type": "string"
+          },
+          "specialization": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "AppointmentEntity": {
+        "type": "object",
+        "properties": {
+          "appointmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "appointmentStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "appointmentEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "note": {
+            "type": "string"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/PatientEntity"
+          },
+          "doctor": {
+            "$ref": "#/components/schemas/DoctorEntity"
+          }
+        }
+      },
+      "DiseaseEntity": {
+        "type": "object",
+        "properties": {
+          "diseaseId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "cured": {
+            "type": "boolean"
+          },
+          "since": {
+            "type": "string",
+            "format": "date"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/PatientEntity"
+          }
+        }
+      },
+      "DoctorEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "specialization": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "loginDetails": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "appointments": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppointmentEntity"
+            }
+          }
+        }
+      },
+      "MediSiteToken": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expirationTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PatientEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "loginDetails": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "appointments": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppointmentEntity"
+            }
+          }
+        }
+      },
+      "RoleEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "UserEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleEntity"
+          },
+          "token": {
+            "$ref": "#/components/schemas/MediSiteToken"
+          }
+        }
+      },
+      "AppointmentDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "patientName": {
+            "type": "string"
+          },
+          "doctorName": {
+            "type": "string"
+          },
+          "doctorSpecialization": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "appointmentEnd": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PersonDTO": {
+        "required": [
+          "name",
+          "surname"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "phone": {
+            "maxLength": 15,
+            "minLength": 7,
+            "pattern": "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

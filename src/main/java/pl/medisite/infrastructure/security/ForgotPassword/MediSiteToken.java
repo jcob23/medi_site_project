@@ -20,7 +20,7 @@ public class MediSiteToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id")
-    private long id;
+    private int id;
 
 
     @Column(name = "token")

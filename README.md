@@ -41,7 +41,7 @@ It's archived by consuming https://api.gios.gov.pl/pjp-api/swagger-ui/, source: 
 
 ## How to use
 To use this application, you can access the web app and interact with the web interface or use the REST API.
-Api can by accessed by swagger-ui, you can find medisite.json in project folder
+Api can by accessed by swagger-ui, you can find medisite-contract.json in project folder
 
 
 ## TO DO
@@ -49,5 +49,6 @@ Api can by accessed by swagger-ui, you can find medisite.json in project folder
 * Enhance web interface clarity and functionality
 * Develop a mobile version
 * Allow doctors to upload their photos
+* Add pm10 information to home page from pjp-api
 * Expand the app to different countries by implementing different languages and time zones
 * Allow users to receive SMS notifications

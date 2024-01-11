@@ -34,11 +34,8 @@ public class DiseaseEntity {
     @Column(name = "since")
     private LocalDate since;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
-
-
-
 
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.medisite.controller.LoginController;
 import pl.medisite.infrastructure.security.UserRepository;
 import pl.medisite.service.UserService;
 

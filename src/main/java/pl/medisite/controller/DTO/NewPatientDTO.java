@@ -53,11 +53,11 @@ public class NewPatientDTO {
 
     public Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
-        Optional.ofNullable(email).ifPresent(value -> result.put("email", email));
-        Optional.ofNullable(password).ifPresent(value -> result.put("password", password));
-        Optional.ofNullable(name).ifPresent(value -> result.put("name", name));
-        Optional.ofNullable(surname).ifPresent(value -> result.put("surname", surname));
-        Optional.ofNullable(phone).ifPresent(value -> result.put("phone", phone));
+        result.put("email",email == null ? "test@email.com": email);
+        result.put("password",password == null ? "1234": password);
+        result.put("name",name == null ? "test" : name);
+        result.put("surname",surname == null ? "test" : surname);
+        result.put("phone",phone == null ? "+48 123 123 123" : phone);
         return result;
     }
     @Getter
