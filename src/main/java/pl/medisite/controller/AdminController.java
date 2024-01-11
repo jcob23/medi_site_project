@@ -81,35 +81,35 @@ public class AdminController {
     }
 
     @GetMapping("/patients")
-    public String adminPatientsPage(Model model,@RequestParam(defaultValue = "1") Integer page) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+    public String adminPatientsPage(Model model, @RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "surname"));
         AbstractMap.SimpleEntry<Integer, List<PersonDTO>> users = userService.getAllPatients(pageable);
         model.addAttribute("patientView", true);
         model.addAttribute("personsData", users.getValue());
         model.addAttribute("numberOfPages", users.getKey());
-        model.addAttribute("url","admin/patients");
+        model.addAttribute("url", "admin/patients");
         return "admin_list";
     }
 
     @GetMapping("/doctors")
-    public String adminDoctorsPage(Model model,@RequestParam(defaultValue = "1") Integer page ) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+    public String adminDoctorsPage(Model model, @RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "surname"));
         AbstractMap.SimpleEntry<Integer, List<PersonDTO.DoctorDTO>> users = userService.getAllDoctors(pageable);
         model.addAttribute("doctorView", true);
         model.addAttribute("personsData", users.getValue());
         model.addAttribute("numberOfPages", users.getKey());
-        model.addAttribute("url","admin/doctors");
+        model.addAttribute("url", "admin/doctors");
         return "admin_list";
     }
 
 
     @GetMapping("/users")
-    public String adminUsersPage(Model model,@RequestParam(defaultValue = "1") Integer page ) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"surname"));
+    public String adminUsersPage(Model model, @RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "surname"));
         AbstractMap.SimpleEntry<Integer, List<PersonDTO>> users = userService.getAllUsersInformation(pageable);
         model.addAttribute("personsData", users.getValue());
         model.addAttribute("numberOfPages", users.getKey());
-        model.addAttribute("url","admin/users");
+        model.addAttribute("url", "admin/users");
         return "admin_list";
     }
 }

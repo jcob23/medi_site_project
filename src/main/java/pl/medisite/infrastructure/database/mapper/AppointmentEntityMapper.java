@@ -4,7 +4,9 @@ import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.util.DateTimeHelper;
 
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 
 public class AppointmentEntityMapper {

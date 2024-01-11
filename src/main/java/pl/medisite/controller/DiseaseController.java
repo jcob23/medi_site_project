@@ -66,11 +66,12 @@ public class DiseaseController {
 
     @PostMapping("/doctor/patient_diseases")
     public String addDisease(
-            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseDTO,RedirectAttributes redirectAttributes) {
+            @Valid @ModelAttribute("diseaseDTO") DiseaseDTO diseaseDTO, RedirectAttributes redirectAttributes) {
         diseaseService.addDiseaseToPatient(diseaseDTO);
         redirectAttributes.addFlashAttribute("added", true);
         return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail() + "?";
     }
+
     @PutMapping("/doctor/edit_disease")
     public String editDisease(
             @Valid @ModelAttribute DiseaseDTO diseaseDTO,
@@ -78,6 +79,6 @@ public class DiseaseController {
     ) {
         diseaseService.updateDisease(diseaseDTO);
         redirectAttributes.addFlashAttribute("edited", true);
-        return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail()+"?";
+        return "redirect:/doctor/patient_diseases/" + diseaseDTO.getPatientEmail() + "?";
     }
 }

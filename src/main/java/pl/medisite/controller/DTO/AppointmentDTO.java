@@ -2,11 +2,8 @@ package pl.medisite.controller.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
-import pl.medisite.util.DateTimeHelper;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Data
 @AllArgsConstructor

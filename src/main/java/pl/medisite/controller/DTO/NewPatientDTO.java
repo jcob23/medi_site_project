@@ -53,13 +53,14 @@ public class NewPatientDTO {
 
     public Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
-        result.put("email",email == null ? "test@email.com": email);
-        result.put("password",password == null ? "1234": password);
-        result.put("name",name == null ? "test" : name);
-        result.put("surname",surname == null ? "test" : surname);
-        result.put("phone",phone == null ? "+48 123 123 123" : phone);
+        result.put("email", email == null ? "test@email.com" : email);
+        result.put("password", password == null ? "1234" : password);
+        result.put("name", name == null ? "test" : name);
+        result.put("surname", surname == null ? "test" : surname);
+        result.put("phone", phone == null ? "+48 123 123 123" : phone);
         return result;
     }
+
     @Getter
     @Setter
     @NoArgsConstructor

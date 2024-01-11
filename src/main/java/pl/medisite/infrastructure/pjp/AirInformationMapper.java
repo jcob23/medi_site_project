@@ -13,7 +13,7 @@ public class AirInformationMapper {
         return AirInformation.builder()
                 .region(aggregateDTO.getWojewództwo())
                 .county(aggregateDTO.getPowiat())
-                .date(LocalDateTime.parse(aggregateDTO.getData().replace(" ","T")))
+                .date(LocalDateTime.parse(aggregateDTO.getData().replace(" ", "T")))
                 .maxValue(mean == null ? null : BigDecimal.valueOf(mean))
                 .meanValue(max == null ? null : BigDecimal.valueOf(max))
                 .build();

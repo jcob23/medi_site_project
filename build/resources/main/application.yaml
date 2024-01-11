@@ -49,12 +49,3 @@ spring:
   resources:
     add-mappings: true
 
-
-
-
-#logging:
-#    level:
-#        root: WARN
-#        org:
-#          springframework:
-#            security: DEBUG

@@ -35,7 +35,7 @@ public class AbstractIntegrationTest {
     public void after() {
         appointmentRepository.deleteAll();
         doctorRepository.deleteAll();
-        patientRepository.deleteAll();
         diseaseRepository.deleteAll();
+        patientRepository.deleteAll();
     }
 }

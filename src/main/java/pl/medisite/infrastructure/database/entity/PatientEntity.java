@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(of = "loginDetails")
 @Table(name = "patient")
-@ToString(exclude = {"appointments","loginDetails"})
+@ToString(exclude = {"appointments", "loginDetails"})
 public class PatientEntity {
 
     @Id

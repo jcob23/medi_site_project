@@ -73,6 +73,8 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:postgresql"
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
+    testImplementation 'org.slf4j:slf4j-api:2.0.4'
+    testImplementation 'com.github.tomakehurst:wiremock-standalone:2.27.2'
 }
 
 dependencyManagement {

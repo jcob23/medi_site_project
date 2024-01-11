@@ -52,3 +52,5 @@ Api can by accessed by swagger-ui, you can find medisite-contract.json in projec
 * Add pm10 information to home page from pjp-api
 * Expand the app to different countries by implementing different languages and time zones
 * Allow users to receive SMS notifications
+* Collect more data from api.gios.gov and display it to the user in more appealing way 
+* Test Test Tests!

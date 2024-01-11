@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(of = "loginDetails")
 @Table(name = "doctor")
-@ToString(exclude = {"appointments","loginDetails"})
+@ToString(exclude = {"appointments", "loginDetails"})
 public class DoctorEntity {
 
     @Id
@@ -40,7 +40,7 @@ public class DoctorEntity {
     @JoinColumn(name = "email", referencedColumnName = "email")
     private UserEntity loginDetails;
 
-    @OneToMany
+    @OneToMany()
     @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id")
     private Set<AppointmentEntity> appointments;
 

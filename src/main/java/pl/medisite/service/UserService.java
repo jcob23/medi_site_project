@@ -22,7 +22,6 @@ import pl.medisite.infrastructure.security.UserRepository;
 
 import java.util.AbstractMap;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -45,7 +44,7 @@ public class UserService {
         UserEntity userEntity = UserEntity.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .role(roleRepository.findById(roleId).orElseThrow(()-> new EntityNotFoundException("Role Not Found")))
+                .role(roleRepository.findById(roleId).orElseThrow(() -> new EntityNotFoundException("Role Not Found")))
                 .build();
 
         return userRepository.saveAndFlush(userEntity);
@@ -66,10 +65,11 @@ public class UserService {
                 .map(PatientEntityMapper::map)
                 .collect(Collectors.toList());
     }
-    public AbstractMap.SimpleEntry<Integer,List<PersonDTO>> getAllPatients(Pageable pageable) {
+
+    public AbstractMap.SimpleEntry<Integer, List<PersonDTO>> getAllPatients(Pageable pageable) {
         Page<PatientEntity> allData = patientRepository.findAll(pageable);
         Page<PersonDTO> doctors = allData.map(PatientEntityMapper::map);
-        return new AbstractMap.SimpleEntry<>(doctors.getTotalPages(),doctors.getContent());
+        return new AbstractMap.SimpleEntry<>(doctors.getTotalPages(), doctors.getContent());
     }
 
     public List<PersonDTO.DoctorDTO> getAllDoctors() {
@@ -77,20 +77,22 @@ public class UserService {
                 .map(DoctorEntityMapper::map)
                 .collect(Collectors.toList());
     }
-    public AbstractMap.SimpleEntry<Integer,List<PersonDTO.DoctorDTO>> getAllDoctors(Pageable pageable) {
+
+    public AbstractMap.SimpleEntry<Integer, List<PersonDTO.DoctorDTO>> getAllDoctors(Pageable pageable) {
         Page<DoctorEntity> allData = doctorRepository.findAll(pageable);
         Page<PersonDTO.DoctorDTO> doctors = allData.map(DoctorEntityMapper::map);
-        return new AbstractMap.SimpleEntry<>(doctors.getTotalPages(),doctors.getContent());
+        return new AbstractMap.SimpleEntry<>(doctors.getTotalPages(), doctors.getContent());
     }
 
-    public AbstractMap.SimpleEntry<Integer,List<PersonDTO>> getAllUsersInformation(Pageable pageable) {
+    public AbstractMap.SimpleEntry<Integer, List<PersonDTO>> getAllUsersInformation(Pageable pageable) {
         List<PersonDTO.DoctorDTO> personInformation = getAllDoctors();
         List<PersonDTO> personDTO2 = getAllPatients();
         personDTO2.addAll(personInformation);
 
-        Page<PersonDTO> page = new PageImpl<>(personDTO2,pageable,personDTO2.size());
-        return new AbstractMap.SimpleEntry<>(page.getTotalPages(),page.getContent());
+        Page<PersonDTO> page = new PageImpl<>(personDTO2, pageable, personDTO2.size());
+        return new AbstractMap.SimpleEntry<>(page.getTotalPages(), page.getContent());
     }
+
     public UserEntity getUserFromToken(UUID token) {
         return userRepository.findByToken(token);
     }

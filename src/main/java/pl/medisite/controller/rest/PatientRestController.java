@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.PersonDTO;
-import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DiseaseService;
@@ -46,9 +45,10 @@ public class PatientRestController {
     public List<AppointmentDTO> getAppointments(@PathVariable String email) {
         return appointmentService.getPatientAppointments(email);
     }
+
     @GetMapping("/appointments_pageable/{email}")
-    public List<AppointmentDTO> getAppointments(@PathVariable String email,@RequestParam(defaultValue = "1") Integer page) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+    public List<AppointmentDTO> getAppointments(@PathVariable String email, @RequestParam(defaultValue = "1") Integer page) {
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "appointmentStart"));
         AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> patientAppointments = appointmentService.getPatientAppointments(email, null, pageable);
         return patientAppointments.getValue();
     }

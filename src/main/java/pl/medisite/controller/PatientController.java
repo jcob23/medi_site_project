@@ -115,7 +115,7 @@ public class PatientController {
     }
 
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/delete/{email}")
     public String deletePatient(@PathVariable(name = "email") @Email String email, Model model, Authentication authentication) {
         securityHelper.compareUserEmailWithRequestEmail((User) authentication.getPrincipal(), email);
         patientService.deletePatient(email);

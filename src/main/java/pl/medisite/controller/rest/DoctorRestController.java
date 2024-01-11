@@ -1,18 +1,14 @@
 package pl.medisite.controller.rest;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.controller.DTO.NewAppointmentDTO;
 import pl.medisite.controller.DTO.Note;
@@ -21,10 +17,7 @@ import pl.medisite.infrastructure.database.entity.DiseaseEntity;
 import pl.medisite.service.AppointmentService;
 import pl.medisite.service.DiseaseService;
 import pl.medisite.service.DoctorService;
-import pl.medisite.service.PatientService;
-import pl.medisite.util.Constants;
 
-import java.text.ParseException;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Set;
@@ -44,12 +37,13 @@ public class DoctorRestController {
     public List<AppointmentDTO> getAppointments(@PathVariable @Email String email) {
         return appointmentService.getDoctorAppointments(email);
     }
+
     @GetMapping("/appointments_pageable/{email}")
     public List<AppointmentDTO> getAppointments(
             @PathVariable @Email String email,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer noOfElements) {
-        PageRequest pageable = PageRequest.of(page-1, noOfElements, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+        PageRequest pageable = PageRequest.of(page - 1, noOfElements, Sort.by(Sort.Direction.ASC, "appointmentStart"));
         AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> doctorAppointments = appointmentService.getDoctorAppointments(email, null, pageable);
         return doctorAppointments.getValue();
     }
@@ -74,10 +68,10 @@ public class DoctorRestController {
     }
 
     @GetMapping("/patient_appointments/{doctorEmail}/{patientEmail}")
-    public Set<AppointmentDTO>  getPatientAppointmentsForDoctor(
+    public Set<AppointmentDTO> getPatientAppointmentsForDoctor(
             @PathVariable @Email String patientEmail,
             @PathVariable @Email String doctorEmail) {
-        return appointmentService.getPatientFutureAppointmentsForDoctor(patientEmail,doctorEmail);
+        return appointmentService.getPatientFutureAppointmentsForDoctor(patientEmail, doctorEmail);
     }
 
     @PatchMapping("/update_note/{appointmentId}")
@@ -92,7 +86,7 @@ public class DoctorRestController {
     @DeleteMapping("/delete_appointment/{appointmentId}")
     public ResponseEntity<?> deleteAppointment(
             @PathVariable("appointmentId") Integer appointmentId
-    )  {
+    ) {
         appointmentService.deleteAppointment(appointmentId);
         return ResponseEntity.noContent().build();
     }

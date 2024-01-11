@@ -6,13 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.medisite.controller.DTO.NewPatientDTO;
-import pl.medisite.controller.DTO.PersonDTO;
 import pl.medisite.controller.DTO.NewUserDTO;
+import pl.medisite.controller.DTO.PersonDTO;
+import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.PatientEntity;
 import pl.medisite.infrastructure.database.mapper.PatientEntityMapper;
+import pl.medisite.infrastructure.database.repository.AppointmentRepository;
+import pl.medisite.infrastructure.database.repository.DiseaseRepository;
 import pl.medisite.infrastructure.database.repository.PatientRepository;
 import pl.medisite.infrastructure.security.UserEntity;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -22,6 +26,8 @@ public class PatientService {
 
     private UserService userService;
     private PatientRepository patientRepository;
+    private DiseaseRepository diseaseRepository;
+    private AppointmentRepository appointmentRepository;
 
     public PatientEntity checkIfPatientExist(String email) {
         PatientEntity patient = patientRepository.findByEmail(email);
@@ -30,7 +36,8 @@ public class PatientService {
         }
         return patient;
     }
-    public PersonDTO getPatient(String email){
+
+    public PersonDTO getPatient(String email) {
         return PatientEntityMapper.map(checkIfPatientExist(email));
     }
 
@@ -59,6 +66,10 @@ public class PatientService {
 
     @Transactional
     public void deletePatient(String email) {
+        List<AppointmentEntity> patientAppointments = appointmentRepository.getPatientAppointments(email);
+        patientAppointments.forEach(appointment -> appointment.setPatient(null));
+        appointmentRepository.saveAllAndFlush(patientAppointments);
+        diseaseRepository.deleteAllByEmail(email);
         patientRepository.deleteByMail(email);
         userService.deleteUser(email);
     }

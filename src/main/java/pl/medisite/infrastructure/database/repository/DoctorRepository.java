@@ -32,6 +32,4 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, Integer> {
     Set<PatientEntity> getPatientsForDoctor(@Param("doctorEmail") String doctorEmail);
 
 
-
-
 }

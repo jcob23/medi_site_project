@@ -5,7 +5,7 @@ import pl.medisite.infrastructure.database.entity.DoctorEntity;
 
 public class DoctorEntityMapper {
 
-    public static PersonDTO.DoctorDTO map(DoctorEntity doctor){
+    public static PersonDTO.DoctorDTO map(DoctorEntity doctor) {
         return new PersonDTO.DoctorDTO(
                 doctor.getLoginDetails().getEmail(),
                 doctor.getName(),

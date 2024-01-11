@@ -14,6 +14,7 @@ import java.util.List;
 public class PjpService {
 
     private PjpClient pjpClient;
+
     public List<AirInformation> getCountryPm10Info() {
         return pjpClient.getAirInformation();
     }

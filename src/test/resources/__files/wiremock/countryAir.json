@@ -1,0 +1,202 @@
+{
+  "@context": {
+    "Lista danych zagregowanych": {
+      "@id": "https://api.gios.gov.pl/pjp-api/v1/rest/aggregate/getAggregatePm10Data"
+    },
+    "links": "https://schema.org/relatedLink",
+    "totalPages": "https://schema.org/numberOfPages"
+  },
+  "Lista danych zagregowanych": [
+    {
+      "Województwo": "LUBELSKIE",
+      "Kod stanowiska": "LbLubObywate-PM10-1g",
+      "Powiat": "Lublin",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 41.25,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 29.504166667
+    },
+    {
+      "Województwo": "LUBELSKIE",
+      "Kod stanowiska": "LbLubObywate-PM10-1g",
+      "Powiat": "Lublin",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 106.325,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 72.6875
+    },
+    {
+      "Województwo": "LUBELSKIE",
+      "Kod stanowiska": "LbLubObywate-PM10-1g",
+      "Powiat": "Lublin",
+      "Data": "2024-01-10 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 102.35,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 57.8125
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakAlKras-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 47.858925,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 35.775216667
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakAlKras-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 69.4819375,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 59.8563125
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakAlKras-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-10 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 211.54125,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 155.6132
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakBujaka-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 62.244275,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 43.158625
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakBujaka-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 91.5669375,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 81.202330435
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakBujaka-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-10 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 199.510875,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 171.526291667
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakBulwar-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 49.3735375,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 32.524604167
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakBulwar-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 81.217725,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 72.454825
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakBulwar-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-10 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 176.634625,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 149.774733333
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakDietla-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 45.62345,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 32.480633333
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakDietla-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 69.2609125,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 59.583856522
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakDietla-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-10 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 178.15,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 139.023033333
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakOsPias-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 61.930625,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 42.286482353
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakOsPias-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 77.852625,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 66.820275
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakOsPias-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-10 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 156.7385,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 126.752120833
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakSwoszo-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-08 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 58.4951,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 41.798105882
+    },
+    {
+      "Województwo": "MAŁOPOLSKIE",
+      "Kod stanowiska": "MpKrakSwoszo-PM10-1g",
+      "Powiat": "Kraków",
+      "Data": "2024-01-09 00:00:00",
+      "Maksimum ze średnich 8-godzinnych": 94.0219,
+      "Średnia 24-godzinna z wyników 1-godzinnych": 74.550929167
+    }
+  ],
+  "meta": {
+    "dc:description": "Usługa sieciowa udostępniająca agregaty maksimum ze średnich 8-godzinnych i średnich 24-godzinnych z 1-godzinnych wyników pomiarów pyłu zawieszonego PM10 ze stanowisk automatycznych za 3 ostatnie doby w podziale na województwa i powiaty",
+    "sy:updateFrequency": "1",
+    "dc:language": "pol (ISO 639-2 / ISO 639-3)",
+    "schema:contentType": "application/ld+json",
+    "schema:provider": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Warszawa",
+        "postalCode": "02-362",
+        "streetAddress": "Bitwy Warszawskiej 1920 3"
+      },
+      "email": "api@gios.gov.pl",
+      "name": "Główny Inspektorat Ochrony Środowiska"
+    },
+    "dc:title": "Agregaty wyników pomiarów pyłu zawieszonego PM10",
+    "schema:datePublished": "03.11.2022",
+    "schema:keywords": "dane pomiarowe, wyniki pomiarów, średnia dobowa, powietrze, jakość powietrza, zanieczyszczenie powietrza, stacje pomiarowe, stanowiska pomiarowe, monitoring powietrza, Państwowy Monitoring Środowiska, środowisko, stan środowiska",
+    "sy:updatePeriod": "daily",
+    "schema:isPartOf": "Państwowy Monitoring Środowiska, Jakość powietrza"
+  },
+  "links": {
+    "next": "https://api.gios.gov.pl/pjp-api/v1/rest/aggregate/getAggregatePm10Data?filter%5Bpowiat%5D=Katowice%2CGda%C5%84sk%2CWarszawa%2CKrak%C3%B3w%2CWroclaw%2CBia%C5%82ystok%2CSzczecin%2CPozna%C5%84%2CLublin&page=1&size=20",
+    "last": "https://api.gios.gov.pl/pjp-api/v1/rest/aggregate/getAggregatePm10Data?filter%5Bpowiat%5D=Katowice%2CGda%C5%84sk%2CWarszawa%2CKrak%C3%B3w%2CWroclaw%2CBia%C5%82ystok%2CSzczecin%2CPozna%C5%84%2CLublin&page=3&size=20",
+    "prev": "https://api.gios.gov.pl/pjp-api/v1/rest/aggregate/getAggregatePm10Data?filter%5Bpowiat%5D=Katowice%2CGda%C5%84sk%2CWarszawa%2CKrak%C3%B3w%2CWroclaw%2CBia%C5%82ystok%2CSzczecin%2CPozna%C5%84%2CLublin&page=0&size=20",
+    "self": "https://api.gios.gov.pl/pjp-api/v1/rest/aggregate/getAggregatePm10Data?filter%5Bpowiat%5D=Katowice%2CGda%C5%84sk%2CWarszawa%2CKrak%C3%B3w%2CWroclaw%2CBia%C5%82ystok%2CSzczecin%2CPozna%C5%84%2CLublin&page=0&size=20",
+    "first": "https://api.gios.gov.pl/pjp-api/v1/rest/aggregate/getAggregatePm10Data?filter%5Bpowiat%5D=Katowice%2CGda%C5%84sk%2CWarszawa%2CKrak%C3%B3w%2CWroclaw%2CBia%C5%82ystok%2CSzczecin%2CPozna%C5%84%2CLublin&page=0&size=20"
+  },
+  "totalPages": 4
+}

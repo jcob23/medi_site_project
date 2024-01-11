@@ -6,7 +6,7 @@ import pl.medisite.infrastructure.database.entity.PatientEntity;
 
 public class DiseaseEntityMapper {
 
-    public static DiseaseEntity mapNewDisease(DiseaseDTO diseaseDTO, PatientEntity patient){
+    public static DiseaseEntity mapNewDisease(DiseaseDTO diseaseDTO, PatientEntity patient) {
         return DiseaseEntity.builder()
                 .patient(patient)
                 .cured(false)
@@ -16,7 +16,7 @@ public class DiseaseEntityMapper {
                 .build();
     }
 
-    public static DiseaseDTO mapDiseaseEntity(DiseaseEntity disease){
+    public static DiseaseDTO mapDiseaseEntity(DiseaseEntity disease) {
         return new DiseaseDTO(
                 disease.getDiseaseId(),
                 disease.getName(),

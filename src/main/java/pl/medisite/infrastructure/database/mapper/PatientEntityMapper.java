@@ -6,7 +6,7 @@ import pl.medisite.infrastructure.database.entity.PatientEntity;
 
 @Slf4j
 public class PatientEntityMapper {
-    public static PersonDTO map(PatientEntity patientEntity){
+    public static PersonDTO map(PatientEntity patientEntity) {
         return new PersonDTO(
                 patientEntity.getLoginDetails().getEmail(),
                 patientEntity.getName(),

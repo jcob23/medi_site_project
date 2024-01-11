@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,18 +11,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.server.authorization.AuthorizationContext;
 
 @Configuration
 @EnableWebSecurity
@@ -37,19 +29,6 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-//        UserDetails patient = User.withUsername("testPatient")
-//                .password(passwordEncoder.encode("1234"))
-//                .roles("PATIENT")
-//                .build();
-//        UserDetails doctor = User.withUsername("testDoctor")
-//                .password(passwordEncoder.encode("1234"))
-//                .roles("DOCTOR")
-//                .build();
-//        return new InMemoryUserDetailsManager(patient,doctor);
-//    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(
@@ -73,15 +52,13 @@ public class SecurityConfiguration {
     }
 
 
-
-
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     public SecurityFilterChain filterChainEnabled(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(httpSecurityCsrfConfigurer ->
                         httpSecurityCsrfConfigurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/api/**"))
+                                .ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(internetUserPages()).permitAll()
                         .requestMatchers(medisiteUserPages()).hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
@@ -99,7 +76,7 @@ public class SecurityConfiguration {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID","XSRF-TOKEN")
+                        .deleteCookies("JSESSIONID", "XSRF-TOKEN")
                         .permitAll()
                 )
                 .build();
@@ -133,6 +110,7 @@ public class SecurityConfiguration {
     private String[] doctorPages() {
         return new String[]{
                 "/doctor",
+                "/doctor/delete/**",
                 "/doctor/update",
                 "/doctor/patients",
                 "/doctor/patient_diseases",
@@ -151,6 +129,7 @@ public class SecurityConfiguration {
     private String[] patientPages() {
         return new String[]{
                 "/patient",
+                "/patient/delete/**",
                 "/patient/update",
                 "/patient/doctors",
                 "/patient/appointments/**",

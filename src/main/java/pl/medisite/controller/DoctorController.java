@@ -3,10 +3,8 @@ package pl.medisite.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
@@ -65,15 +63,15 @@ public class DoctorController {
             @RequestParam(name = "dateFilter", required = false) String dateFilter,
             @RequestParam(defaultValue = "1") Integer page
     ) {
-        PageRequest pageable = PageRequest.of(page-1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC,"appointmentStart"));
+        PageRequest pageable = PageRequest.of(page - 1, Constants.ELEMENTS_ON_PAGE, Sort.by(Sort.Direction.ASC, "appointmentStart"));
         String email = (String) session.getAttribute("userEmail");
-        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> appointments = appointmentService.getDoctorAppointments(email, dateFilter,pageable);
+        AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> appointments = appointmentService.getDoctorAppointments(email, dateFilter, pageable);
 
         model.addAttribute("newAppointmentDTO", new NewAppointmentDTO());
         model.addAttribute("newAppointmentsDTO", new NewAppointmentsDTO());
         model.addAttribute("appointments", appointments.getValue());
         model.addAttribute("numberOfPages", appointments.getKey());
-        if( !Objects.isNull(dateFilter) ){
+        if( !Objects.isNull(dateFilter) ) {
             model.addAttribute("filter", dateFilter);
         }
         return "doctor_appointments";
@@ -107,7 +105,7 @@ public class DoctorController {
             RedirectAttributes redirectAttributes) throws BindException {
         String email = (String) session.getAttribute("userEmail");
         appointmentService.createMultipleAppointments(newAppointmentsDTO, email);
-        redirectAttributes.addFlashAttribute("added2",true);
+        redirectAttributes.addFlashAttribute("added2", true);
         return "redirect:/doctor/appointments";
     }
 
@@ -143,13 +141,13 @@ public class DoctorController {
     public String deleteAppointment(
             @PathVariable("appointmentId") Integer appointmentId,
             RedirectAttributes redirectAttributes
-    )  {
+    ) {
         appointmentService.deleteAppointment(appointmentId);
         redirectAttributes.addFlashAttribute("deleted", true);
         return "redirect:/doctor/appointments";
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/delete/{email}")
     public String deleteDoctor(@PathVariable(name = "email") @Email String email, Authentication authentication, Model model) {
         securityHelper.compareUserEmailWithRequestEmail((User) authentication.getPrincipal(), email);
         doctorService.deleteDoctor(email);

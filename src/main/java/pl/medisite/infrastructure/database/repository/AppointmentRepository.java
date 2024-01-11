@@ -8,14 +8,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import pl.medisite.controller.DTO.AppointmentDTO;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 
 import java.util.List;
 import java.util.Set;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Integer> {
-
 
 
     AppointmentEntity getByAppointmentId(Integer appointmentId);
@@ -37,7 +35,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             " JOIN a.doctor d" +
             " JOIN d.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart < CURRENT_TIMESTAMP")
-    Page<AppointmentEntity> getDoctorPastAppointments(String email,PageRequest pageAble);
+    Page<AppointmentEntity> getDoctorPastAppointments(String email, PageRequest pageAble);
 
 
     @Query("SELECT a FROM AppointmentEntity a" +
@@ -45,6 +43,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             " JOIN d.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
     Page<AppointmentEntity> getDoctorFutureAppointments(String email, PageRequest pageAble);
+
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.patient p" +
             " JOIN p.loginDetails u" +
@@ -68,7 +67,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             " JOIN a.patient p" +
             " JOIN p.loginDetails u" +
             " WHERE u.email = :email AND a.appointmentStart > CURRENT_TIMESTAMP")
-    Page<AppointmentEntity> getPatientFutureAppointments(String email,  PageRequest pageable);
+    Page<AppointmentEntity> getPatientFutureAppointments(String email, PageRequest pageable);
 
     @Query("SELECT a FROM AppointmentEntity a" +
             " JOIN a.doctor d" +
@@ -82,7 +81,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             " JOIN p.loginDetails up" +
             " JOIN d.loginDetails ud" +
             " WHERE up.email = :patientEmail AND ud.email = :doctorEmail AND a.appointmentStart > CURRENT_TIMESTAMP")
-    Set<AppointmentEntity> getPatientFutureAppointmentsForDoctor(String patientEmail,String doctorEmail,  Sort sort);
+    Set<AppointmentEntity> getPatientFutureAppointmentsForDoctor(String patientEmail, String doctorEmail, Sort sort);
 
     @Modifying
     @Transactional
@@ -91,5 +90,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     void deleteAppointment(@Param("appointmentId") Integer appointmentId);
 
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM AppointmentEntity a" +
+            " WHERE a.doctor IN (SELECT d FROM DoctorEntity d JOIN d.loginDetails ld WHERE ld.email = :doctorEmail)")
+    void deleteAllByDoctorEmail(@Param("doctorEmail") String doctorEmail);
 
 }

@@ -3,11 +3,16 @@ package pl.medisite.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
-import pl.medisite.controller.DTO.*;
+import pl.medisite.controller.DTO.AppointmentDTO;
+import pl.medisite.controller.DTO.NewAppointmentDTO;
+import pl.medisite.controller.DTO.NewAppointmentsDTO;
+import pl.medisite.controller.DTO.Note;
 import pl.medisite.exception.AppointmentCancellationException;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 import pl.medisite.infrastructure.database.entity.DoctorEntity;
@@ -44,7 +49,7 @@ public class AppointmentService {
         return AppointmentEntityMapper.mapAppointment(checkIfAppointmentExist(id));
     }
 
-    public List<AppointmentDTO> getPatientAppointments(String email){
+    public List<AppointmentDTO> getPatientAppointments(String email) {
         return appointmentRepository.getPatientAppointments(email).stream()
                 .map(AppointmentEntityMapper::mapAppointment).collect(Collectors.toList());
     }
@@ -53,35 +58,34 @@ public class AppointmentService {
         patientService.checkIfPatientExist(email);
         Page<AppointmentEntity> appointments;
         if( "past".equals(filter) ) {
-            appointments = appointmentRepository.getPatientPastAppointments(email,  pageable);
+            appointments = appointmentRepository.getPatientPastAppointments(email, pageable);
         } else if( "future".equals(filter) ) {
-            appointments = appointmentRepository.getPatientFutureAppointments(email,  pageable);
-        } else  {
-            appointments = appointmentRepository.getPatientAppointments(email,  pageable);
+            appointments = appointmentRepository.getPatientFutureAppointments(email, pageable);
+        } else {
+            appointments = appointmentRepository.getPatientAppointments(email, pageable);
         }
         Page<AppointmentDTO> mappedAppointments = appointments.map(AppointmentEntityMapper::mapAppointment);
-        return new AbstractMap.SimpleEntry<>(mappedAppointments.getTotalPages(),mappedAppointments.getContent());
+        return new AbstractMap.SimpleEntry<>(mappedAppointments.getTotalPages(), mappedAppointments.getContent());
     }
 
-    public List<AppointmentDTO> getDoctorAppointments(String email){
+    public List<AppointmentDTO> getDoctorAppointments(String email) {
         return appointmentRepository.getDoctorAppointments(email).stream()
                 .map(AppointmentEntityMapper::mapAppointment).collect(Collectors.toList());
     }
 
-    public AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> getDoctorAppointments(String email, String filter,PageRequest pageable) {
+    public AbstractMap.SimpleEntry<Integer, List<AppointmentDTO>> getDoctorAppointments(String email, String filter, PageRequest pageable) {
         doctorService.checkIfDoctorExist(email);
         Page<AppointmentEntity> appointments;
         if( "past".equals(filter) ) {
-            appointments = appointmentRepository.getDoctorPastAppointments(email,  pageable);
+            appointments = appointmentRepository.getDoctorPastAppointments(email, pageable);
         } else if( "future".equals(filter) ) {
-            appointments = appointmentRepository.getDoctorFutureAppointments(email,  pageable);
-        } else  {
-            appointments = appointmentRepository.getDoctorAppointments(email,  pageable);
+            appointments = appointmentRepository.getDoctorFutureAppointments(email, pageable);
+        } else {
+            appointments = appointmentRepository.getDoctorAppointments(email, pageable);
         }
         Page<AppointmentDTO> mappedAppointments = appointments.map(AppointmentEntityMapper::mapAppointment);
-        return new AbstractMap.SimpleEntry<>(mappedAppointments.getTotalPages(),mappedAppointments.getContent());
+        return new AbstractMap.SimpleEntry<>(mappedAppointments.getTotalPages(), mappedAppointments.getContent());
     }
-
 
 
     public Set<AppointmentDTO> getDoctorFutureFreeAppointments(String email) {
@@ -106,18 +110,18 @@ public class AppointmentService {
     public void createSingleAppointment(NewAppointmentDTO newAppointment, String email) throws BindException {
         LocalTime timeStart = LocalTime.parse(newAppointment.getAppointmentTimeStart(), DateTimeFormatter.ISO_TIME);
         LocalTime timeEnd = LocalTime.parse(newAppointment.getAppointmentTimeEnd(), DateTimeFormatter.ISO_TIME);
-        dateTimeHelper.checkIfAppointmentTimeIsValid(timeStart,timeEnd);
+        dateTimeHelper.checkIfAppointmentTimeIsValid(timeStart, timeEnd);
 
         DoctorEntity doctorEntity = doctorService.checkIfDoctorExist(email);
         AppointmentEntity appointmentEntity = AppointmentEntity.builder()
                 .appointmentStart(
                         ZonedDateTime.of(newAppointment.getAppointmentDate(), timeStart, ZoneId.of("Europe/Warsaw")))
                 .appointmentEnd(
-                        ZonedDateTime.of(newAppointment.getAppointmentDate(),timeEnd, ZoneId.of("Europe/Warsaw")))
+                        ZonedDateTime.of(newAppointment.getAppointmentDate(), timeEnd, ZoneId.of("Europe/Warsaw")))
                 .doctor(doctorEntity)
                 .build();
         Set<AppointmentEntity> doctorAppointments = appointmentRepository.getDoctorAppointments(email);
-        dateTimeHelper.checkIfDateIsAvailable(appointmentEntity,doctorAppointments);
+        dateTimeHelper.checkIfDateIsAvailable(appointmentEntity, doctorAppointments);
         appointmentRepository.saveAndFlush(appointmentEntity);
     }
 
@@ -154,7 +158,7 @@ public class AppointmentService {
                         .appointmentEnd(ZonedDateTime.of(currentDate, currentTime.plus(appointmentTimeInterval), ZoneId.of("Europe/Warsaw")))
                         .doctor(doctorEntity)
                         .build();
-                dateTimeHelper.checkIfAppointmentTimeIsValid(currentTime,currentTime.plus(appointmentTimeInterval));
+                dateTimeHelper.checkIfAppointmentTimeIsValid(currentTime, currentTime.plus(appointmentTimeInterval));
                 appointmentEntitySet.add(appointmentEntity);
                 currentTime = currentTime.plus(appointmentTimeInterval).plus(breakTimeInterval);
                 if( currentTime.isAfter(timeEnd) || currentTime.equals(timeEnd) ) {

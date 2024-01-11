@@ -3,9 +3,7 @@ package pl.medisite.util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import pl.medisite.controller.DTO.NewAppointmentDTO;
 import pl.medisite.exception.AppointmentOverlapException;
 import pl.medisite.infrastructure.database.entity.AppointmentEntity;
 
@@ -34,6 +32,7 @@ public class DateTimeHelper {
             isOverlap(newAppointment, appointment);
         }
     }
+
     private void isOverlap(AppointmentEntity newAppointment, AppointmentEntity appointment) {
         if( newAppointment.getAppointmentStart().toLocalDate().equals(appointment.getAppointmentStart().toLocalDate()) ) {
             LocalTime newTimeStart = newAppointment.getAppointmentStart().toLocalTime();
@@ -53,15 +52,16 @@ public class DateTimeHelper {
     }
 
     public void checkIfAppointmentTimeIsValid(LocalTime timeStart, LocalTime timeEnd) throws BindException {
-        if (timeEnd.isBefore(timeStart)) {
+        if( timeEnd.isBefore(timeStart) ) {
             FieldError fieldError = getFieldError(timeEnd);
 
-            BindException bindException = new BindException(fieldError,"newAppointmentDTO");
+            BindException bindException = new BindException(fieldError, "newAppointmentDTO");
             bindException.addError(fieldError);
 
             throw bindException;
         }
     }
+
     private static FieldError getFieldError(LocalTime timeEnd) {
         String errorCode = "appointment.invalidTimeRange";
 
