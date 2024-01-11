@@ -2,7 +2,7 @@ version: '3.2'
 services:
   # Usługa bazy danych PostgreSQL
   db:
-    image: postgres:latest
+    image: postgres:15
     restart: always
     environment:
       POSTGRES_DB: medisite
