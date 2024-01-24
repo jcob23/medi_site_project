@@ -1,4 +1,4 @@
-# MEDI SITE PROJECT IR
+# MEDI SITE PROJECT WIP
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
