@@ -43,6 +43,15 @@ It's archived by consuming https://api.gios.gov.pl/pjp-api/swagger-ui/, source: 
 To use this application, you can access the web app and interact with the web interface or use the REST API.
 Api can by accessed by swagger-ui, you can find medisite-contract.json in project folder
 
+You can test:
+-Admin functions by logging to the site with login: admin@medisite.pl password: 1234
+    Viewing user lists,Deleting and Editing users, Adding doctor Accounts
+-Doctor functions by logging to the site with login doctor1@medisite.pl password 1234
+    Viewing patient list, view patient diseases, creating new appointments, deleting appointments, adding notes to appointment
+-User function by logging to the site with login  user1@medisite.pl password 1234
+    Viewing doctor list, viewing registered appointments, viewing diseases
+ You can create your own account and with existing email and test forgot password option, it sends email with special token to reset password
+
 
 ## TO DO
 * Improve security
